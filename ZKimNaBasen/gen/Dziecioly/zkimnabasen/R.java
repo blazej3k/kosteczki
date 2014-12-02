@@ -1648,7 +1648,7 @@ containing a value of this type.
         public static final int action_mode_bar=0x7f05002e;
         public static final int action_mode_bar_stub=0x7f05002d;
         public static final int action_mode_close_button=0x7f050020;
-        public static final int action_settings=0x7f05003f;
+        public static final int action_settings=0x7f050041;
         public static final int activity_chooser_view_content=0x7f050021;
         public static final int always=0x7f05000d;
         public static final int beginning=0x7f050012;
@@ -1659,6 +1659,7 @@ containing a value of this type.
         public static final int dialog=0x7f050010;
         public static final int disableHome=0x7f05000a;
         public static final int dropdown=0x7f050011;
+        public static final int dupa=0x7f050040;
         public static final int edit_query=0x7f050033;
         public static final int end=0x7f050014;
         public static final int expand_activities_button=0x7f050022;
@@ -1694,6 +1695,7 @@ containing a value of this type.
         public static final int split_action_bar=0x7f050019;
         public static final int submit_area=0x7f05003c;
         public static final int tabMode=0x7f050003;
+        public static final int textView1=0x7f05003f;
         public static final int title=0x7f050027;
         public static final int up=0x7f050016;
         public static final int useLogo=0x7f050005;
@@ -1815,6 +1817,7 @@ containing a value of this type.
         public static final int action_settings=0x7f0a0012;
         public static final int app_name=0x7f0a0010;
         public static final int hello_world=0x7f0a0011;
+        public static final int string_dupa=0x7f0a0013;
     }
     public static final class style {
         /** 

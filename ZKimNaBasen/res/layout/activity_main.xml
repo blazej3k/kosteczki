@@ -9,8 +9,21 @@
     tools:context="Dziecioly.zkimnabasen.MainActivity" >
 
     <TextView
+        android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/hello_world" />
+
+    <ToggleButton
+        android:id="@+id/dupa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView1"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/textView1"
+        android:layout_marginTop="111dp"
+        android:text="@string/string_dupa"
+        android:textOff="KOSTKA"
+        android:textOn="DUPA" />
 
 </RelativeLayout>

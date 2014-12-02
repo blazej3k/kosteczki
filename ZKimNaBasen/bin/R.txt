@@ -347,7 +347,7 @@ int id action_menu_presenter 0x7f05001b
 int id action_mode_bar 0x7f05002e
 int id action_mode_bar_stub 0x7f05002d
 int id action_mode_close_button 0x7f050020
-int id action_settings 0x7f05003f
+int id action_settings 0x7f050041
 int id activity_chooser_view_content 0x7f050021
 int id always 0x7f05000d
 int id beginning 0x7f050012
@@ -358,6 +358,7 @@ int id default_activity_button 0x7f050024
 int id dialog 0x7f050010
 int id disableHome 0x7f05000a
 int id dropdown 0x7f050011
+int id dupa 0x7f050040
 int id edit_query 0x7f050033
 int id end 0x7f050014
 int id expand_activities_button 0x7f050022
@@ -393,6 +394,7 @@ int id showTitle 0x7f050008
 int id split_action_bar 0x7f050019
 int id submit_area 0x7f05003c
 int id tabMode 0x7f050003
+int id textView1 0x7f05003f
 int id title 0x7f050027
 int id up 0x7f050016
 int id useLogo 0x7f050005
@@ -444,6 +446,7 @@ int string abc_toolbar_collapse_description 0x7f0a0004
 int string action_settings 0x7f0a0012
 int string app_name 0x7f0a0010
 int string hello_world 0x7f0a0011
+int string string_dupa 0x7f0a0013
 int style AppBaseTheme 0x7f0b00eb
 int style AppTheme 0x7f0b00ec
 int style Base_TextAppearance_AppCompat 0x7f0b0098
