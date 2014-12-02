@@ -28,6 +28,9 @@ public class MainActivity extends ActionBarActivity {
         
         //ugigguygiuguigu
         System.out.println("zagajnik");
+        
+        
+        System.out.println("JAKI PIEKNY WALCZYK");
     }
 
 
