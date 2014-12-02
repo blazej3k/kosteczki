@@ -20,6 +20,8 @@ public class MainActivity extends ActionBarActivity {
         context = getApplicationContext();
         
         przycisk = (Button) findViewById(R.id.dupa);
+        
+        System.out.println("DUPA");
     }
 
 
