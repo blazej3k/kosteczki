@@ -23,6 +23,7 @@ public class MainActivity extends ActionBarActivity {
         
         System.out.println("DUPA");
         System.out.println("Dwie æwiartki kurczaka.");
+        System.out.println("Dwie æwiartki kurczakadddd.");
     }
 
 
