@@ -22,6 +22,7 @@ public class MainActivity extends ActionBarActivity {
         przycisk = (Button) findViewById(R.id.dupa);
         
         System.out.println("DUPA");
+        System.out.println("Dziêcio³owy Zagajnik.");
     }
 
 
