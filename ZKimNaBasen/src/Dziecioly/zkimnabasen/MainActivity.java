@@ -21,13 +21,8 @@ public class MainActivity extends ActionBarActivity {
         
         przycisk = (Button) findViewById(R.id.dupa);
         
-        System.out.println("DUPA");
-        System.out.println("Dwie æwiartki kurczaka.");
-        System.out.println("Dwie æwiartki kurczakadddd.");
-        
-        
-        //ugigguygiuguigu
-        System.out.println("zagajnik");
+        System.out.println("Karolka");
+             
     }
 
 
