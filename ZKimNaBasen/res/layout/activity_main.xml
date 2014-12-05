@@ -8,22 +8,13 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="Dziecioly.zkimnabasen.MainActivity" >
 
-    <TextView
-        android:id="@+id/textView1"
+    <Button
+        android:id="@+id/noweWydarzenie"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
-
-    <ToggleButton
-        android:id="@+id/dupa"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView1"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/textView1"
-        android:layout_marginTop="111dp"
-        android:text="@string/string_dupa"
-        android:textOff="KOSTKA"
-        android:textOn="DUPA" />
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="64dp"
+        android:text="@string/noweWydarzenie" />
 
 </RelativeLayout>
