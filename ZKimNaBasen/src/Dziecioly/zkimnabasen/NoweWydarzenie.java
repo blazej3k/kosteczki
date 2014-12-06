@@ -1,6 +1,8 @@
 package Dziecioly.zkimnabasen;
 
+import android.R.integer;
 import android.app.DatePickerDialog.OnDateSetListener;
+import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,8 +15,10 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TimePicker;
 
-public class NoweWydarzenie extends FragmentActivity implements OnDateSetListener {
+public class NoweWydarzenie extends FragmentActivity implements
+		OnDateSetListener, OnTimeSetListener {
 
 	private Context context;
 	private EditText nazwa;
@@ -24,6 +28,10 @@ public class NoweWydarzenie extends FragmentActivity implements OnDateSetListene
 	private Button godzinaZakonczenia;
 	private Button zaprosZnajomych;
 	private Button zapisz;
+
+	public static final int FLAG_START_TIME = 0;
+	public static final int FLAG_END_TIME = 1;
+	private int flag;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -38,40 +46,53 @@ public class NoweWydarzenie extends FragmentActivity implements OnDateSetListene
 		godzinaZakonczenia = (Button) findViewById(R.id.godzinaZakonczenia);
 		zaprosZnajomych = (Button) findViewById(R.id.zaprosZnajomych);
 		zapisz = (Button) findViewById(R.id.zapisz);
-		
-		
+
 		zapisz.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				zapisz();
 			}
 		});
-		
-		
-		
+
 		data.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				 DatePickerFragment date = new DatePickerFragment();
-				  date.show(getSupportFragmentManager(), "Date Picker");
+				DatePickerFragment date = new DatePickerFragment();
+				date.show(getSupportFragmentManager(), "Date Picker");
 			}
 		});
-	
-	}
-	
 
-	private void zapisz()
-	{
+		godzinaRozpoczecia.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				flag = 0;
+				TimePickerFragment time = new TimePickerFragment();
+				time.show(getSupportFragmentManager(), "Time Picker");
+			}
+		});
+		
+		godzinaZakonczenia.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				flag = 1;
+				TimePickerFragment time = new TimePickerFragment();
+				time.show(getSupportFragmentManager(), "Time Picker");
+			}
+		});
+
+
+	}
+
+	private void zapisz() {
 		Intent intent = new Intent(context, MainActivity.class);
-		
-		
+
 		String nazwaString = nazwa.getText().toString();
 		String lokalizacjaString = lokalizacja.getText().toString();
-		
+
 		intent.putExtra("nazwa", nazwaString);
 		intent.putExtra("lokalizacja", lokalizacjaString);
 
 		startActivity(intent);
-		
+
 	}
 
 	@Override
@@ -93,12 +114,23 @@ public class NoweWydarzenie extends FragmentActivity implements OnDateSetListene
 		return super.onOptionsItemSelected(item);
 	}
 
+	@Override
+	public void onDateSet(DatePicker view, int year, int month, int day) {
+		String dateText = day + "-" + String.valueOf(month + 1) + "-" + year;
+		data.setText(dateText);
+
+	}
+
+	TimePickerFragment timePickerFragment = new TimePickerFragment();
 
 	@Override
-	public void onDateSet(DatePicker view, int year, int month,
-			int day) {
-		String dateText = day+"-"+String.valueOf(month+1)+"-"+year;
-		data.setText(dateText);
-		
+	public void onTimeSet(TimePicker view, int hour, int minute) {
+		String timeText = hour + ":" + minute;
+		if (flag == FLAG_START_TIME) {
+			godzinaRozpoczecia.setText(timeText);
+		} else if (flag == FLAG_END_TIME) {
+			godzinaZakonczenia.setText(timeText);
+		}
+
 	}
 }
