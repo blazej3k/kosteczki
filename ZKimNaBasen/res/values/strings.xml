@@ -17,5 +17,7 @@
     <string name="lokalizacja">Lokalizacja</string>
     <string name="zaprosZnajomych">Zaproś znajomych</string>
     <string name="noweWydarzenie">Nowe wydarzenie</string>
+    <string name="title_activity_edycja_wydarzenia">EdycjaWydarzenia</string>
+    <string name="title_activity_szczegoly_wydarzenia">SzczegolyWydarzenia</string>
 
 </resources>

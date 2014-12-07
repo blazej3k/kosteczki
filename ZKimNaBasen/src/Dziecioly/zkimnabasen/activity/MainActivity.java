@@ -1,5 +1,6 @@
-package Dziecioly.zkimnabasen;
+package Dziecioly.zkimnabasen.activity;
 
+import Dziecioly.zkimnabasen.R;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;

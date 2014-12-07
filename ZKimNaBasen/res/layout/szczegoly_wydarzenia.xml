@@ -6,15 +6,11 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="Dziecioly.zkimnabasen.activity.MainActivity" >
+    tools:context="Dziecioly.zkimnabasen.activity.SzczegolyWydarzenia" >
 
-    <Button
-        android:id="@+id/noweWydarzenie"
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="64dp"
-        android:text="@string/noweWydarzenie" />
+        android:text="@string/hello_world" />
 
 </RelativeLayout>

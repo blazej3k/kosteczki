@@ -1,5 +1,8 @@
-package Dziecioly.zkimnabasen;
+package Dziecioly.zkimnabasen.activity;
 
+import Dziecioly.zkimnabasen.R;
+import Dziecioly.zkimnabasen.picker.DatePickerFragment;
+import Dziecioly.zkimnabasen.picker.TimePickerFragment;
 import android.R.integer;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.TimePickerDialog.OnTimeSetListener;
