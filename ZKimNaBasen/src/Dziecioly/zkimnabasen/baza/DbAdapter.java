@@ -11,9 +11,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 public class DbAdapter {
-	private static final String DEBUG_TAG = "SqLiteBasen";
+	public static final String DEBUG_TAG = "SqLiteBasen";
 	
-	private static final int DB_VERSION = 1;
+	private static final int DB_VERSION = 2;
 	private static final String DB_NAME = "baza.db";
 
 	private static final String DB_UZYTKOWNIK_TABLE = "uzytkownik";
@@ -66,6 +66,8 @@ public class DbAdapter {
 	}
 	
 	public long insertUzytkownik(String nazwa, String haslo, String telefon) {
+		Log.d(DEBUG_TAG, "Robimy inserta.");
+		
 		ContentValues newTodoValues = new ContentValues();
 		newTodoValues.put(TUzytkownik.KEY_NAZWA_UZYTKOWNIKA, nazwa);
 		newTodoValues.put(TUzytkownik.KEY_HASLO, haslo);
