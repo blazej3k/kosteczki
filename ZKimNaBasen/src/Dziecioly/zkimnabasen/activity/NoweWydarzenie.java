@@ -3,14 +3,12 @@ package Dziecioly.zkimnabasen.activity;
 import Dziecioly.zkimnabasen.R;
 import Dziecioly.zkimnabasen.picker.DatePickerFragment;
 import Dziecioly.zkimnabasen.picker.TimePickerFragment;
-import android.R.integer;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -93,7 +91,7 @@ public class NoweWydarzenie extends FragmentActivity implements
 
 		intent.putExtra("nazwa", nazwaString);
 		intent.putExtra("lokalizacja", lokalizacjaString);
-
+		
 		startActivity(intent);
 
 	}
