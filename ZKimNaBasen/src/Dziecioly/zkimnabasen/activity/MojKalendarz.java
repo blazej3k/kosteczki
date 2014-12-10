@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,12 +27,6 @@ public class MojKalendarz extends ActionBarActivity {
 		System.out.println("KUTAS");
 		
 		db = new DbAdapter(context);
-		db.open();
-		
-		long status = db.insertUzytkownik("Penis", "Gruby", "333fff");
-		
-		
-		Log.d(DbAdapter.DEBUG_TAG, "insertowalem: "+Long.toString(status));
 		
 		noweWydarzenie = (Button) findViewById(R.id.noweWydarzenie);
 		noweWydarzenie.setOnClickListener(new OnClickListener() {
