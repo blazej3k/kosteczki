@@ -1,16 +1,22 @@
 package Dziecioly.zkimnabasen.activity;
 
+import java.sql.SQLException;
+
 import Dziecioly.zkimnabasen.R;
+import Dziecioly.zkimnabasen.baza.DatabaseManager;
 import Dziecioly.zkimnabasen.baza.DbAdapter;
+import Dziecioly.zkimnabasen.baza.model.Uzytkownik;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.Toast;
 
 public class MojKalendarz extends ActionBarActivity {
 
@@ -24,9 +30,25 @@ public class MojKalendarz extends ActionBarActivity {
 		context = getApplicationContext();
 		setContentView(R.layout.moj_kalendarz);
 
-		System.out.println("KUTAS");
+		DatabaseManager.init(this);		
+		Uzytkownik u = new Uzytkownik(1, "Karolina", 8654444, "haslo");
+		try {
+			DatabaseManager.getInstance().getHelper().getUzytkownikDao().create(u);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			Uzytkownik us = DatabaseManager.getInstance().getHelper().getUzytkownikDao().queryForId(1);
+			Toast toast = Toast.makeText(context, us.getNazwa() + " " + us.getNr_tel() + "  " + us.getHaslo(), Toast.LENGTH_LONG);
+			toast.show();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
-		db = new DbAdapter(context);
+		
+		//db = new DbAdapter(context);
 		
 		noweWydarzenie = (Button) findViewById(R.id.noweWydarzenie);
 		noweWydarzenie.setOnClickListener(new OnClickListener() {
