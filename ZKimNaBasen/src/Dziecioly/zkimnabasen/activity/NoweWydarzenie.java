@@ -84,7 +84,7 @@ public class NoweWydarzenie extends FragmentActivity implements
 	}
 
 	private void zapisz() {
-		Intent intent = new Intent(context, MainActivity.class);
+		Intent intent = new Intent(context, MojKalendarz.class);
 
 		String nazwaString = nazwa.getText().toString();
 		String lokalizacjaString = lokalizacja.getText().toString();

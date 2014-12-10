@@ -1,7 +1,7 @@
 package Dziecioly.zkimnabasen.activity;
 
 import Dziecioly.zkimnabasen.R;
-import Dziecioly.zkimnabasen.baza_old.DbAdapter;
+import Dziecioly.zkimnabasen.baza.DbAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
-public class MainActivity extends ActionBarActivity {
+public class MojKalendarz extends ActionBarActivity {
 
 	Context context;
 	Button noweWydarzenie;
@@ -22,10 +22,11 @@ public class MainActivity extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		context = getApplicationContext();
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.moj_kalendarz);
+
+		System.out.println("KUTAS");
 		
 		db = new DbAdapter(context);
-		db.open();
 		
 		noweWydarzenie = (Button) findViewById(R.id.noweWydarzenie);
 		noweWydarzenie.setOnClickListener(new OnClickListener() {
