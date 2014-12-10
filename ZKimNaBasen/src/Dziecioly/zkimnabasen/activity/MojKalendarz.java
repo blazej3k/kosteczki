@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
-public class MainActivity extends ActionBarActivity {
+public class MojKalendarz extends ActionBarActivity {
 
 	Context context;
 	Button noweWydarzenie;
@@ -22,7 +22,7 @@ public class MainActivity extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		context = getApplicationContext();
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.moj_kalendarz);
 
 		System.out.println("KUTAS");
 		
