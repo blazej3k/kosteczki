@@ -1,6 +1,7 @@
 package Dziecioly.zkimnabasen.activity;
 
 import Dziecioly.zkimnabasen.R;
+import Dziecioly.zkimnabasen.baza.DbAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,24 +16,27 @@ public class MainActivity extends ActionBarActivity {
 
 	Context context;
 	Button noweWydarzenie;
+	private DbAdapter db;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		context = getApplicationContext();
 		setContentView(R.layout.activity_main);
-		
-		 noweWydarzenie = (Button) findViewById(R.id.noweWydarzenie);
-		 
-		 noweWydarzenie.setOnClickListener(new OnClickListener() {
 
-				public void onClick(View v) {
-					Intent intent = new Intent(context, NoweWydarzenie.class);
-					startActivity(intent);
-				}
-			});
+		System.out.println("KUTAS");
 		
+		db = new DbAdapter(context);
 		
+		noweWydarzenie = (Button) findViewById(R.id.noweWydarzenie);
+		noweWydarzenie.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				Intent intent = new Intent(context, NoweWydarzenie.class);
+				startActivity(intent);
+			}
+		});
+
+
 	}
 
 	@Override
