@@ -4,14 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Dziecioly.zkimnabasen.baza.model.Uzytkownik;
-
 import android.content.Context;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
-import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
@@ -25,8 +23,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 	// increase the database version
 	private static final int DATABASE_VERSION = 1;
 
-	// the DAO object we use to access the SimpleData table
-	private Dao<Uzytkownik, Integer> uzytkownikDao = null;
+	
 
 	public DatabaseHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -45,6 +42,8 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 		}
 
 	}
+	
+	
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, ConnectionSource connectionSource,
@@ -63,20 +62,10 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 			Log.e(DatabaseHelper.class.getName(), "exception during onUpgrade",
 					e);
 			throw new RuntimeException(e);
+			
 		}
 
 	}
 	
-	 public Dao<Uzytkownik, Integer> getUzytkownikDao() {
-	        if (null == uzytkownikDao) {
-	            try {
-	            	uzytkownikDao = getDao(Uzytkownik.class);
-	            }catch (java.sql.SQLException e) {
-	                e.printStackTrace();
-	            }
-	        }
-	        return uzytkownikDao;
-	    }
-
 
 }

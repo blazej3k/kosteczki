@@ -29,13 +29,5 @@ public class DatabaseManager {
 	        return helper;
 	    }
 
-	    public List<Uzytkownik> getAllWishLists() {
-	        List<Uzytkownik> uzytkownikList = null;
-	        try {
-	        	uzytkownikList = getHelper().getUzytkownikDao().queryForAll();
-	        } catch (SQLException e) {
-	            e.printStackTrace();
-	        }
-	        return uzytkownikList;
-	}
+	   
 }
