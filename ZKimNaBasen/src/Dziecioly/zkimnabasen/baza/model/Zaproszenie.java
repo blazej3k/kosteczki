@@ -9,8 +9,14 @@ public class Zaproszenie {
 	@DatabaseField(generatedId = true)
 	private int id;
 	
-	@DatabaseField
+	@DatabaseField(canBeNull = false)
 	boolean wezmie_udzial;
+	
+	@DatabaseField(foreign = true, foreignAutoRefresh = true, foreignAutoCreate=true)
+	private Uzytkownik uzytkownik;
+	
+	@DatabaseField(foreign = true, foreignAutoRefresh = true, foreignAutoCreate=true)
+	private Wydarzenie wydarzenie;
 	
 	
 	public Zaproszenie() {
@@ -39,6 +45,27 @@ public class Zaproszenie {
 	public void setWezmie_udzial(boolean wezmie_udzial) {
 		this.wezmie_udzial = wezmie_udzial;
 	}
+
+
+	public Uzytkownik getUzytkownik() {
+		return uzytkownik;
+	}
+
+
+	public void setUzytkownik(Uzytkownik uzytkownik) {
+		this.uzytkownik = uzytkownik;
+	}
+
+
+	public Wydarzenie getWydarzenie() {
+		return wydarzenie;
+	}
+
+
+	public void setWydarzenie(Wydarzenie wydarzenie) {
+		this.wydarzenie = wydarzenie;
+	}
+	
 	
 	
 }

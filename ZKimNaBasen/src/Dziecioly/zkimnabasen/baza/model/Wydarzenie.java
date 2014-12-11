@@ -1,6 +1,11 @@
 package Dziecioly.zkimnabasen.baza.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable
@@ -9,7 +14,7 @@ public class Wydarzenie {
 	@DatabaseField(generatedId = true)
 	private int id;
 
-	@DatabaseField
+	@DatabaseField(canBeNull = false)
 	private String nazwa;
 
 	@DatabaseField
@@ -29,6 +34,12 @@ public class Wydarzenie {
 
 	@DatabaseField
 	private boolean otwarte;
+
+	@DatabaseField(foreign = true, foreignAutoRefresh = true)
+	private Uzytkownik uzytkownik;
+
+	@ForeignCollectionField
+	private ForeignCollection<Zaproszenie> zaproszenia;
 
 	public Wydarzenie() {
 		// TODO Auto-generated constructor stub
@@ -108,6 +119,26 @@ public class Wydarzenie {
 
 	public void setOtwarte(boolean otwarte) {
 		this.otwarte = otwarte;
+	}
+
+	public Uzytkownik getUzytkownik() {
+		return uzytkownik;
+	}
+
+	public void setUzytkownik(Uzytkownik uzytkownik) {
+		this.uzytkownik = uzytkownik;
+	}
+
+	public List<Zaproszenie> getZaprozenia() {
+		ArrayList<Zaproszenie> zaproszenieList = new ArrayList<Zaproszenie>();
+		for (Zaproszenie z : zaproszenia) {
+			zaproszenieList.add(z);
+		}
+		return zaproszenieList;
+	}
+
+	public void setZaproszenia(ForeignCollection<Zaproszenie> zaproszenia) {
+		this.zaproszenia = zaproszenia;
 	}
 
 }

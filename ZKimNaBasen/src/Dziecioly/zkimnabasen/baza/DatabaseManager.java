@@ -18,7 +18,7 @@ import com.j256.ormlite.table.TableUtils;
 public class DatabaseManager extends OrmLiteSqliteOpenHelper {
 
 	private static final String DATABASE_NAME = "zKimNaBasen.sqlite";
-	private static final int DATABASE_VERSION = 1;
+	private static final int DATABASE_VERSION = 4;
 
 	static private DatabaseManager instance;
 
