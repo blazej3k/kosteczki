@@ -1,8 +1,5 @@
 package Dziecioly.zkimnabasen.baza;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import Dziecioly.zkimnabasen.baza.model.Uzytkownik;
 import Dziecioly.zkimnabasen.baza.model.Wydarzenie;
 import Dziecioly.zkimnabasen.baza.model.Zaproszenie;
@@ -18,7 +15,15 @@ import com.j256.ormlite.table.TableUtils;
 public class DatabaseManager extends OrmLiteSqliteOpenHelper {
 
 	private static final String DATABASE_NAME = "zKimNaBasen.sqlite";
-	private static final int DATABASE_VERSION = 5;
+	private static final int DATABASE_VERSION = 6;
+	public static final String DEBUG_TAG = "SqLiteBasen";
+	
+	private static final String DROP_TABLE_UZYTKOWNIK = 
+			"DROP TABLE IF EXISTS Uzytkownik";
+	private static final String DROP_TABLE_ZAPROSZENIE = 
+			"DROP TABLE IF EXISTS Zaproszenie";
+	private static final String DROP_TABLE_WYDARZENIE = 
+			"DROP TABLE IF EXISTS Wydarzenie";
 
 	static private DatabaseManager instance;
 
@@ -50,7 +55,7 @@ public class DatabaseManager extends OrmLiteSqliteOpenHelper {
 			TableUtils.createTable(connectionSource, Uzytkownik.class);
 			TableUtils.createTable(connectionSource, Wydarzenie.class);
 			TableUtils.createTable(connectionSource, Zaproszenie.class);
-			Log.i("DATABASE MANAGER", "BAZA UTWORZONA");
+			Log.d(DEBUG_TAG, "Database creating...");
 		} catch (SQLException e) {
 			Log.e(DatabaseManager.class.getName(), "Can't create database", e);
 			throw new RuntimeException(e);
@@ -63,22 +68,16 @@ public class DatabaseManager extends OrmLiteSqliteOpenHelper {
 	@Override
 	public void onUpgrade(SQLiteDatabase db, ConnectionSource connectionSource,
 			int oldVersion, int newVersion) {
-		try {
-			List<String> allSql = new ArrayList<String>();
-			switch (oldVersion) {
-			case 1:
-				// allSql.add("alter table AdData add column `new_col` VARCHAR");
-				// allSql.add("alter table AdData add column `new_col2` VARCHAR");
-			}
-			for (String sql : allSql) {
-				db.execSQL(sql);
-			}
-		} catch (SQLException e) {
-			Log.e(DatabaseManager.class.getName(),
-					"exception during onUpgrade", e);
-			throw new RuntimeException(e);
-
-		}
+		
+		db.execSQL(DROP_TABLE_UZYTKOWNIK);
+		db.execSQL(DROP_TABLE_WYDARZENIE);
+		db.execSQL(DROP_TABLE_ZAPROSZENIE);
+		
+		Log.d(DEBUG_TAG, "Database updating...");
+        Log.d(DEBUG_TAG, "All data is lost.");
+        
+        onCreate(db, connectionSource);
+	
 
 	}
 
