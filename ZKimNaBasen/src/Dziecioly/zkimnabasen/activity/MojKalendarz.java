@@ -28,7 +28,7 @@ public class MojKalendarz extends ActionBarActivity {
 		db.open();
 		
 		db.insertUzytkownik("Janek", "kuktas", "6666666");
-
+		System.out.println("malcziki");
 		db.close();
 		
 		noweWydarzenie = (Button) findViewById(R.id.noweWydarzenie);
