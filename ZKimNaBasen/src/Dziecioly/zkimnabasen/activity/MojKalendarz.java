@@ -1,7 +1,15 @@
 package Dziecioly.zkimnabasen.activity;
 
+import java.util.List;
+
 import Dziecioly.zkimnabasen.R;
+import Dziecioly.zkimnabasen.baza.DatabaseManager;
 import Dziecioly.zkimnabasen.baza.DbAdapter;
+import Dziecioly.zkimnabasen.baza.dao.UzytkownikDao;
+import Dziecioly.zkimnabasen.baza.dao.WydarzenieDao;
+import Dziecioly.zkimnabasen.baza.dao.ZaproszenieDao;
+import Dziecioly.zkimnabasen.baza.model.Uzytkownik;
+import Dziecioly.zkimnabasen.baza.model.Wydarzenie;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.Toast;
 
 public class MojKalendarz extends ActionBarActivity {
 
@@ -18,19 +27,43 @@ public class MojKalendarz extends ActionBarActivity {
 	Button noweWydarzenie;
 	private DbAdapter db;
 
+	UzytkownikDao uzytkownikDao = new UzytkownikDao();
+	ZaproszenieDao zaproszenieDao = new ZaproszenieDao();
+	WydarzenieDao wydarzenieDao = new WydarzenieDao();
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		context = getApplicationContext();
 		setContentView(R.layout.moj_kalendarz);
+
+		DatabaseManager.init(this);
+		Uzytkownik u = new Uzytkownik("Karolina", 8654444, "haslo");
+		uzytkownikDao.add(u);
 		
-		db = new DbAdapter(context);
+		Wydarzenie w = new Wydarzenie("basen", "Mycka 4/11", "2014-12-12", "17:00", "19:00", "bla bla", false);
+		wydarzenieDao.add(w);
+
+		Uzytkownik us = uzytkownikDao.find(1);
+		List<Wydarzenie> wyd = wydarzenieDao.list();
+		Toast toast = Toast
+				.makeText(context, us.getNazwa() + " " + us.getNr_tel()
+						+ "  " + us.getHaslo(), Toast.LENGTH_SHORT);
+		toast.show();
+		
+		toast = Toast
+				.makeText(context, wyd.get(0).getLokalizacja() + "  " + wyd.get(0).getData(), Toast.LENGTH_SHORT);
+		toast.show();
+		
+		//DatabaseManager.getInstance().close();
+
+		/*db = new DbAdapter(context);
 		db.open();
-		
+
 		db.insertUzytkownik("Janek", "kuktas", "6666666");
 		System.out.println("malcziki");
-		db.close();
-		
+		db.close();*/
+
 		noweWydarzenie = (Button) findViewById(R.id.noweWydarzenie);
 		noweWydarzenie.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
@@ -38,7 +71,6 @@ public class MojKalendarz extends ActionBarActivity {
 				startActivity(intent);
 			}
 		});
-
 
 	}
 

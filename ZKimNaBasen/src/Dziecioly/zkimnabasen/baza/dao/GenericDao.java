@@ -23,7 +23,7 @@ public class GenericDao<E, K> {
 	public Dao<E, K> getDao() {
 		if (null == entity) {
 			try {
-				dao = DatabaseManager.getInstance().getHelper().getDao(daoType);
+				dao = DatabaseManager.getInstance().getDao(daoType);
 			} catch (java.sql.SQLException e) {
 				e.printStackTrace();
 			}
@@ -41,16 +41,36 @@ public class GenericDao<E, K> {
 	}
 
 	public void update(E entity) {
+		try {
+			getDao().update(entity);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void remove(E entity) {
+		try {
+			getDao().delete(entity);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public E find(K key) {
+		try {
+			return getDao().queryForId(key);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return null;
 	}
 
 	public List<E> list() {
+		try {
+			return getDao().queryForAll();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return null;
 	}
 

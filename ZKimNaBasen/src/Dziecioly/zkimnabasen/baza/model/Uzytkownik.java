@@ -22,9 +22,8 @@ public class Uzytkownik {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Uzytkownik(int id, String nazwa, int nr_tel, String haslo) {
+	public Uzytkownik(String nazwa, int nr_tel, String haslo) {
 		super();
-		this.id = id;
 		this.nazwa = nazwa;
 		this.nr_tel = nr_tel;
 		this.haslo = haslo;
