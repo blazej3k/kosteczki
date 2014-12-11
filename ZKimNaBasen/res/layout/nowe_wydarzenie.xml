@@ -21,16 +21,6 @@
         android:ems="10"
         android:hint="@string/nazwa" />
 
-    <Button
-        android:id="@+id/zapisz"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/nazwa"
-        android:layout_alignParentBottom="true"
-        android:layout_alignRight="@+id/zaprosZnajomych"
-        android:layout_marginBottom="37dp"
-        android:text="@string/zapisz" />
-
     <EditText
         android:id="@+id/lokalizacja"
         android:layout_width="wrap_content"
@@ -70,13 +60,32 @@
         android:layout_marginTop="14dp"
         android:text="@string/data" />
 
+    <CheckBox
+        android:id="@+id/czyOtwarte"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/godzinaZakonczenia"
+        android:layout_below="@+id/godzinaZakonczenia"
+        android:layout_marginTop="19dp"
+        android:text="@string/otwarte" />
+
     <Button
         android:id="@+id/zaprosZnajomych"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/godzinaZakonczenia"
+        android:layout_alignLeft="@+id/czyOtwarte"
         android:layout_alignRight="@+id/godzinaZakonczenia"
-        android:layout_below="@+id/godzinaZakonczenia"
+        android:layout_below="@+id/czyOtwarte"
         android:text="@string/zaprosZnajomych" />
+
+    <Button
+        android:id="@+id/zapisz"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/zaprosZnajomych"
+        android:layout_alignRight="@+id/zaprosZnajomych"
+        android:layout_below="@+id/zaprosZnajomych"
+        android:layout_marginTop="28dp"
+        android:text="@string/zapisz" />
 
 </RelativeLayout>

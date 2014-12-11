@@ -1,6 +1,11 @@
 package Dziecioly.zkimnabasen.activity;
 
 import Dziecioly.zkimnabasen.R;
+import Dziecioly.zkimnabasen.baza.DatabaseManager;
+import Dziecioly.zkimnabasen.baza.dao.UzytkownikDao;
+import Dziecioly.zkimnabasen.baza.dao.WydarzenieDao;
+import Dziecioly.zkimnabasen.baza.model.Uzytkownik;
+import Dziecioly.zkimnabasen.baza.model.Wydarzenie;
 import Dziecioly.zkimnabasen.picker.DatePickerFragment;
 import Dziecioly.zkimnabasen.picker.TimePickerFragment;
 import android.app.DatePickerDialog.OnDateSetListener;
@@ -14,9 +19,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 public class NoweWydarzenie extends FragmentActivity implements
 		OnDateSetListener, OnTimeSetListener {
@@ -29,6 +36,10 @@ public class NoweWydarzenie extends FragmentActivity implements
 	private Button godzinaZakonczenia;
 	private Button zaprosZnajomych;
 	private Button zapisz;
+	private CheckBox czyOtwarte;
+
+	WydarzenieDao wydarzenieDao = new WydarzenieDao();
+	UzytkownikDao uzytkownikDao = new UzytkownikDao();
 
 	public static final int FLAG_START_TIME = 0;
 	public static final int FLAG_END_TIME = 1;
@@ -47,6 +58,7 @@ public class NoweWydarzenie extends FragmentActivity implements
 		godzinaZakonczenia = (Button) findViewById(R.id.godzinaZakonczenia);
 		zaprosZnajomych = (Button) findViewById(R.id.zaprosZnajomych);
 		zapisz = (Button) findViewById(R.id.zapisz);
+		czyOtwarte = (CheckBox) findViewById(R.id.czyOtwarte);
 
 		zapisz.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
@@ -70,7 +82,7 @@ public class NoweWydarzenie extends FragmentActivity implements
 				time.show(getSupportFragmentManager(), "Time Picker");
 			}
 		});
-		
+
 		godzinaZakonczenia.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -80,17 +92,25 @@ public class NoweWydarzenie extends FragmentActivity implements
 			}
 		});
 
-
 	}
 
 	private void zapisz() {
 		Intent intent = new Intent(context, MojKalendarz.class);
 
-		String nazwaString = nazwa.getText().toString();
-		String lokalizacjaString = lokalizacja.getText().toString();
+		String w_nazwa = nazwa.getText().toString();
+		String w_lokalizacja = lokalizacja.getText().toString();
+		String w_data = data.getText().toString();
+		String w_godzinaRozpoczecia = godzinaRozpoczecia.getText().toString();
+		String w_godzinaZakonczenia = godzinaZakonczenia.getText().toString();
+		boolean w_czyOtwarte = czyOtwarte.isChecked();
 
-		intent.putExtra("nazwa", nazwaString);
-		intent.putExtra("lokalizacja", lokalizacjaString);
+		Wydarzenie w = new Wydarzenie(w_nazwa, w_lokalizacja, w_data,
+				w_godzinaRozpoczecia, w_godzinaZakonczenia, null, w_czyOtwarte);
+
+		Uzytkownik u = uzytkownikDao.list().get(0);
+		w.setUzytkownik(u);
+
+		wydarzenieDao.add(w);
 		
 		startActivity(intent);
 

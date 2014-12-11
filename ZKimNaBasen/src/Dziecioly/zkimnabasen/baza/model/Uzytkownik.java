@@ -16,19 +16,19 @@ public class Uzytkownik {
 
 	@DatabaseField(canBeNull = false, unique = true)
 	private String nazwa;
-	
+
 	@DatabaseField(canBeNull = false, unique = true)
 	private int nr_tel;
-	
+
 	@DatabaseField(canBeNull = false)
 	private String haslo;
-	
-	 @ForeignCollectionField
-	 private ForeignCollection<Wydarzenie> wydarzenia;
-	 
-	 @ForeignCollectionField
-	 private ForeignCollection<Zaproszenie> zaproszenia;
-	
+
+	@ForeignCollectionField
+	private ForeignCollection<Wydarzenie> wydarzenia;
+
+	@ForeignCollectionField
+	private ForeignCollection<Zaproszenie> zaproszenia;
+
 	public Uzytkownik() {
 		// TODO Auto-generated constructor stub
 	}
@@ -74,10 +74,10 @@ public class Uzytkownik {
 
 	public List<Wydarzenie> getWydarzenia() {
 		ArrayList<Wydarzenie> wydarzenieList = new ArrayList<Wydarzenie>();
-        for (Wydarzenie w : wydarzenia) {
-        	wydarzenieList.add(w);
-        }
-        return wydarzenieList;
+		for (Wydarzenie w : wydarzenia) {
+			wydarzenieList.add(w);
+		}
+		return wydarzenieList;
 	}
 
 	public void setWydarzenia(ForeignCollection<Wydarzenie> wydarzenia) {
@@ -86,19 +86,14 @@ public class Uzytkownik {
 
 	public List<Zaproszenie> getZaprozenia() {
 		ArrayList<Zaproszenie> zaproszenieList = new ArrayList<Zaproszenie>();
-        for (Zaproszenie z : zaproszenia) {
-        	zaproszenieList.add(z);
-        }
-        return zaproszenieList;
+		for (Zaproszenie z : zaproszenia) {
+			zaproszenieList.add(z);
+		}
+		return zaproszenieList;
 	}
 
 	public void setZaproszenia(ForeignCollection<Zaproszenie> zaproszenia) {
 		this.zaproszenia = zaproszenia;
 	}
-	
-	
-	
-	
-	
-	
+
 }

@@ -19,5 +19,6 @@
     <string name="noweWydarzenie">Nowe wydarzenie</string>
     <string name="title_activity_edycja_wydarzenia">EdycjaWydarzenia</string>
     <string name="title_activity_szczegoly_wydarzenia">SzczegolyWydarzenia</string>
+    <string name="otwarte">Otwarte</string>
 
 </resources>
