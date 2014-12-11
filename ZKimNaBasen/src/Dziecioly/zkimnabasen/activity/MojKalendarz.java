@@ -23,10 +23,13 @@ public class MojKalendarz extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		context = getApplicationContext();
 		setContentView(R.layout.moj_kalendarz);
-
-		System.out.println("KUTAS");
 		
 		db = new DbAdapter(context);
+		db.open();
+		
+		db.insertUzytkownik("Janek", "kuktas", "6666666");
+
+		db.close();
 		
 		noweWydarzenie = (Button) findViewById(R.id.noweWydarzenie);
 		noweWydarzenie.setOnClickListener(new OnClickListener() {
