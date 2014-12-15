@@ -20,5 +20,14 @@
     <string name="title_activity_edycja_wydarzenia">EdycjaWydarzenia</string>
     <string name="title_activity_szczegoly_wydarzenia">SzczegolyWydarzenia</string>
     <string name="otwarte">Otwarte</string>
+    <string name="nickLubNumer">Nick lub numer telefonu</string>
+    <string name="haslo">hasło</string>
+    <string name="zaloguj">Zaloguj</string>
+    <string name="utworzKonto">Utwórz konto</string>
+    <string name="nick">Nick</string>
+    <string name="numerTelefonu">Numer telefonu</string>
+    <string name="powtorzHaslo">Powtórz hasło</string>
+    <string name="zarejestruj">Zarejestruj</string>
+    <string name="logowanie">Logowanie</string>
 
 </resources>

@@ -1,0 +1,57 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ABCDEF"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="Dziecioly.zkimnabasen.activity.Logowanie" >
+    
+    <Button
+        android:id="@+id/utworzKonto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/zaloguj"
+        android:layout_alignRight="@+id/zaloguj"
+        android:layout_below="@+id/zaloguj"
+        android:layout_marginTop="35dp"
+        android:text="@string/utworzKonto" />
+
+    <EditText
+        android:id="@+id/login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:background="#FFFFFF"
+        android:ems="10"
+        android:hint="@string/nickLubNumer" >
+
+        <requestFocus />
+    </EditText>
+
+    <EditText
+        android:id="@+id/haslo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/login"
+        android:layout_below="@+id/login"
+        android:layout_marginTop="28dp"
+        android:background="#FFFFFF"
+        android:ems="10"
+        android:hint="@string/haslo" />
+
+    <Button
+        android:id="@+id/zaloguj"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/haslo"
+        android:layout_alignRight="@+id/haslo"
+        android:layout_below="@+id/haslo"
+        android:layout_marginTop="28dp"
+        android:text="@string/zaloguj" />
+
+</RelativeLayout>
