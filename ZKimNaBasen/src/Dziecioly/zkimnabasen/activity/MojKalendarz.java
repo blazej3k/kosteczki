@@ -20,7 +20,8 @@ import android.widget.Button;
 public class MojKalendarz extends ActionBarActivity {
 
 	Context context;
-	Button noweWydarzenie;
+	private Button btnNoweWydarzenie;
+	private Button btnListaWydarzen;
 	private DbAdapter db;
 
 	UzytkownikDao uzytkownikDao = new UzytkownikDao();
@@ -34,12 +35,10 @@ public class MojKalendarz extends ActionBarActivity {
 		setContentView(R.layout.moj_kalendarz);
 
 		DatabaseManager.init(this);
-		
-
 		Uzytkownik u = new Uzytkownik("Karolina", 333355888, "dzieciol");
 		uzytkownikDao.add(u);
-		
-		
+
+
 		// DatabaseManager.getInstance().close();
 
 		/*
@@ -49,15 +48,12 @@ public class MojKalendarz extends ActionBarActivity {
 		 * System.out.println("malcziki"); db.close();
 		 */
 
-		noweWydarzenie = (Button) findViewById(R.id.noweWydarzenie);
-		noweWydarzenie.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				Intent intent = new Intent(context, NoweWydarzenie.class);
-				startActivity(intent);
-			}
-		});
-
+		btnNoweWydarzenie = (Button) findViewById(R.id.btnNoweWydarzenie);
+		btnListaWydarzen = (Button) findViewById(R.id.btnListaWydarzen);
+		
+		initBtnOnClickListeners();
 	}
+
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -78,5 +74,24 @@ public class MojKalendarz extends ActionBarActivity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
+
+
+	private void initBtnOnClickListeners() {
+		btnNoweWydarzenie.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				Intent intent = new Intent(context, NoweWydarzenie.class);
+				startActivity(intent);
+			}
+		});
+		
+		btnListaWydarzen.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				Intent intent = new Intent(context, WydarzeniaLista.class);
+				startActivity(intent);
+			}
+		});
+
+
+	}
 }
+

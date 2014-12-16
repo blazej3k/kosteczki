@@ -20,5 +20,9 @@
     <string name="title_activity_edycja_wydarzenia">EdycjaWydarzenia</string>
     <string name="title_activity_szczegoly_wydarzenia">SzczegolyWydarzenia</string>
     <string name="otwarte">Otwarte</string>
+    <string name="title_activity_wydarzenia_">Wydarzenia_Activity</string>
+    <string name="title_activity_wydarzenia">Wydarzenia</string>
+    <string name="title_activity_wydarzenia_lista">WydarzeniaLista</string>
+    <string name="penis_str">penis</string>
 
 </resources>

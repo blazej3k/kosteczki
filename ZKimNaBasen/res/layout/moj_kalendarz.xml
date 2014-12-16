@@ -9,12 +9,22 @@
     tools:context="Dziecioly.zkimnabasen.activity.MojKalendarz" >
 
     <Button
-        android:id="@+id/noweWydarzenie"
+        android:id="@+id/btnNoweWydarzenie"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="64dp"
         android:text="@string/noweWydarzenie" />
+
+    <Button
+        android:id="@+id/btnListaWydarzen"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btnNoweWydarzenie"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="17dp"
+        android:text="@string/penis_str" />
 
 </RelativeLayout>
