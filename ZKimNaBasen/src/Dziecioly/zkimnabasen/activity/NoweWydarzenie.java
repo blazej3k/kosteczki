@@ -15,6 +15,7 @@ import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,10 +26,9 @@ import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 public class NoweWydarzenie extends FragmentActivity implements
-		OnDateSetListener, OnTimeSetListener {
+		OnDateSetListener, OnTimeSetListener, ChecboxListFragment.NoticeDialogListener {
 
 	private Context context;
 	private EditText nazwa;
@@ -39,11 +39,13 @@ public class NoweWydarzenie extends FragmentActivity implements
 	private Button zaprosZnajomych;
 	private Button zapisz;
 	private CheckBox czyOtwarte;
+	
+	public List<Integer> wybraniZnajomi;
 
-	TimePickerFragment timePickerFragment = new TimePickerFragment();
-
-	WydarzenieDao wydarzenieDao = new WydarzenieDao();
-	UzytkownikDao uzytkownikDao = new UzytkownikDao();
+	private WydarzenieDao wydarzenieDao = new WydarzenieDao();
+	private UzytkownikDao uzytkownikDao = new UzytkownikDao();
+	
+	private ChecboxListFragment frag = new ChecboxListFragment();
 
 	public static final int FLAG_START_TIME = 0;
 	public static final int FLAG_END_TIME = 1;
@@ -164,9 +166,20 @@ public class NoweWydarzenie extends FragmentActivity implements
 		zaprosZnajomych.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				ChecboxListFragment frag = new ChecboxListFragment();
 				frag.show(getSupportFragmentManager(), "Checkbox list");
 			}
 		});
+	}
+
+	@Override
+	public void onDialogPositiveClick(DialogFragment dialog) {
+		wybraniZnajomi = frag.getmSelectedItems();
+		
+	}
+
+	@Override
+	public void onDialogNegativeClick(DialogFragment dialog) {
+		// TODO Auto-generated method stub
+		
 	}
 }

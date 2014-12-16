@@ -3,21 +3,30 @@ package Dziecioly.zkimnabasen.picker;
 import java.util.ArrayList;
 import java.util.List;
 
-import Dziecioly.zkimnabasen.baza.DatabaseManager;
 import Dziecioly.zkimnabasen.baza.dao.UzytkownikDao;
 import Dziecioly.zkimnabasen.baza.model.Uzytkownik;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
-
 
 public class ChecboxListFragment extends DialogFragment {
 
 	private UzytkownikDao uzytkownikDao = new UzytkownikDao();
 	private List<Integer> mSelectedItems;
+	NoticeDialogListener mListener;
+	
+	
+
+	public List<Integer> getmSelectedItems() {
+		return mSelectedItems;
+	}
+
+	public void setmSelectedItems(List<Integer> mSelectedItems) {
+		this.mSelectedItems = mSelectedItems;
+	}
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -25,36 +34,56 @@ public class ChecboxListFragment extends DialogFragment {
 		mSelectedItems = new ArrayList<Integer>();
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-		builder.setMessage("Wybierz znajomych:");
+		builder.setTitle("Wybierz znajomych");
 
-		final CharSequence[] items = { ".NET", "J2EE", "PHP" };
-
-		builder.setMultiChoiceItems(items,
-				new boolean[] { false, false, false },
+		builder.setMultiChoiceItems(znajomi(), null,
 				new DialogInterface.OnMultiChoiceClickListener() {
 
 					@Override
 					public void onClick(DialogInterface dialog, int which,
 							boolean isChecked) {
-						//itemsChecked[which] = isChecked;
+						if (isChecked) {
+							mSelectedItems.add(which);
+						} else if (mSelectedItems.contains(which)) {
+							mSelectedItems.remove(Integer.valueOf(which));
+						}
 					}
 				});
 
 		builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
-				Log.d(DatabaseManager.DEBUG_TAG,
-						Integer.toString(mSelectedItems.size()));
+				mListener.onDialogPositiveClick(ChecboxListFragment.this);
+
 			}
 		});
 
 		builder.setNegativeButton("Analuj",
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
-						// User cancelled the dialog
+						mListener
+								.onDialogNegativeClick(ChecboxListFragment.this);
+
 					}
 				});
 
 		return builder.create();
+	}
+
+	public interface NoticeDialogListener {
+		public void onDialogPositiveClick(DialogFragment dialog);
+
+		public void onDialogNegativeClick(DialogFragment dialog);
+	}
+
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		try {
+			mListener = (NoticeDialogListener) activity;
+		} catch (ClassCastException e) {
+			throw new ClassCastException(activity.toString()
+					+ " must implement NoticeDialogListener");
+		}
 	}
 
 	public CharSequence[] znajomi() {
@@ -62,11 +91,10 @@ public class ChecboxListFragment extends DialogFragment {
 		List<String> nazwy = new ArrayList<String>();
 		for (Uzytkownik uzytkownik : lista)
 			nazwy.add(uzytkownik.getNazwa());
-		/*
-		 * CharSequence[] charSequence = nazwy .toArray(new
-		 * CharSequence[nazwy.size()]);
-		 */
-		final CharSequence[] charSequence = { "Ola", "Kasia", "basia" };
+
+		final CharSequence[] charSequence = nazwy
+				.toArray(new CharSequence[nazwy.size()]);
+
 		return charSequence;
 
 	}
