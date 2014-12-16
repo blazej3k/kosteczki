@@ -22,6 +22,7 @@ public class MojKalendarz extends ActionBarActivity {
 	Context context;
 	private Button btnNoweWydarzenie;
 	private Button btnListaWydarzen;
+	private Button logowanie;
 	private DbAdapter db;
 
 	UzytkownikDao uzytkownikDao = new UzytkownikDao();
@@ -35,8 +36,8 @@ public class MojKalendarz extends ActionBarActivity {
 		setContentView(R.layout.moj_kalendarz);
 
 		DatabaseManager.init(this);
-		Uzytkownik u = new Uzytkownik("Karolina", 333355888, "dzieciol");
-		uzytkownikDao.add(u);
+		// Uzytkownik u = new Uzytkownik("Karolina", 333355888, "dzieciol");
+		// uzytkownikDao.add(u);
 
 
 		// DatabaseManager.getInstance().close();
@@ -50,6 +51,7 @@ public class MojKalendarz extends ActionBarActivity {
 
 		btnNoweWydarzenie = (Button) findViewById(R.id.btnNoweWydarzenie);
 		btnListaWydarzen = (Button) findViewById(R.id.btnListaWydarzen);
+		btnLogowanie= (Button) findViewById(R.id.logowanie);
 		
 		initBtnOnClickListeners();
 	}
@@ -90,6 +92,14 @@ public class MojKalendarz extends ActionBarActivity {
 				startActivity(intent);
 			}
 		});
+		
+		logowanie.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				Intent intent = new Intent(context, Logowanie.class);
+				startActivity(intent);
+			}
+		});
+
 
 
 	}
