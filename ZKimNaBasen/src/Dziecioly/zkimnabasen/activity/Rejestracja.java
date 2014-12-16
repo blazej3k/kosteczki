@@ -48,7 +48,7 @@ public class Rejestracja extends ActionBarActivity {
 
 	private void zarejestruj() {
 		String u_nick = nick.getText().toString();
-		int u_numerTel = Integer.parseInt(numerTel.getText().toString());
+		String u_numerTel = numerTel.getText().toString();
 		String u_haslo = haslo.getText().toString();
 		String u_powtorzHaslo = powtorzHaslo.getText().toString();
 

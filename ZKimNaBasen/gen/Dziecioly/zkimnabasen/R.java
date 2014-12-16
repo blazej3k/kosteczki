@@ -1684,12 +1684,12 @@ containing a value of this type.
         public static final int middle=0x7f09001d;
         public static final int nazwa=0x7f090047;
         public static final int never=0x7f090017;
-        public static final int nick=0x7f090050;
+        public static final int nick=0x7f090051;
         public static final int none=0x7f09000f;
         public static final int normal=0x7f09000b;
-        public static final int numerTel=0x7f090053;
-        public static final int podajHaslo=0x7f090052;
-        public static final int powtorzHaslo=0x7f090051;
+        public static final int numerTel=0x7f090052;
+        public static final int podajHaslo=0x7f09004f;
+        public static final int powtorzHaslo=0x7f090050;
         public static final int progress_circular=0x7f090007;
         public static final int progress_horizontal=0x7f090008;
         public static final int radio=0x7f09002b;
@@ -1719,7 +1719,7 @@ containing a value of this type.
         public static final int zaloguj=0x7f090041;
         public static final int zapisz=0x7f09004e;
         public static final int zaprosZnajomych=0x7f09004d;
-        public static final int zarejestruj=0x7f09004f;
+        public static final int zarejestruj=0x7f090053;
     }
     public static final class integer {
         /**  The maximum number of action buttons that should be permitted within

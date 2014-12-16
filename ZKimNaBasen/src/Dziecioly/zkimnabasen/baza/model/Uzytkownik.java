@@ -3,6 +3,8 @@ package Dziecioly.zkimnabasen.baza.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.R.string;
+
 import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
@@ -18,7 +20,7 @@ public class Uzytkownik {
 	private String nazwa;
 
 	@DatabaseField(canBeNull = false, unique = true)
-	private int nr_tel;
+	private String nr_tel;
 
 	@DatabaseField(canBeNull = false)
 	private String haslo;
@@ -33,7 +35,7 @@ public class Uzytkownik {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Uzytkownik(String nazwa, int nr_tel, String haslo) {
+	public Uzytkownik(String nazwa, String nr_tel, String haslo) {
 		super();
 		this.nazwa = nazwa;
 		this.nr_tel = nr_tel;
@@ -56,11 +58,11 @@ public class Uzytkownik {
 		this.nazwa = nazwa;
 	}
 
-	public int getNr_tel() {
+	public String getNr_tel() {
 		return nr_tel;
 	}
 
-	public void setNr_tel(int nr_tel) {
+	public void setNr_tel(String nr_tel) {
 		this.nr_tel = nr_tel;
 	}
 

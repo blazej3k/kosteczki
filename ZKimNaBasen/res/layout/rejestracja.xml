@@ -9,26 +9,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="Dziecioly.zkimnabasen.activity.Rejestracja" >
 
-    <Button
-        android:id="@+id/zarejestruj"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/nick"
-        android:layout_alignRight="@+id/powtorzHaslo"
-        android:layout_centerVertical="true"
-        android:text="@string/zarejestruj" />
-
-    <EditText
-        android:id="@+id/powtorzHaslo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/zarejestruj"
-        android:layout_alignLeft="@+id/podajHaslo"
-        android:layout_marginBottom="28dp"
-        android:background="#FFFFFF"
-        android:ems="10"
-        android:hint="@string/powtorzHaslo" />
-
     <EditText
         android:id="@+id/podajHaslo"
         android:layout_width="wrap_content"
@@ -41,20 +21,6 @@
         android:hint="@string/haslo" />
 
     <EditText
-        android:id="@+id/nick"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="28dp"
-        android:background="#FFFFFF"
-        android:ems="10"
-        android:hint="@string/nick" >
-
-        <requestFocus />
-    </EditText>
-
-    <EditText
         android:id="@+id/numerTel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -64,5 +30,39 @@
         android:background="#FFFFFF"
         android:ems="10"
         android:hint="@string/numerTelefonu" />
+
+    <EditText
+        android:id="@+id/nick"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/numerTel"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="24dp"
+        android:background="#FFFFFF"
+        android:ems="10"
+        android:hint="@string/nick" />
+
+    <EditText
+        android:id="@+id/powtorzHaslo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/podajHaslo"
+        android:layout_centerVertical="true"
+        android:background="#FFFFFF"
+        android:ems="10"
+        android:hint="@string/powtorzHaslo" >
+
+        <requestFocus />
+    </EditText>
+
+    <Button
+        android:id="@+id/zarejestruj"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/powtorzHaslo"
+        android:layout_alignRight="@+id/powtorzHaslo"
+        android:layout_below="@+id/powtorzHaslo"
+        android:layout_marginTop="37dp"
+        android:text="@string/zarejestruj" />
 
 </RelativeLayout>
