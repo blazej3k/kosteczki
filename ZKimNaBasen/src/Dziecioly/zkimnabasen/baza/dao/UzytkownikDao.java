@@ -5,6 +5,7 @@ import java.util.List;
 
 import Dziecioly.zkimnabasen.baza.DatabaseManager;
 import Dziecioly.zkimnabasen.baza.model.Uzytkownik;
+import android.R.integer;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -35,4 +36,5 @@ public class UzytkownikDao extends GenericDao<Uzytkownik, Integer> {
 		}
 		return false;
 	}
+
 }

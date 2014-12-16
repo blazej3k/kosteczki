@@ -1688,6 +1688,7 @@ containing a value of this type.
         public static final int none=0x7f09000f;
         public static final int normal=0x7f09000b;
         public static final int numerTel=0x7f090052;
+        public static final int one=0x7f090055;
         public static final int podajHaslo=0x7f09004f;
         public static final int powtorzHaslo=0x7f090050;
         public static final int progress_circular=0x7f090007;
@@ -1710,7 +1711,9 @@ containing a value of this type.
         public static final int split_action_bar=0x7f090004;
         public static final int submit_area=0x7f09003c;
         public static final int tabMode=0x7f09000c;
+        public static final int three=0x7f090057;
         public static final int title=0x7f090027;
+        public static final int two=0x7f090056;
         public static final int up=0x7f090001;
         public static final int useLogo=0x7f090013;
         public static final int utworzKonto=0x7f090040;
@@ -1783,7 +1786,8 @@ containing a value of this type.
         public static final int edycja_wydarzenia=0x7f0c0000;
         public static final int main=0x7f0c0001;
         public static final int nowe_wydarzenie=0x7f0c0002;
-        public static final int szczegoly_wydarzenia=0x7f0c0003;
+        public static final int popup=0x7f0c0003;
+        public static final int szczegoly_wydarzenia=0x7f0c0004;
     }
     public static final class string {
         /**  Content description for the action bar "home" affordance. [CHAR LIMIT=NONE] 
