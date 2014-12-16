@@ -31,6 +31,8 @@ public class GenericDao<E, K> {
 		return dao;
 	}
 
+	
+	//insert
 	public int add(E entity) {
 		try {
 			return getDao().create(entity);
@@ -40,6 +42,7 @@ public class GenericDao<E, K> {
 		return 0;
 	}
 
+	//update
 	public void update(E entity) {
 		try {
 			getDao().update(entity);
@@ -48,6 +51,7 @@ public class GenericDao<E, K> {
 		}
 	}
 
+	//delate
 	public void remove(E entity) {
 		try {
 			getDao().delete(entity);
@@ -56,6 +60,7 @@ public class GenericDao<E, K> {
 		}
 	}
 
+	//select po id
 	public E find(K key) {
 		try {
 			return getDao().queryForId(key);
@@ -65,6 +70,7 @@ public class GenericDao<E, K> {
 		return null;
 	}
 
+	//select wszystko
 	public List<E> list() {
 		try {
 			return getDao().queryForAll();
