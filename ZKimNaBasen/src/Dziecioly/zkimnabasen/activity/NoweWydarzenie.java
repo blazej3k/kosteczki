@@ -1,12 +1,16 @@
 package Dziecioly.zkimnabasen.activity;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import Dziecioly.zkimnabasen.R;
 import Dziecioly.zkimnabasen.baza.dao.UzytkownikDao;
 import Dziecioly.zkimnabasen.baza.dao.WydarzenieDao;
+import Dziecioly.zkimnabasen.baza.dao.ZaproszenieDao;
 import Dziecioly.zkimnabasen.baza.model.Uzytkownik;
 import Dziecioly.zkimnabasen.baza.model.Wydarzenie;
+import Dziecioly.zkimnabasen.baza.model.Zaproszenie;
 import Dziecioly.zkimnabasen.picker.ChecboxListFragment;
 import Dziecioly.zkimnabasen.picker.DatePickerFragment;
 import Dziecioly.zkimnabasen.picker.TimePickerFragment;
@@ -40,10 +44,13 @@ public class NoweWydarzenie extends FragmentActivity implements
 	private Button zapisz;
 	private CheckBox czyOtwarte;
 	
-	public List<Integer> wybraniZnajomi;
+	
+	private List<Uzytkownik> wszyscyZnajomi = new ArrayList<Uzytkownik>();
+	private boolean[] wybraniZnajomi;
 
 	private WydarzenieDao wydarzenieDao = new WydarzenieDao();
 	private UzytkownikDao uzytkownikDao = new UzytkownikDao();
+	private ZaproszenieDao zaproszenieDao = new ZaproszenieDao();
 	
 	private ChecboxListFragment frag = new ChecboxListFragment();
 
@@ -67,6 +74,10 @@ public class NoweWydarzenie extends FragmentActivity implements
 		czyOtwarte = (CheckBox) findViewById(R.id.czyOtwarte);
 
 		initBtnOnClickListeners();
+		
+		wszyscyZnajomi = pobierzZnajomych();
+		wybraniZnajomi = new boolean[wszyscyZnajomi.size()];
+		Arrays.fill(wybraniZnajomi, Boolean.FALSE);
 
 	}
 
@@ -79,14 +90,29 @@ public class NoweWydarzenie extends FragmentActivity implements
 		String w_godzinaRozpoczecia = godzinaRozpoczecia.getText().toString();
 		String w_godzinaZakonczenia = godzinaZakonczenia.getText().toString();
 		boolean w_czyOtwarte = czyOtwarte.isChecked();
+		
+		
+		
 
 		Wydarzenie w = new Wydarzenie(w_nazwa, w_lokalizacja, w_data,
 				w_godzinaRozpoczecia, w_godzinaZakonczenia, null, w_czyOtwarte);
 
-		Uzytkownik u = uzytkownikDao.list().get(0);
-		w.setUzytkownik(u);
+		Uzytkownik uzytkownik = uzytkownikDao.list().get(0);
+		w.setUzytkownik(uzytkownik);
 
 		wydarzenieDao.add(w);
+		
+		for (int i=0; i<wybraniZnajomi.length; i++)
+		{
+			if (wybraniZnajomi[i] == true)
+			{
+				Uzytkownik u = wszyscyZnajomi.get(i);
+				Zaproszenie z = new Zaproszenie(false);
+				z.setUzytkownik(u);
+				z.setWydarzenie(w);
+				zaproszenieDao.add(z);
+			}
+		}
 
 		startActivity(intent);
 
@@ -166,6 +192,8 @@ public class NoweWydarzenie extends FragmentActivity implements
 		zaprosZnajomych.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				frag.setWybraniZnajomi(wybraniZnajomi);
+				frag.setWszyscyZnajomi(wszyscyZnajomi);
 				frag.show(getSupportFragmentManager(), "Checkbox list");
 			}
 		});
@@ -173,13 +201,16 @@ public class NoweWydarzenie extends FragmentActivity implements
 
 	@Override
 	public void onDialogPositiveClick(DialogFragment dialog) {
-		wybraniZnajomi = frag.getmSelectedItems();
-		
+		wybraniZnajomi = frag.getWybraniZnajomi();
 	}
 
 	@Override
 	public void onDialogNegativeClick(DialogFragment dialog) {
 		// TODO Auto-generated method stub
-		
+	}
+	
+	public List<Uzytkownik> pobierzZnajomych() {
+		List<Uzytkownik> lista = uzytkownikDao.list();
+		return lista;
 	}
 }
