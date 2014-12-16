@@ -31,10 +31,9 @@
         android:id="@+id/btnLogowanie"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/noweWydarzenie"
-        android:layout_alignRight="@+id/noweWydarzenie"
-        android:layout_below="@+id/noweWydarzenie"
-        android:layout_marginTop="32dp"
+        android:layout_below="@+id/btnListaWydarzen"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
         android:text="@string/logowanie" />
 
 </RelativeLayout>
