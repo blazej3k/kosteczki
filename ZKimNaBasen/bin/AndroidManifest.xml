@@ -40,6 +40,11 @@
             android:name=".activity.WydarzeniaLista"
             android:label="@string/title_activity_wydarzenia_lista" >
         </activity>
+        
+        <activity
+            android:name=".activity.View_List_ListaWydarzen" >
+        </activity>
+        
         <activity android:name=".activity.Logowanie"></activity>
         <activity android:name=".activity.Rejestracja"></activity>
     </application>
