@@ -1,7 +1,6 @@
 package Dziecioly.zkimnabasen.picker;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import Dziecioly.zkimnabasen.baza.model.Uzytkownik;
@@ -11,7 +10,6 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.widget.Toast;
 
 public class ChecboxListFragment extends DialogFragment {
 

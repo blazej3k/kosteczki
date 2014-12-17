@@ -33,5 +33,7 @@
     <string name="powtorzHaslo">Powtórz hasło</string>
     <string name="zarejestruj">Zarejestruj</string>
     <string name="logowanie">Logowanie</string>
+    <string name="title_activity_mapa">Mapa</string>
+    <string name="mapa">Mapa</string>
 
 </resources>
