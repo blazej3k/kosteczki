@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import Dziecioly.zkimnabasen.R;
+import Dziecioly.zkimnabasen.baza.DatabaseManager;
 import Dziecioly.zkimnabasen.baza.dao.UzytkownikDao;
 import Dziecioly.zkimnabasen.baza.dao.WydarzenieDao;
 import Dziecioly.zkimnabasen.baza.dao.ZaproszenieDao;
@@ -14,6 +15,7 @@ import Dziecioly.zkimnabasen.baza.model.Zaproszenie;
 import Dziecioly.zkimnabasen.picker.ChecboxListFragment;
 import Dziecioly.zkimnabasen.picker.DatePickerFragment;
 import Dziecioly.zkimnabasen.picker.TimePickerFragment;
+import android.R.integer;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.Context;
@@ -22,6 +24,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,6 +34,7 @@ import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 public class NoweWydarzenie extends FragmentActivity implements
 		OnDateSetListener, OnTimeSetListener,
@@ -53,8 +57,7 @@ public class NoweWydarzenie extends FragmentActivity implements
 	private UzytkownikDao uzytkownikDao = new UzytkownikDao();
 	private ZaproszenieDao zaproszenieDao = new ZaproszenieDao();
 
-	private ChecboxListFragment frag = new ChecboxListFragment();
-
+	private ChecboxListFragment frag;
 	public static final int FLAG_START_TIME = 0;
 	public static final int FLAG_END_TIME = 1;
 	private int flag;
@@ -140,7 +143,6 @@ public class NoweWydarzenie extends FragmentActivity implements
 	public void onDateSet(DatePicker view, int year, int month, int day) {
 		String dateText = day + "-" + String.valueOf(month + 1) + "-" + year;
 		data.setText(dateText);
-
 	}
 
 	@Override
@@ -190,21 +192,23 @@ public class NoweWydarzenie extends FragmentActivity implements
 		zaprosZnajomych.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				frag.setWybraniZnajomi(wybraniZnajomi);
-				frag.setWszyscyZnajomi(wszyscyZnajomi);
+				Toast.makeText(context, "2", Toast.LENGTH_SHORT).show();
+				frag = new ChecboxListFragment("Wybierz znajomych", null, wybraniZnajomi);
+				frag.setItems(wszyscyZnajomi);
 				frag.show(getSupportFragmentManager(), "Checkbox list");
 			}
 		});
 	}
+	
 
 	@Override
 	public void onDialogPositiveClick(DialogFragment dialog) {
-		wybraniZnajomi = frag.getWybraniZnajomi();
+		this.wybraniZnajomi = frag.getCheckedItems();
+		Toast.makeText(context, "1", Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
 	public void onDialogNegativeClick(DialogFragment dialog) {
-		// TODO Auto-generated method stub
 	}
 
 	public List<Uzytkownik> pobierzZnajomych() {
