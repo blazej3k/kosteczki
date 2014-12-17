@@ -6,6 +6,8 @@ import java.util.List;
 
 import Dziecioly.zkimnabasen.baza.DatabaseManager;
 
+import android.util.Log;
+
 import com.j256.ormlite.dao.Dao;
 
 public class GenericDao<E, K> {
@@ -25,7 +27,8 @@ public class GenericDao<E, K> {
 			try {
 				dao = DatabaseManager.getInstance().getDao(daoType);
 			} catch (java.sql.SQLException e) {
-				e.printStackTrace();
+//				e.printStackTrace();
+				Log.d(DatabaseManager.DEBUG_TAG, e.toString());
 			}
 		}
 		return dao;
@@ -35,7 +38,8 @@ public class GenericDao<E, K> {
 		try {
 			return getDao().create(entity);
 		} catch (SQLException e) {
-			e.printStackTrace();
+//			e.printStackTrace();
+			Log.d(DatabaseManager.DEBUG_TAG, e.toString());
 		}
 		return 0;
 	}
@@ -44,7 +48,8 @@ public class GenericDao<E, K> {
 		try {
 			getDao().update(entity);
 		} catch (SQLException e) {
-			e.printStackTrace();
+//			e.printStackTrace();
+			Log.d(DatabaseManager.DEBUG_TAG, e.toString());
 		}
 	}
 
@@ -52,7 +57,8 @@ public class GenericDao<E, K> {
 		try {
 			getDao().delete(entity);
 		} catch (SQLException e) {
-			e.printStackTrace();
+//			e.printStackTrace();
+			Log.d(DatabaseManager.DEBUG_TAG, e.toString());
 		}
 	}
 
@@ -60,7 +66,8 @@ public class GenericDao<E, K> {
 		try {
 			return getDao().queryForId(key);
 		} catch (SQLException e) {
-			e.printStackTrace();
+//			e.printStackTrace();
+			Log.d(DatabaseManager.DEBUG_TAG, e.toString());
 		}
 		return null;
 	}
@@ -69,7 +76,8 @@ public class GenericDao<E, K> {
 		try {
 			return getDao().queryForAll();
 		} catch (SQLException e) {
-			e.printStackTrace();
+//			e.printStackTrace();
+			Log.d(DatabaseManager.DEBUG_TAG, e.toString());
 		}
 		return null;
 	}
