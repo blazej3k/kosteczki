@@ -8,6 +8,7 @@ import Dziecioly.zkimnabasen.baza.dao.ZaproszenieDao;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -35,6 +36,7 @@ public class MojKalendarz extends ActionBarActivity {
 		DatabaseManager.init(this);
 
 		SharedPreferences pref = context.getSharedPreferences("MyPref", 0);
+		
 		if (!pref.contains("loggedIn")) {
 			Intent intent = new Intent(context, Logowanie.class);
 			startActivity(intent);

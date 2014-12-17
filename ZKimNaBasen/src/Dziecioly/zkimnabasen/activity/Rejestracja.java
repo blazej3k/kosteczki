@@ -5,6 +5,8 @@ import Dziecioly.zkimnabasen.baza.dao.UzytkownikDao;
 import Dziecioly.zkimnabasen.baza.model.Uzytkownik;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -62,6 +64,13 @@ public class Rejestracja extends ActionBarActivity {
 				Toast.makeText(context, "U¿ytkownik istnieje",
 						Toast.LENGTH_LONG).show();
 			else {
+				SharedPreferences pref = context.getSharedPreferences("MyPref",
+						0);
+				Editor editor = pref.edit();
+				editor.clear();
+				editor.putString("loggedIn", u_nick);
+				editor.commit();
+
 				Intent intent = new Intent(context, MojKalendarz.class);
 				startActivity(intent);
 			}

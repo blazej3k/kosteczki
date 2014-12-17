@@ -21,11 +21,11 @@ public class UzytkownikDao extends GenericDao<Uzytkownik, Integer> {
 					where.or(where.eq("nazwa", login),
 							where.eq("nr_tel", login)),
 					where.eq("haslo", haslo));
-			
+
 			Log.d(DatabaseManager.DEBUG_TAG, where.getStatement());
 			long count = where.countOf();
-			Log.d(DatabaseManager.DEBUG_TAG, "countOf: " +Long.toString(count));
-			
+			Log.d(DatabaseManager.DEBUG_TAG, "countOf: " + Long.toString(count));
+
 			if (count == 0)
 				return false;
 			else {
@@ -35,6 +35,16 @@ public class UzytkownikDao extends GenericDao<Uzytkownik, Integer> {
 			e.printStackTrace();
 		}
 		return false;
+	}
+
+	public Uzytkownik pobierzZalogowanegoUzytkownika(String login) {
+		try {
+			return getDao().queryBuilder().where().eq("nazwa", login).or()
+					.eq("nr_tel", login).queryForFirst();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }

@@ -18,6 +18,7 @@ import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
@@ -32,7 +33,8 @@ import android.widget.EditText;
 import android.widget.TimePicker;
 
 public class NoweWydarzenie extends FragmentActivity implements
-		OnDateSetListener, OnTimeSetListener, ChecboxListFragment.NoticeDialogListener {
+		OnDateSetListener, OnTimeSetListener,
+		ChecboxListFragment.NoticeDialogListener {
 
 	private Context context;
 	private EditText nazwa;
@@ -43,15 +45,14 @@ public class NoweWydarzenie extends FragmentActivity implements
 	private Button zaprosZnajomych;
 	private Button zapisz;
 	private CheckBox czyOtwarte;
-	
-	
+
 	private List<Uzytkownik> wszyscyZnajomi = new ArrayList<Uzytkownik>();
 	private boolean[] wybraniZnajomi;
 
 	private WydarzenieDao wydarzenieDao = new WydarzenieDao();
 	private UzytkownikDao uzytkownikDao = new UzytkownikDao();
 	private ZaproszenieDao zaproszenieDao = new ZaproszenieDao();
-	
+
 	private ChecboxListFragment frag = new ChecboxListFragment();
 
 	public static final int FLAG_START_TIME = 0;
@@ -74,7 +75,7 @@ public class NoweWydarzenie extends FragmentActivity implements
 		czyOtwarte = (CheckBox) findViewById(R.id.czyOtwarte);
 
 		initBtnOnClickListeners();
-		
+
 		wszyscyZnajomi = pobierzZnajomych();
 		wybraniZnajomi = new boolean[wszyscyZnajomi.size()];
 		Arrays.fill(wybraniZnajomi, Boolean.FALSE);
@@ -89,19 +90,21 @@ public class NoweWydarzenie extends FragmentActivity implements
 		String w_godzinaRozpoczecia = godzinaRozpoczecia.getText().toString();
 		String w_godzinaZakonczenia = godzinaZakonczenia.getText().toString();
 		boolean w_czyOtwarte = czyOtwarte.isChecked();
-	
+
 		Wydarzenie w = new Wydarzenie(w_nazwa, w_lokalizacja, w_data,
 				w_godzinaRozpoczecia, w_godzinaZakonczenia, null, w_czyOtwarte);
 
-		Uzytkownik uzytkownik = uzytkownikDao.list().get(0);
+		SharedPreferences pref = context.getSharedPreferences("MyPref", 0);
+		
+		String login = pref.getString("loggedIn", "null");
+		Uzytkownik uzytkownik = uzytkownikDao
+				.pobierzZalogowanegoUzytkownika(login);
 		w.setUzytkownik(uzytkownik);
 
 		wydarzenieDao.add(w);
-		
-		for (int i=0; i<wybraniZnajomi.length; i++)
-		{
-			if (wybraniZnajomi[i] == true)
-			{
+
+		for (int i = 0; i < wybraniZnajomi.length; i++) {
+			if (wybraniZnajomi[i] == true) {
 				Uzytkownik u = wszyscyZnajomi.get(i);
 				Zaproszenie z = new Zaproszenie(false);
 				z.setUzytkownik(u);
@@ -132,8 +135,7 @@ public class NoweWydarzenie extends FragmentActivity implements
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
-	
+
 	@Override
 	public void onDateSet(DatePicker view, int year, int month, int day) {
 		String dateText = day + "-" + String.valueOf(month + 1) + "-" + year;
@@ -204,7 +206,7 @@ public class NoweWydarzenie extends FragmentActivity implements
 	public void onDialogNegativeClick(DialogFragment dialog) {
 		// TODO Auto-generated method stub
 	}
-	
+
 	public List<Uzytkownik> pobierzZnajomych() {
 		List<Uzytkownik> lista = uzytkownikDao.list();
 		return lista;
