@@ -7,6 +7,7 @@ import Dziecioly.zkimnabasen.baza.dao.WydarzenieDao;
 import Dziecioly.zkimnabasen.baza.dao.ZaproszenieDao;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -28,19 +29,25 @@ public class MojKalendarz extends ActionBarActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+
 		super.onCreate(savedInstanceState);
 		context = getApplicationContext();
-		setContentView(R.layout.moj_kalendarz);
-
 		DatabaseManager.init(this);
-		
-		btnNoweWydarzenie = (Button) findViewById(R.id.btnNoweWydarzenie);
-		btnListaWydarzen = (Button) findViewById(R.id.btnListaWydarzen);
-		btnLogowanie = (Button) findViewById(R.id.btnLogowanie);
-		
-		initBtnOnClickListeners();
-	}
 
+		SharedPreferences pref = context.getSharedPreferences("MyPref", 0);
+		if (!pref.contains("loggedIn")) {
+			Intent intent = new Intent(context, Logowanie.class);
+			startActivity(intent);
+		} else {
+			setContentView(R.layout.moj_kalendarz);
+
+			btnNoweWydarzenie = (Button) findViewById(R.id.btnNoweWydarzenie);
+			btnListaWydarzen = (Button) findViewById(R.id.btnListaWydarzen);
+			btnLogowanie = (Button) findViewById(R.id.btnLogowanie);
+
+			initBtnOnClickListeners();
+		}
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -62,7 +69,6 @@ public class MojKalendarz extends ActionBarActivity {
 		return super.onOptionsItemSelected(item);
 	}
 
-
 	private void initBtnOnClickListeners() {
 		btnNoweWydarzenie.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
@@ -70,14 +76,14 @@ public class MojKalendarz extends ActionBarActivity {
 				startActivity(intent);
 			}
 		});
-		
+
 		btnListaWydarzen.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				Intent intent = new Intent(context, WydarzeniaLista.class);
 				startActivity(intent);
 			}
 		});
-		
+
 		btnLogowanie.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				Intent intent = new Intent(context, Logowanie.class);
@@ -85,8 +91,5 @@ public class MojKalendarz extends ActionBarActivity {
 			}
 		});
 
-
-
 	}
 }
-

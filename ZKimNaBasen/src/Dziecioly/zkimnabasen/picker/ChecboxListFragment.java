@@ -52,9 +52,7 @@ public class ChecboxListFragment extends DialogFragment {
 							boolean isChecked) {
 						if (isChecked) {
 							wybraniZnajomi[which] = true;
-						} /*else if (wybraniZnajomi[which] == true) {
-							wybraniZnajomi[which]
-						}*/
+						}
 					}
 				});
 

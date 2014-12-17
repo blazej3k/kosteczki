@@ -1,9 +1,13 @@
 package Dziecioly.zkimnabasen.activity;
 
+import java.io.ObjectOutputStream.PutField;
+
 import Dziecioly.zkimnabasen.R;
 import Dziecioly.zkimnabasen.baza.dao.UzytkownikDao;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -63,6 +67,14 @@ public class Logowanie extends ActionBarActivity {
 		else {
 			Intent intent = new Intent(context, MojKalendarz.class);
 			startActivity(intent);
+			
+			 SharedPreferences pref = context.getSharedPreferences("MyPref", 0); 
+			 Editor editor = pref.edit();
+			 editor.clear();
+			 editor.putString("loggedIn", u_login);
+			 editor.commit();
+			 
+			 
 		}
 	}
 

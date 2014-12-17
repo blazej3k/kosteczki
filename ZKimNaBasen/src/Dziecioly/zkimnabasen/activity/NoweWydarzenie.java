@@ -78,7 +78,6 @@ public class NoweWydarzenie extends FragmentActivity implements
 		wszyscyZnajomi = pobierzZnajomych();
 		wybraniZnajomi = new boolean[wszyscyZnajomi.size()];
 		Arrays.fill(wybraniZnajomi, Boolean.FALSE);
-
 	}
 
 	private void zapisz() {
@@ -90,10 +89,7 @@ public class NoweWydarzenie extends FragmentActivity implements
 		String w_godzinaRozpoczecia = godzinaRozpoczecia.getText().toString();
 		String w_godzinaZakonczenia = godzinaZakonczenia.getText().toString();
 		boolean w_czyOtwarte = czyOtwarte.isChecked();
-		
-		
-		
-
+	
 		Wydarzenie w = new Wydarzenie(w_nazwa, w_lokalizacja, w_data,
 				w_godzinaRozpoczecia, w_godzinaZakonczenia, null, w_czyOtwarte);
 
