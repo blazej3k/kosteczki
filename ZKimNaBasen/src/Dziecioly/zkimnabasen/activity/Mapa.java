@@ -11,7 +11,7 @@ public class Mapa extends FragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.mapa);
+//		setContentView(R.layout.mapa);
 
 	}
 }

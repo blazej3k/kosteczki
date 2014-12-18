@@ -9,12 +9,18 @@ import Dziecioly.zkimnabasen.baza.dao.WydarzenieDao;
 import Dziecioly.zkimnabasen.baza.model.List_Custom_ListaWydarzen;
 import Dziecioly.zkimnabasen.baza.model.Wydarzenie;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 public class WydarzeniaLista extends Activity {
 
+	private ListView rozbudowana_lista;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -38,10 +44,24 @@ public class WydarzeniaLista extends Activity {
 				Log.d(DatabaseManager.DEBUG_TAG, "ID: "+ x.getId());
 		}
 
-
 		//String[] przykladowe_dane = {"Wlaz³ kotek", "na p³otek", "i mruga.", "piêkna to", "piosneczka nied³uga.", "Wlaz³ kurek", "na murek", "i pieje", "niech siê nikt", "z tych piosnek", "nie œmieje."};
-		ListView rozbudowana_lista = (ListView) findViewById(R.id.lv_prostalista);
+		rozbudowana_lista = (ListView) findViewById(R.id.lv_prostalista);
 		List_Custom_ListaWydarzen adapter_listy = new List_Custom_ListaWydarzen(sWydarzenia, this);
 		rozbudowana_lista.setAdapter(adapter_listy);
+		
+		initOnItemClickListener();
+	}
+	
+	private void initOnItemClickListener() {
+		rozbudowana_lista.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				Intent startSzczegolowyWidok = new Intent(WydarzeniaLista.this, SzczegolyWydarzenia.class);
+//				startSzczegolowyWidok = new Intent
+//				startActivity(startSzczegolowyWidok);
+			}
+			
+		});
 	}
 }
