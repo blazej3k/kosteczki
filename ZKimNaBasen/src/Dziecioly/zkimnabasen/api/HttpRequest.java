@@ -2,36 +2,42 @@ package Dziecioly.zkimnabasen.api;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import Dziecioly.zkimnabasen.activity.Mapa;
-import Dziecioly.zkimnabasen.baza.DatabaseManager;
+import Dziecioly.zkimnabasen.baza.model.Lokalizacja;
 import android.os.AsyncTask;
 import android.util.Base64;
-import android.util.Log;
 
-public class HttpRequest extends AsyncTask<String, String, String> {
+public class HttpRequest extends AsyncTask<String, String, List<Lokalizacja>> {
 
 	private String username = "48514168764";
 	private String password = "NhmQ8cUyZdksr5S";
 	private Mapa mapa;
-	
+	private boolean listIsReady;
+
 	public HttpRequest(Mapa mapa) {
-		this.mapa =  mapa;
+		this.mapa = mapa;
 	}
+	
 
 	@Override
-	protected String doInBackground(String... uri) {
+	protected List<Lokalizacja> doInBackground(String... uri) {
+		listIsReady = false;
 		MyHttpClient httpclient = new MyHttpClient();
 		HttpResponse response;
 		String responseString = null;
+		List<Lokalizacja> lokalizacje = new ArrayList<Lokalizacja>();
 		try {
 			HttpGet get = new HttpGet(uri[0]);
 			get.addHeader("Authorization", getB64Auth(username, password));
@@ -43,8 +49,7 @@ public class HttpRequest extends AsyncTask<String, String, String> {
 				response.getEntity().writeTo(out);
 				out.close();
 				responseString = out.toString();
-				parseResponse(responseString);
-				
+				lokalizacje = parseResponse(responseString);
 			} else {
 				// Closes the connection.
 				response.getEntity().getContent().close();
@@ -55,31 +60,40 @@ public class HttpRequest extends AsyncTask<String, String, String> {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return responseString;
+		return lokalizacje;
 	}
-	
-	private void parseResponse(String responseString)
-	{
+
+	private List<Lokalizacja> parseResponse(String responseString) {
 		try {
 			JSONObject json = new JSONObject(responseString);
-			JSONObject coord = json.getJSONObject("data").getJSONObject("geometry").getJSONObject("coordinates");
-			JSONObject prop = json.getJSONObject("data").getJSONObject("properties");
-			
-			String adres = prop.getString("ulica")+" "+prop.getString("numer");
-			String opis = prop.getString("opis");
-			String lat = coord.getString("lat");
-			String lon = coord.getString("lon");
-			
-			Log.d(DatabaseManager.DEBUG_TAG, lat);
-			Log.d(DatabaseManager.DEBUG_TAG, lon);
-			Log.d(DatabaseManager.DEBUG_TAG, adres);
-			Log.d(DatabaseManager.DEBUG_TAG, opis);
-			
-			
-			
+			JSONArray data = json.getJSONArray("data");
+			List<Lokalizacja> lokalizacje = new ArrayList<Lokalizacja>();
+
+			for (int i = 0; i < data.length(); i++) {
+				JSONObject coord = data.getJSONObject(i)
+						.getJSONObject("geometry").getJSONObject("coordinates");
+				double lat = coord.getDouble("lat");
+				double lon = coord.getDouble("lon");
+
+				JSONArray prop = data.getJSONObject(i).getJSONArray(
+						"properties");
+
+				String ulica = prop.getJSONObject(0).getString("value");
+				String numer = prop.getJSONObject(1).getString("value");
+				String opis = prop.getJSONObject(2).getString("value");
+
+				String adres = ulica + " " + numer;
+
+				Lokalizacja l = new Lokalizacja(lat, lon, adres, opis, false, Lokalizacja.kategorie[8]);
+				lokalizacje.add(l);
+
+			}
+			return lokalizacje;
+
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
+		return null;
 	}
 
 	private String getB64Auth(String login, String pass) {
@@ -89,12 +103,21 @@ public class HttpRequest extends AsyncTask<String, String, String> {
 						| Base64.NO_WRAP);
 		return ret;
 	}
-	
-	
 
 	@Override
-	protected void onPostExecute(String result) {
+	protected void onPostExecute(List<Lokalizacja> result) {
 		super.onPostExecute(result);
-		mapa.addMarkers(result);
+		mapa.setLokalizacje(result);
+		listIsReady = true;
 	}
+	
+	public boolean isListIsReady() {
+		return listIsReady;
+	}
+
+
+	public void setListIsReady(boolean listIsReady) {
+		this.listIsReady = listIsReady;
+	}
+
 }

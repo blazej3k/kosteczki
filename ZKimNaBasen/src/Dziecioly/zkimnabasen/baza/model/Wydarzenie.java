@@ -18,9 +18,6 @@ public class Wydarzenie {
 	private String nazwa;
 
 	@DatabaseField
-	private String lokalizacja;
-
-	@DatabaseField
 	private String data;
 
 	@DatabaseField
@@ -37,6 +34,9 @@ public class Wydarzenie {
 
 	@DatabaseField(foreign = true, foreignAutoRefresh = true)
 	private Uzytkownik uzytkownik;
+	
+	@DatabaseField(foreign = true, foreignAutoRefresh = true)
+	private Lokalizacja lokalizacja;
 
 	@ForeignCollectionField
 	private ForeignCollection<Zaproszenie> zaproszenia;
@@ -49,7 +49,6 @@ public class Wydarzenie {
 			String godz_od, String godz_do, String opis, boolean otwarte) {
 		super();
 		this.nazwa = nazwa;
-		this.lokalizacja = lokalizacja;
 		this.data = data;
 		this.godz_od = godz_od;
 		this.godz_do = godz_do;
@@ -71,14 +70,6 @@ public class Wydarzenie {
 
 	public void setNazwa(String nazwa) {
 		this.nazwa = nazwa;
-	}
-
-	public String getLokalizacja() {
-		return lokalizacja;
-	}
-
-	public void setLokalizacja(String lokalizacja) {
-		this.lokalizacja = lokalizacja;
 	}
 
 	public String getData() {
@@ -140,5 +131,15 @@ public class Wydarzenie {
 	public void setZaproszenia(ForeignCollection<Zaproszenie> zaproszenia) {
 		this.zaproszenia = zaproszenia;
 	}
+
+	public Lokalizacja getLokalizacja() {
+		return lokalizacja;
+	}
+
+	public void setLokalizacja(Lokalizacja lokalizacja) {
+		this.lokalizacja = lokalizacja;
+	}
+	
+	
 
 }
