@@ -10,6 +10,7 @@ import Dziecioly.zkimnabasen.baza.model.Lokalizacja;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -38,6 +39,10 @@ public class Mapa extends FragmentActivity implements OnMapClickListener,
 	private Marker userMarker;
 	private Marker selectedMarker = null;
 
+	private LatLng userLatLon;
+	private boolean zMapy;
+	private String adresZMapyText;
+
 	private BitmapDescriptor colorApiMarker;
 	private BitmapDescriptor colorUserMarker;
 	private BitmapDescriptor colorSelectedMarker;
@@ -55,6 +60,27 @@ public class Mapa extends FragmentActivity implements OnMapClickListener,
 			request.execute(swimmingPoolsUrl);
 		else if (kategoria.equals(Lokalizacja.kategorie[5]))
 			request.execute(sportFieldsUrl);
+		else
+			request.setListIsReady(true);
+
+		Object user = getIntent().getExtras().get("userAddress");
+		if (user != null) {
+			boolean userAddress = (Boolean) user;
+			if (userAddress) {
+				Double userLat = (Double) getIntent().getExtras().get("lat");
+				Double userLon = (Double) getIntent().getExtras().get("lon");
+				userLatLon = new LatLng(userLat, userLon);
+				zMapy = (Boolean) getIntent().getExtras().get("zMapy");
+				if (zMapy)
+					adresZMapyText = (String) getIntent().getExtras().get("adresZMapyText");
+					
+			} else {
+				Log.d(DatabaseManager.DEBUG_TAG, "Nieznana lokalizacja");
+				Toast.makeText(getApplicationContext(), "Nieznana lokalizacja",
+						Toast.LENGTH_LONG).show();
+			}
+
+		}
 
 		mapIsReady = false;
 
@@ -96,10 +122,36 @@ public class Mapa extends FragmentActivity implements OnMapClickListener,
 	}
 
 	public void addMarkers(List<Lokalizacja> lokalizacje) {
-		for (Lokalizacja l : lokalizacje)
-			map.addMarker(new MarkerOptions()
-					.position(new LatLng(l.getLat(), l.getLon()))
-					.title(l.getOpis()).snippet(l.getAdres()));
+		Log.d(DatabaseManager.DEBUG_TAG, "Narysuj marker..");
+		if (userLatLon != null && !zMapy) {
+			// lokalizacja wpisana przez usera -> narysuj marker usera i zaznacz
+			// go jako wybrany
+			Log.d(DatabaseManager.DEBUG_TAG,
+					"Rysuje marker " + Double.toString(userLatLon.latitude));
+			userMarker = map.addMarker(new MarkerOptions().position(userLatLon)
+					.icon(colorSelectedMarker));
+			selectedMarker = userMarker;
+
+		}
+		// rysuj markery z api
+		for (Lokalizacja l : lokalizacje) {
+			LatLng apiMarkerLatLng = new LatLng(l.getLat(), l.getLon());
+
+			// lokalizacja wybrana wczesniej z mapy -> narysuj zielony marker
+			if (userLatLon != null && zMapy
+					&& adresZMapyText.equalsIgnoreCase(l.getAdres())) {
+				selectedMarker = map.addMarker(new MarkerOptions()
+						.position(apiMarkerLatLng).title(l.getOpis())
+						.snippet(l.getAdres()).icon(colorSelectedMarker));
+
+			}
+			// pozosta³e markeryApi - czerwone
+			else {
+				map.addMarker(new MarkerOptions().position(apiMarkerLatLng)
+						.title(l.getOpis()).snippet(l.getAdres()));
+			}
+
+		}
 
 	}
 
@@ -133,7 +185,7 @@ public class Mapa extends FragmentActivity implements OnMapClickListener,
 					.equals(selectedMarker.getPosition())) {
 				// jeœli klikniêty marker jest markerem u¿ytkownika -> pokoloruj
 				// na niebiesko
-				if (clickedMarker.getPosition()
+				if (userMarker!=null && clickedMarker.getPosition()
 						.equals(userMarker.getPosition()))
 					clickedMarker.setIcon(colorUserMarker);
 				// jeœli klikniêty marker jest markerem z api -> pokoloruj na

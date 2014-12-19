@@ -1,5 +1,6 @@
 package Dziecioly.zkimnabasen.activity;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -23,6 +24,8 @@ import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
@@ -60,6 +63,8 @@ public class NoweWydarzenie extends FragmentActivity implements
 	private String wybranaKategoria = "";
 	public static Lokalizacja wybranaLokalizacja;
 
+	private String adresZMapy = "";
+
 	private WydarzenieDao wydarzenieDao = new WydarzenieDao();
 	private UzytkownikDao uzytkownikDao = new UzytkownikDao();
 	private ZaproszenieDao zaproszenieDao = new ZaproszenieDao();
@@ -70,6 +75,8 @@ public class NoweWydarzenie extends FragmentActivity implements
 	public static final int FLAG_START_TIME = 0;
 	public static final int FLAG_END_TIME = 1;
 	private int flag;
+
+	Geocoder geocoder;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -95,8 +102,9 @@ public class NoweWydarzenie extends FragmentActivity implements
 		wszyscyZnajomi = pobierzZnajomych();
 		wybraniZnajomi = new boolean[wszyscyZnajomi.size()];
 		Arrays.fill(wybraniZnajomi, Boolean.FALSE);
-		
+
 		wybranaLokalizacja = null;
+		geocoder = new Geocoder(context);
 
 	}
 
@@ -105,15 +113,57 @@ public class NoweWydarzenie extends FragmentActivity implements
 		super.onResume();
 		Log.d(DatabaseManager.DEBUG_TAG, "onResume");
 		if (wybranaLokalizacja != null) {
-			Log.d(DatabaseManager.DEBUG_TAG,
-					Double.toString(wybranaLokalizacja.getLat()));
-			Log.d(DatabaseManager.DEBUG_TAG,
-					Double.toString(wybranaLokalizacja.getLon()));
 			String adres = wybranaLokalizacja.getAdres();
+			if (adres == null) {
+				adres = pobierzAdres(wybranaLokalizacja.getLat(),
+						wybranaLokalizacja.getLon());
+			}
 			if (adres != null)
 				lokalizacja.setText(adres);
+
+			if (!wybranaLokalizacja.isLokalizacjaUzytkownika())
+				adresZMapy = adres;
+
+			Log.d(DatabaseManager.DEBUG_TAG, adres);
+		} else {
+			lokalizacja.setText("");
 		}
 
+		wybranaLokalizacja = null;
+	}
+
+	private String pobierzAdres(double lat, double lon) {
+		try {
+			Address a = geocoder.getFromLocation(lat, lon, 1).get(0);
+			return a.getAddressLine(0);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	private double[] pobierzMarker(String adres) {
+		double[] lewyDolnyRog = { 52.116507, 20.870993 };
+		double[] prawyGornyRog = { 52.365419, 21.208823 };
+
+		double[] latlon = new double[2];
+		try {
+			List<Address> ad = geocoder.getFromLocationName(
+					adres + " Warszawa", 1, lewyDolnyRog[0], lewyDolnyRog[1],
+					prawyGornyRog[0], prawyGornyRog[1]);
+
+			if (ad.size() == 0)
+				return null;
+			else {
+				Address a = ad.get(0);
+				latlon[0] = a.getLatitude();
+				latlon[1] = a.getLongitude();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return latlon;
 	}
 
 	private void zapisz() {
@@ -140,7 +190,7 @@ public class NoweWydarzenie extends FragmentActivity implements
 				.znajdzLokalizacjeJakNieMaToDodaj(wybranaLokalizacja);
 
 		w.setLokalizacja(lokalizacjaBaza);
-		
+
 		wydarzenieDao.add(w);
 
 		for (int i = 0; i < wybraniZnajomi.length; i++) {
@@ -247,12 +297,38 @@ public class NoweWydarzenie extends FragmentActivity implements
 
 		btnMapa.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				Intent intent = new Intent(context, Mapa.class);
-				intent.putExtra("kategoria", wybranaKategoria);
-				startActivity(intent);
+				wczytajMape();
 			}
 		});
 
+	}
+
+	private void wczytajMape() {
+		Intent intent = new Intent(context, Mapa.class);
+		intent.putExtra("kategoria", wybranaKategoria);
+
+		String wpisanyAdres = lokalizacja.getText().toString();
+
+		if (wpisanyAdres != null && !wpisanyAdres.equals("")) {
+			if (wpisanyAdres.equalsIgnoreCase(adresZMapy)) {
+				intent.putExtra("zMapy", true);
+				intent.putExtra("adresZMapyText", wpisanyAdres);
+			} else
+				intent.putExtra("zMapy", false);
+			Log.d(DatabaseManager.DEBUG_TAG, wpisanyAdres);
+			double[] latlon = pobierzMarker(wpisanyAdres);
+			if (latlon == null)
+				intent.putExtra("userAddress", false);
+			else {
+				Log.d(DatabaseManager.DEBUG_TAG, Double.toString(latlon[0]));
+				Log.d(DatabaseManager.DEBUG_TAG, Double.toString(latlon[1]));
+				intent.putExtra("userAddress", true);
+				intent.putExtra("lat", latlon[0]);
+				intent.putExtra("lon", latlon[1]);
+			}
+		}
+
+		startActivity(intent);
 	}
 
 	@Override
