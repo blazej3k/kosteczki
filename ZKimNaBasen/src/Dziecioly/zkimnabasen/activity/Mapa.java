@@ -10,7 +10,6 @@ import Dziecioly.zkimnabasen.baza.model.Lokalizacja;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -18,6 +17,7 @@ import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -29,20 +29,27 @@ public class Mapa extends FragmentActivity implements OnMapClickListener,
 	private String swimmingPoolsUrl = "https://api.bihapi.pl/wfs/warszawa/swimmingPools";
 	private String sportFieldsUrl = "https://api.bihapi.pl/wfs/warszawa/swimmingPools";
 	private HttpRequest request = new HttpRequest(this);
-	
+
 	private GoogleMap map;
 	private boolean mapIsReady;
 	private final LatLng defaultLatLng = new LatLng(52.23, 21);
-	
+
 	private List<Lokalizacja> lokalizacje = new ArrayList<Lokalizacja>();
 	private Marker userMarker;
-	private Marker selectedMarker;
-	
+	private Marker selectedMarker = null;
+
+	private BitmapDescriptor colorApiMarker;
+	private BitmapDescriptor colorUserMarker;
+	private BitmapDescriptor colorSelectedMarker;
+
 	private String kategoria;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		Log.d(DatabaseManager.DEBUG_TAG, "mapa onCreate");
+
 		kategoria = (String) getIntent().getExtras().get("kategoria");
 		if (kategoria.equals(Lokalizacja.kategorie[7]))
 			request.execute(swimmingPoolsUrl);
@@ -58,12 +65,18 @@ public class Mapa extends FragmentActivity implements OnMapClickListener,
 		myMapFragment.onCreate(savedInstanceState);
 
 		myMapFragment.getMapAsync(this);
+
+		colorApiMarker = BitmapDescriptorFactory
+				.defaultMarker(BitmapDescriptorFactory.HUE_RED);
+		colorUserMarker = BitmapDescriptorFactory
+				.defaultMarker(BitmapDescriptorFactory.HUE_BLUE);
+		colorSelectedMarker = BitmapDescriptorFactory
+				.defaultMarker(BitmapDescriptorFactory.HUE_GREEN);
 	}
 
 	@Override
 	public void onMapReady(GoogleMap mapp) {
 		this.map = mapp;
-		Log.d(DatabaseManager.DEBUG_TAG, "kk");
 		map.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLatLng, 12.0f));
 		map.setOnMapClickListener(this);
 		map.setOnMarkerClickListener(this);
@@ -71,6 +84,14 @@ public class Mapa extends FragmentActivity implements OnMapClickListener,
 		mapIsReady = true;
 		if (request.isListIsReady())
 			addMarkers(lokalizacje);
+
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		Log.d(DatabaseManager.DEBUG_TAG, "mapa onPause");
+		NoweWydarzenie.wybranaLokalizacja = getSelectedMarker();
 
 	}
 
@@ -86,14 +107,12 @@ public class Mapa extends FragmentActivity implements OnMapClickListener,
 	public void onMapClick(LatLng arg) {
 
 		if (selectedMarker != null)
-			selectedMarker.setIcon(BitmapDescriptorFactory
-					.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+			selectedMarker.setIcon(colorApiMarker);
 		if (userMarker != null)
 			userMarker.remove();
 
 		userMarker = map.addMarker(new MarkerOptions().position(arg).icon(
-				BitmapDescriptorFactory
-						.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+				colorSelectedMarker));
 		selectedMarker = userMarker;
 
 	}
@@ -116,14 +135,12 @@ public class Mapa extends FragmentActivity implements OnMapClickListener,
 				// na niebiesko
 				if (clickedMarker.getPosition()
 						.equals(userMarker.getPosition()))
-					clickedMarker.setIcon(BitmapDescriptorFactory
-							.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+					clickedMarker.setIcon(colorUserMarker);
 				// jeœli klikniêty marker jest markerem z api -> pokoloruj na
 				// czerwono
 				else
 
-					clickedMarker.setIcon(BitmapDescriptorFactory
-							.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+					clickedMarker.setIcon(colorApiMarker);
 				// odznacz marker i nie wyœwietlaj tytu³u
 				selectedMarker = null;
 				return true;
@@ -133,26 +150,39 @@ public class Mapa extends FragmentActivity implements OnMapClickListener,
 			else if (userMarker != null
 					&& selectedMarker.getPosition().equals(
 							userMarker.getPosition()))
-				selectedMarker.setIcon(BitmapDescriptorFactory
-						.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+				selectedMarker.setIcon(colorUserMarker);
 			// jeœli istnieje zielony marker i istnieje marker api,
 			// który jest zielony -> pokoloruj go na czerwono
 			else
-				selectedMarker.setIcon(BitmapDescriptorFactory
-						.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+				selectedMarker.setIcon(colorApiMarker);
 
 		}
 
 		// klikniêty marker pokoloruj na zielono, poka¿ tytu³
-		clickedMarker.setIcon(BitmapDescriptorFactory
-				.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+		clickedMarker.setIcon(colorSelectedMarker);
 		selectedMarker = clickedMarker;
 		return false;
 
 	}
 
-	public Marker getSelectedMarker() {
-		return selectedMarker;
+	public Lokalizacja getSelectedMarker() {
+		if (selectedMarker == null)
+			return null;
+		else if (userMarker != null
+				&& selectedMarker.getPosition()
+						.equals(userMarker.getPosition()))
+			return new Lokalizacja(selectedMarker.getPosition().latitude,
+					selectedMarker.getPosition().longitude, null, null, false,
+					null, true);
+		else {
+			for (Lokalizacja l : lokalizacje) {
+				LatLng p = new LatLng(l.getLat(), l.getLon());
+				if (selectedMarker.getPosition().equals(p))
+					return l;
+			}
+		}
+		return null;
+
 	}
 
 	public void setSelectedMarker(Marker selectedMarker) {

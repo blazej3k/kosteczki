@@ -34,6 +34,8 @@ public class Lokalizacja {
 
 	@ForeignCollectionField
 	private ForeignCollection<Wydarzenie> wydarzenia;
+	
+	private boolean lokalizacjaUzytkownika;
 
 	public static final String[] kategorie = { "Bie¿nia", "Fitness",
 			"Kort tenisowy", "Koszykówka", "Lodowisko", "Pi³ka no¿na",
@@ -44,7 +46,7 @@ public class Lokalizacja {
 	}
 
 	public Lokalizacja(double lat, double lon, String adres, String opis,
-			boolean publiczna, String kategoria) {
+			boolean publiczna, String kategoria, boolean lokalizacjaUzytkownika) {
 		super();
 		this.lat = lat;
 		this.lon = lon;
@@ -52,6 +54,7 @@ public class Lokalizacja {
 		this.opis = opis;
 		this.publiczna = publiczna;
 		this.kategoria = kategoria;
+		this.lokalizacjaUzytkownika = lokalizacjaUzytkownika;
 	}
 	
 	public int getId() {
@@ -121,5 +124,15 @@ public class Lokalizacja {
 	public void setOpis(String opis) {
 		this.opis = opis;
 	}
+
+	public boolean isLokalizacjaUzytkownika() {
+		return lokalizacjaUzytkownika;
+	}
+
+	public void setLokalizacjaUzytkownika(boolean lokalizacjaUzytkownika) {
+		this.lokalizacjaUzytkownika = lokalizacjaUzytkownika;
+	}
+	
+	
 
 }

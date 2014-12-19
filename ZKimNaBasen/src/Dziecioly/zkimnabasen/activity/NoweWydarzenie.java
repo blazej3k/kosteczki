@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import Dziecioly.zkimnabasen.R;
+import Dziecioly.zkimnabasen.baza.DatabaseManager;
+import Dziecioly.zkimnabasen.baza.dao.LokalizacjaDao;
 import Dziecioly.zkimnabasen.baza.dao.UzytkownikDao;
 import Dziecioly.zkimnabasen.baza.dao.WydarzenieDao;
 import Dziecioly.zkimnabasen.baza.dao.ZaproszenieDao;
@@ -24,6 +26,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -54,11 +57,13 @@ public class NoweWydarzenie extends FragmentActivity implements
 
 	private List<Uzytkownik> wszyscyZnajomi = new ArrayList<Uzytkownik>();
 	private boolean[] wybraniZnajomi;
-	private String wybranaKategoria;
+	private String wybranaKategoria = "";
+	public static Lokalizacja wybranaLokalizacja;
 
 	private WydarzenieDao wydarzenieDao = new WydarzenieDao();
 	private UzytkownikDao uzytkownikDao = new UzytkownikDao();
 	private ZaproszenieDao zaproszenieDao = new ZaproszenieDao();
+	private LokalizacjaDao lokalizacjaDao = new LokalizacjaDao();
 
 	private ChecboxListFragment checkboxFrag;
 	private ListFragment listFrag;
@@ -71,6 +76,8 @@ public class NoweWydarzenie extends FragmentActivity implements
 		super.onCreate(savedInstanceState);
 		context = getApplicationContext();
 		setContentView(R.layout.nowe_wydarzenie);
+
+		Log.d(DatabaseManager.DEBUG_TAG, "onCreate");
 
 		nazwa = (EditText) findViewById(R.id.nazwa);
 		lokalizacja = (EditText) findViewById(R.id.lokalizacja);
@@ -88,6 +95,24 @@ public class NoweWydarzenie extends FragmentActivity implements
 		wszyscyZnajomi = pobierzZnajomych();
 		wybraniZnajomi = new boolean[wszyscyZnajomi.size()];
 		Arrays.fill(wybraniZnajomi, Boolean.FALSE);
+		
+		wybranaLokalizacja = null;
+
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		Log.d(DatabaseManager.DEBUG_TAG, "onResume");
+		if (wybranaLokalizacja != null) {
+			Log.d(DatabaseManager.DEBUG_TAG,
+					Double.toString(wybranaLokalizacja.getLat()));
+			Log.d(DatabaseManager.DEBUG_TAG,
+					Double.toString(wybranaLokalizacja.getLon()));
+			String adres = wybranaLokalizacja.getAdres();
+			if (adres != null)
+				lokalizacja.setText(adres);
+		}
 
 	}
 
@@ -111,6 +136,11 @@ public class NoweWydarzenie extends FragmentActivity implements
 				.pobierzZalogowanegoUzytkownika(login);
 		w.setUzytkownik(uzytkownik);
 
+		Lokalizacja lokalizacjaBaza = lokalizacjaDao
+				.znajdzLokalizacjeJakNieMaToDodaj(wybranaLokalizacja);
+
+		w.setLokalizacja(lokalizacjaBaza);
+		
 		wydarzenieDao.add(w);
 
 		for (int i = 0; i < wybraniZnajomi.length; i++) {
