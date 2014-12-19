@@ -22,7 +22,6 @@ public class MojKalendarz extends ActionBarActivity {
 	private Button btnNoweWydarzenie;
 	private Button btnListaWydarzen;
 	private Button btnLogowanie;
-	private Button btnMapa;
 
 	UzytkownikDao uzytkownikDao = new UzytkownikDao();
 	ZaproszenieDao zaproszenieDao = new ZaproszenieDao();
@@ -46,7 +45,6 @@ public class MojKalendarz extends ActionBarActivity {
 			btnNoweWydarzenie = (Button) findViewById(R.id.btnNoweWydarzenie);
 			btnListaWydarzen = (Button) findViewById(R.id.btnListaWydarzen);
 			btnLogowanie = (Button) findViewById(R.id.btnLogowanie);
-			btnMapa = (Button) findViewById(R.id.mapa);
 
 			initBtnOnClickListeners();
 		}
@@ -94,12 +92,6 @@ public class MojKalendarz extends ActionBarActivity {
 			}
 		});
 		
-		btnMapa.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				Intent intent = new Intent(context, Mapa.class);
-				startActivity(intent);
-			}
-		});
 		
 		
 

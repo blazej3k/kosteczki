@@ -35,5 +35,6 @@
     <string name="logowanie">Logowanie</string>
     <string name="title_activity_mapa">Mapa</string>
     <string name="mapa">Mapa</string>
+    <string name="kategoria">Kategoria</string>
 
 </resources>

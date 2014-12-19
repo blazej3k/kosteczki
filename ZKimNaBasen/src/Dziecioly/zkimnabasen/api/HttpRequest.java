@@ -84,7 +84,7 @@ public class HttpRequest extends AsyncTask<String, String, List<Lokalizacja>> {
 
 				String adres = ulica + " " + numer;
 
-				Lokalizacja l = new Lokalizacja(lat, lon, adres, opis, false, Lokalizacja.kategorie[8]);
+				Lokalizacja l = new Lokalizacja(lat, lon, adres, opis, false, Lokalizacja.kategorie[7]);
 				lokalizacje.add(l);
 
 			}

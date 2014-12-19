@@ -10,6 +10,7 @@ import Dziecioly.zkimnabasen.baza.model.Lokalizacja;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -25,21 +26,31 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class Mapa extends FragmentActivity implements OnMapClickListener,
 		OnMarkerClickListener, OnMapReadyCallback {
 
+	private String swimmingPoolsUrl = "https://api.bihapi.pl/wfs/warszawa/swimmingPools";
+	private String sportFieldsUrl = "https://api.bihapi.pl/wfs/warszawa/swimmingPools";
+	private HttpRequest request = new HttpRequest(this);
+	
 	private GoogleMap map;
 	private boolean mapIsReady;
-	private String swimmingPoolsUrl = "https://api.bihapi.pl/wfs/warszawa/swimmingPools";
 	private final LatLng defaultLatLng = new LatLng(52.23, 21);
+	
 	private List<Lokalizacja> lokalizacje = new ArrayList<Lokalizacja>();
 	private Marker userMarker;
 	private Marker selectedMarker;
-	private HttpRequest request = new HttpRequest(this);
+	
+	private String kategoria;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		kategoria = (String) getIntent().getExtras().get("kategoria");
+		if (kategoria.equals(Lokalizacja.kategorie[7]))
+			request.execute(swimmingPoolsUrl);
+		else if (kategoria.equals(Lokalizacja.kategorie[5]))
+			request.execute(sportFieldsUrl);
 
 		mapIsReady = false;
-		request.execute(swimmingPoolsUrl);
+
 		setContentView(R.layout.mapa);
 
 		SupportMapFragment myMapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -96,18 +107,56 @@ public class Mapa extends FragmentActivity implements OnMapClickListener,
 
 	@Override
 	public boolean onMarkerClick(Marker clickedMarker) {
+		// jeœli istnieje zielony marker
 		if (selectedMarker != null) {
-			if (userMarker != null && selectedMarker.getPosition().equals(userMarker.getPosition()))
+			// jeœli klikniêto na zielony marker -> odznacz
+			if (clickedMarker.getPosition()
+					.equals(selectedMarker.getPosition())) {
+				// jeœli klikniêty marker jest markerem u¿ytkownika -> pokoloruj
+				// na niebiesko
+				if (clickedMarker.getPosition()
+						.equals(userMarker.getPosition()))
+					clickedMarker.setIcon(BitmapDescriptorFactory
+							.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+				// jeœli klikniêty marker jest markerem z api -> pokoloruj na
+				// czerwono
+				else
+
+					clickedMarker.setIcon(BitmapDescriptorFactory
+							.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+				// odznacz marker i nie wyœwietlaj tytu³u
+				selectedMarker = null;
+				return true;
+			}
+			// jeœli istnieje zielony marker i istnieje marker u¿ytkownika,
+			// który jest zielony -> pokoloruj go na niebiesko
+			else if (userMarker != null
+					&& selectedMarker.getPosition().equals(
+							userMarker.getPosition()))
 				selectedMarker.setIcon(BitmapDescriptorFactory
 						.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+			// jeœli istnieje zielony marker i istnieje marker api,
+			// który jest zielony -> pokoloruj go na czerwono
 			else
 				selectedMarker.setIcon(BitmapDescriptorFactory
 						.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+
 		}
 
+		// klikniêty marker pokoloruj na zielono, poka¿ tytu³
 		clickedMarker.setIcon(BitmapDescriptorFactory
 				.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
 		selectedMarker = clickedMarker;
 		return false;
+
 	}
+
+	public Marker getSelectedMarker() {
+		return selectedMarker;
+	}
+
+	public void setSelectedMarker(Marker selectedMarker) {
+		this.selectedMarker = selectedMarker;
+	}
+
 }

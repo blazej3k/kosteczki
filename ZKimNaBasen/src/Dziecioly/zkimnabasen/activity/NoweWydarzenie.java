@@ -8,12 +8,14 @@ import Dziecioly.zkimnabasen.R;
 import Dziecioly.zkimnabasen.baza.dao.UzytkownikDao;
 import Dziecioly.zkimnabasen.baza.dao.WydarzenieDao;
 import Dziecioly.zkimnabasen.baza.dao.ZaproszenieDao;
+import Dziecioly.zkimnabasen.baza.model.Lokalizacja;
 import Dziecioly.zkimnabasen.baza.model.Uzytkownik;
 import Dziecioly.zkimnabasen.baza.model.Wydarzenie;
 import Dziecioly.zkimnabasen.baza.model.Zaproszenie;
-import Dziecioly.zkimnabasen.picker.ChecboxListFragment;
-import Dziecioly.zkimnabasen.picker.DatePickerFragment;
-import Dziecioly.zkimnabasen.picker.TimePickerFragment;
+import Dziecioly.zkimnabasen.fragment.ChecboxListFragment;
+import Dziecioly.zkimnabasen.fragment.DatePickerFragment;
+import Dziecioly.zkimnabasen.fragment.ListFragment;
+import Dziecioly.zkimnabasen.fragment.TimePickerFragment;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.Context;
@@ -35,7 +37,8 @@ import android.widget.Toast;
 
 public class NoweWydarzenie extends FragmentActivity implements
 		OnDateSetListener, OnTimeSetListener,
-		ChecboxListFragment.NoticeDialogListener {
+		ChecboxListFragment.NoticeDialogListener,
+		ListFragment.NoticeDialogListener {
 
 	private Context context;
 	private EditText nazwa;
@@ -45,16 +48,20 @@ public class NoweWydarzenie extends FragmentActivity implements
 	private Button godzinaZakonczenia;
 	private Button zaprosZnajomych;
 	private Button zapisz;
+	private Button btnMapa;
+	private Button btnKategoria;
 	private CheckBox czyOtwarte;
 
 	private List<Uzytkownik> wszyscyZnajomi = new ArrayList<Uzytkownik>();
 	private boolean[] wybraniZnajomi;
+	private String wybranaKategoria;
 
 	private WydarzenieDao wydarzenieDao = new WydarzenieDao();
 	private UzytkownikDao uzytkownikDao = new UzytkownikDao();
 	private ZaproszenieDao zaproszenieDao = new ZaproszenieDao();
 
-	private ChecboxListFragment frag;
+	private ChecboxListFragment checkboxFrag;
+	private ListFragment listFrag;
 	public static final int FLAG_START_TIME = 0;
 	public static final int FLAG_END_TIME = 1;
 	private int flag;
@@ -73,12 +80,15 @@ public class NoweWydarzenie extends FragmentActivity implements
 		zaprosZnajomych = (Button) findViewById(R.id.zaprosZnajomych);
 		zapisz = (Button) findViewById(R.id.zapisz);
 		czyOtwarte = (CheckBox) findViewById(R.id.czyOtwarte);
+		btnKategoria = (Button) findViewById(R.id.kategoria);
+		btnMapa = (Button) findViewById(R.id.mapa);
 
 		initBtnOnClickListeners();
 
 		wszyscyZnajomi = pobierzZnajomych();
 		wybraniZnajomi = new boolean[wszyscyZnajomi.size()];
 		Arrays.fill(wybraniZnajomi, Boolean.FALSE);
+
 	}
 
 	private void zapisz() {
@@ -95,7 +105,7 @@ public class NoweWydarzenie extends FragmentActivity implements
 				w_godzinaRozpoczecia, w_godzinaZakonczenia, null, w_czyOtwarte);
 
 		SharedPreferences pref = context.getSharedPreferences("MyPref", 0);
-		
+
 		String login = pref.getString("loggedIn", "null");
 		Uzytkownik uzytkownik = uzytkownikDao
 				.pobierzZalogowanegoUzytkownika(login);
@@ -190,17 +200,34 @@ public class NoweWydarzenie extends FragmentActivity implements
 			@Override
 			public void onClick(View v) {
 				Toast.makeText(context, "2", Toast.LENGTH_SHORT).show();
-				frag = new ChecboxListFragment("Wybierz znajomych", null, wybraniZnajomi);
-				frag.setItems(wszyscyZnajomi);
-				frag.show(getSupportFragmentManager(), "Checkbox list");
+				checkboxFrag = new ChecboxListFragment("Wybierz znajomych",
+						null, wybraniZnajomi);
+				checkboxFrag.setItems(wszyscyZnajomi);
+				checkboxFrag.show(getSupportFragmentManager(), "Checkbox list");
 			}
 		});
+
+		btnKategoria.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				listFrag = new ListFragment("Wybierz kategoriê",
+						Lokalizacja.kategorie);
+				listFrag.show(getSupportFragmentManager(), "List");
+			}
+		});
+
+		btnMapa.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				Intent intent = new Intent(context, Mapa.class);
+				intent.putExtra("kategoria", wybranaKategoria);
+				startActivity(intent);
+			}
+		});
+
 	}
-	
 
 	@Override
 	public void onDialogPositiveClick(DialogFragment dialog) {
-		this.wybraniZnajomi = frag.getCheckedItems();
+		this.wybraniZnajomi = checkboxFrag.getCheckedItems();
 		Toast.makeText(context, "1", Toast.LENGTH_SHORT).show();
 	}
 
@@ -211,5 +238,11 @@ public class NoweWydarzenie extends FragmentActivity implements
 	public List<Uzytkownik> pobierzZnajomych() {
 		List<Uzytkownik> lista = uzytkownikDao.list();
 		return lista;
+	}
+
+	@Override
+	public void onDialogClick(DialogFragment dialog) {
+		wybranaKategoria = listFrag.getSelectedItem();
+		btnKategoria.setText(wybranaKategoria);
 	}
 }
