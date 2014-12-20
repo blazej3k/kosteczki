@@ -71,11 +71,20 @@ public class GenericDao<E, K> {
 		try {
 			return getDao().queryForId(key);
 		} catch (SQLException e) {
-//			e.printStackTrace();
 			Log.d(DatabaseManager.DEBUG_TAG, e.toString());
 		}
 		return null;
 	}
+	
+		//select po jednej kolumnie
+		public List<E> findByColumnName(String columnName, Object value) {
+			try {
+				return getDao().queryBuilder().where().eq(columnName, value).query();
+			} catch (SQLException e) {
+				Log.d(DatabaseManager.DEBUG_TAG, e.toString());
+			}
+			return null;
+		}
 
 	//select wszystko
 	public List<E> list() {

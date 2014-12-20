@@ -5,7 +5,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="#ABCDEF"
         android:paddingBottom="@dimen/activity_vertical_margin"
         android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -34,35 +34,17 @@
             android:layout_marginTop="18dp"
             android:background="#FFFFFF"
             android:ems="10"
-            android:hint="@string/lokalizacja" />
+            android:hint="@string/adres" />
 
         <Button
-            android:id="@+id/godzinaRozpoczecia"
+            android:id="@+id/zapisz"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/lokalizacja"
-            android:layout_alignRight="@+id/lokalizacja"
-            android:layout_below="@+id/data"
-            android:text="@string/godzinaRozpoczecia" />
-
-        <Button
-            android:id="@+id/godzinaZakonczenia"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/lokalizacja"
-            android:layout_alignRight="@+id/godzinaRozpoczecia"
-            android:layout_below="@+id/godzinaRozpoczecia"
-            android:text="@string/godzinaZakonczenia" />
-
-        <Button
-            android:id="@+id/data"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/godzinaRozpoczecia"
-            android:layout_alignRight="@+id/lokalizacja"
-            android:layout_below="@+id/lokalizacja"
-            android:layout_marginTop="14dp"
-            android:text="@string/data" />
+            android:layout_alignLeft="@+id/zaprosZnajomych"
+            android:layout_alignRight="@+id/godzinaZakonczenia"
+            android:layout_below="@+id/zaprosZnajomych"
+            android:layout_marginTop="15dp"
+            android:text="@string/zapisz" />
 
         <CheckBox
             android:id="@+id/czyOtwarte"
@@ -70,7 +52,7 @@
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/godzinaZakonczenia"
             android:layout_below="@+id/godzinaZakonczenia"
-            android:layout_marginTop="19dp"
+            android:layout_marginTop="16dp"
             android:text="@string/otwarte" />
 
         <Button
@@ -78,19 +60,57 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/czyOtwarte"
-            android:layout_alignRight="@+id/godzinaZakonczenia"
+            android:layout_alignRight="@+id/godzinaRozpoczecia"
             android:layout_below="@+id/czyOtwarte"
             android:text="@string/zaprosZnajomych" />
 
         <Button
-            android:id="@+id/zapisz"
+            android:id="@+id/godzinaRozpoczecia"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/zaprosZnajomych"
-            android:layout_alignRight="@+id/zaprosZnajomych"
-            android:layout_below="@+id/zaprosZnajomych"
-            android:layout_marginTop="28dp"
-            android:text="@string/zapisz" />
+            android:layout_alignLeft="@+id/lokalizacja"
+            android:layout_alignRight="@+id/data"
+            android:layout_below="@+id/data"
+            android:layout_marginTop="19dp"
+            android:text="@string/godzinaRozpoczecia" />
+
+        <Button
+            android:id="@+id/mapa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@+id/lokalizacja"
+            android:layout_below="@+id/lokalizacja"
+            android:layout_marginTop="22dp"
+            android:text="@string/mapa" />
+
+        <Button
+            android:id="@+id/data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/lokalizacja"
+            android:layout_alignRight="@+id/mapa"
+            android:layout_below="@+id/mapa"
+            android:layout_marginTop="26dp"
+            android:text="@string/data" />
+
+        <Button
+            android:id="@+id/godzinaZakonczenia"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/godzinaRozpoczecia"
+            android:layout_alignRight="@+id/godzinaRozpoczecia"
+            android:layout_below="@+id/godzinaRozpoczecia"
+            android:layout_marginTop="22dp"
+            android:text="@string/godzinaZakonczenia" />
+
+        <Button
+            android:id="@+id/kategoria"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/lokalizacja"
+            android:layout_alignTop="@+id/mapa"
+            android:text="@string/kategoria" />
+
     </RelativeLayout>
 
 </ScrollView>
