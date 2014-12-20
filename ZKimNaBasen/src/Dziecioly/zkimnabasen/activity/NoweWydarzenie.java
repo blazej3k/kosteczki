@@ -137,7 +137,6 @@ public class NoweWydarzenie extends FragmentActivity implements
 			Address a = geocoder.getFromLocation(lat, lon, 1).get(0);
 			return a.getAddressLine(0);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
@@ -186,10 +185,36 @@ public class NoweWydarzenie extends FragmentActivity implements
 				.pobierzZalogowanegoUzytkownika(login);
 		w.setUzytkownik(uzytkownik);
 
-		Lokalizacja lokalizacjaBaza = lokalizacjaDao
-				.znajdzLokalizacjeJakNieMaToDodaj(wybranaLokalizacja);
+		String wpisanyAdres = lokalizacja.getText().toString();
+		if (wpisanyAdres != null && !wpisanyAdres.equals("")) {
+			Lokalizacja l = lokalizacjaDao.pobierzLokalizacje(wpisanyAdres,
+					wybranaKategoria);
+			// jeœli lokalizacja jest ju¿ w bazie
+			if (l != null)
+				Log.d(DatabaseManager.DEBUG_TAG, "Lokalizacja jest ju¿ w bazie");
+			else {
+				Log.d(DatabaseManager.DEBUG_TAG, "Lokalizacji nie ma w bazie");
+				if (wpisanyAdres.equalsIgnoreCase(adresZMapy)) {
+					Log.d(DatabaseManager.DEBUG_TAG, "Trzeba pobraæ lokalizacjê z api");
+					// jesli lokalizacja usera
+				} else {
+					// ustal lat lon
+					Log.d(DatabaseManager.DEBUG_TAG, "Lokalizacja u¿ytkownika");
+					double[] latlon = pobierzMarker(wpisanyAdres);
+					if (latlon == null) {
+						Toast.makeText(context, "Nieznana lokalizacja",
+								Toast.LENGTH_LONG).show();
+					} else {
+						Log.d(DatabaseManager.DEBUG_TAG, "Zapisujê now¹ lokalizacjê do bazy");
+						l = new Lokalizacja(latlon[0], latlon[1], wpisanyAdres,
+								null, false, wybranaKategoria, true);
+						lokalizacjaDao.add(l);
+					}
+				}
+			}
+			w.setLokalizacja(l);
 
-		w.setLokalizacja(lokalizacjaBaza);
+		}
 
 		wydarzenieDao.add(w);
 
@@ -206,7 +231,7 @@ public class NoweWydarzenie extends FragmentActivity implements
 		startActivity(intent);
 
 	}
-
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.

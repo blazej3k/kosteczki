@@ -15,9 +15,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import Dziecioly.zkimnabasen.activity.Mapa;
+import Dziecioly.zkimnabasen.baza.DatabaseManager;
 import Dziecioly.zkimnabasen.baza.model.Lokalizacja;
 import android.os.AsyncTask;
 import android.util.Base64;
+import android.util.Log;
 
 public class HttpRequest extends AsyncTask<String, String, List<Lokalizacja>> {
 
@@ -25,41 +27,22 @@ public class HttpRequest extends AsyncTask<String, String, List<Lokalizacja>> {
 	private String password = "NhmQ8cUyZdksr5S";
 	private Mapa mapa;
 	private boolean listIsReady;
+	
+	public HttpRequest() {
+		// TODO Auto-generated constructor stub
+	}
 
 	public HttpRequest(Mapa mapa) {
 		this.mapa = mapa;
 	}
-	
 
 	@Override
 	protected List<Lokalizacja> doInBackground(String... uri) {
 		listIsReady = false;
-		MyHttpClient httpclient = new MyHttpClient();
-		HttpResponse response;
-		String responseString = null;
 		List<Lokalizacja> lokalizacje = new ArrayList<Lokalizacja>();
-		try {
-			HttpGet get = new HttpGet(uri[0]);
-			get.addHeader("Authorization", getB64Auth(username, password));
+		String responseString = getFromUrl(uri[0], true);
+		lokalizacje = parseResponse(responseString);
 
-			response = httpclient.execute(get);
-			StatusLine statusLine = response.getStatusLine();
-			if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
-				ByteArrayOutputStream out = new ByteArrayOutputStream();
-				response.getEntity().writeTo(out);
-				out.close();
-				responseString = out.toString();
-				lokalizacje = parseResponse(responseString);
-			} else {
-				// Closes the connection.
-				response.getEntity().getContent().close();
-				throw new IOException(statusLine.getReasonPhrase());
-			}
-		} catch (ClientProtocolException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 		return lokalizacje;
 	}
 
@@ -84,7 +67,8 @@ public class HttpRequest extends AsyncTask<String, String, List<Lokalizacja>> {
 
 				String adres = ulica + " " + numer;
 
-				Lokalizacja l = new Lokalizacja(lat, lon, adres, opis, false, Lokalizacja.kategorie[7], false);
+				Lokalizacja l = new Lokalizacja(lat, lon, adres, opis, false,
+						Lokalizacja.kategorie[7], false);
 				lokalizacje.add(l);
 
 			}
@@ -110,14 +94,43 @@ public class HttpRequest extends AsyncTask<String, String, List<Lokalizacja>> {
 		mapa.setLokalizacje(result);
 		listIsReady = true;
 	}
-	
+
 	public boolean isListIsReady() {
 		return listIsReady;
 	}
 
-
 	public void setListIsReady(boolean listIsReady) {
 		this.listIsReady = listIsReady;
+	}
+
+	public String getFromUrl(String url, boolean auth) {
+		MyHttpClient httpclient = new MyHttpClient();
+		HttpResponse response;
+		String responseString = null;
+		try {
+			HttpGet get = new HttpGet(url);
+			if (auth)
+				get.addHeader("Authorization", getB64Auth(username, password));
+
+			response = httpclient.execute(get);
+			StatusLine statusLine = response.getStatusLine();
+			if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
+				ByteArrayOutputStream out = new ByteArrayOutputStream();
+				response.getEntity().writeTo(out);
+				out.close();
+				responseString = out.toString();
+				Log.d(DatabaseManager.DEBUG_TAG, responseString);
+			} else {
+				// Closes the connection.
+				response.getEntity().getContent().close();
+				throw new IOException(statusLine.getReasonPhrase());
+			}
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return responseString;
 	}
 
 }

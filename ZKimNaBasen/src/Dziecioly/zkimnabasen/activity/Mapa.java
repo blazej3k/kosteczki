@@ -10,6 +10,7 @@ import Dziecioly.zkimnabasen.baza.model.Lokalizacja;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -28,7 +29,7 @@ public class Mapa extends FragmentActivity implements OnMapClickListener,
 		OnMarkerClickListener, OnMapReadyCallback {
 
 	private String swimmingPoolsUrl = "https://api.bihapi.pl/wfs/warszawa/swimmingPools";
-	private String sportFieldsUrl = "https://api.bihapi.pl/wfs/warszawa/swimmingPools";
+	private String sportFieldsUrl = "https://api.bihapi.pl/wfs/warszawa/sportFields?maxFeatures";
 	private HttpRequest request = new HttpRequest(this);
 
 	private GoogleMap map;
@@ -72,8 +73,9 @@ public class Mapa extends FragmentActivity implements OnMapClickListener,
 				userLatLon = new LatLng(userLat, userLon);
 				zMapy = (Boolean) getIntent().getExtras().get("zMapy");
 				if (zMapy)
-					adresZMapyText = (String) getIntent().getExtras().get("adresZMapyText");
-					
+					adresZMapyText = (String) getIntent().getExtras().get(
+							"adresZMapyText");
+
 			} else {
 				Log.d(DatabaseManager.DEBUG_TAG, "Nieznana lokalizacja");
 				Toast.makeText(getApplicationContext(), "Nieznana lokalizacja",
@@ -98,6 +100,20 @@ public class Mapa extends FragmentActivity implements OnMapClickListener,
 				.defaultMarker(BitmapDescriptorFactory.HUE_BLUE);
 		colorSelectedMarker = BitmapDescriptorFactory
 				.defaultMarker(BitmapDescriptorFactory.HUE_GREEN);
+		
+		
+	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+	    if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+	        Log.d(DatabaseManager.DEBUG_TAG, "back button pressed");
+	        
+	        NoweWydarzenie.wybranaLokalizacja = getSelectedMarker();
+	        
+	       
+	    }
+	    return super.onKeyDown(keyCode, event);
 	}
 
 	@Override
@@ -110,14 +126,6 @@ public class Mapa extends FragmentActivity implements OnMapClickListener,
 		mapIsReady = true;
 		if (request.isListIsReady())
 			addMarkers(lokalizacje);
-
-	}
-
-	@Override
-	protected void onPause() {
-		super.onPause();
-		Log.d(DatabaseManager.DEBUG_TAG, "mapa onPause");
-		NoweWydarzenie.wybranaLokalizacja = getSelectedMarker();
 
 	}
 
@@ -185,8 +193,9 @@ public class Mapa extends FragmentActivity implements OnMapClickListener,
 					.equals(selectedMarker.getPosition())) {
 				// jeœli klikniêty marker jest markerem u¿ytkownika -> pokoloruj
 				// na niebiesko
-				if (userMarker!=null && clickedMarker.getPosition()
-						.equals(userMarker.getPosition()))
+				if (userMarker != null
+						&& clickedMarker.getPosition().equals(
+								userMarker.getPosition()))
 					clickedMarker.setIcon(colorUserMarker);
 				// jeœli klikniêty marker jest markerem z api -> pokoloruj na
 				// czerwono
