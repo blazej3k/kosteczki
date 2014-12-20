@@ -46,7 +46,7 @@ public class MojKalendarz extends ActionBarActivity {
 			btnNoweWydarzenie = (Button) findViewById(R.id.btnNoweWydarzenie);
 			btnListaWydarzen = (Button) findViewById(R.id.btnListaWydarzen);
 			btnLogowanie = (Button) findViewById(R.id.btnLogowanie);
-			btnVeturillo= (Button) findViewById(R.id.btnVeturillo);
+//			btnVeturillo= (Button) findViewById(R.id.btnVeturillo);
 
 			initBtnOnClickListeners();
 		}
