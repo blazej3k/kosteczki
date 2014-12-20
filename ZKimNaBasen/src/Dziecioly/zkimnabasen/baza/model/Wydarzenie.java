@@ -35,7 +35,7 @@ public class Wydarzenie {
 	@DatabaseField
 	private boolean otwarte;
 
-	@DatabaseField(foreign = true, foreignAutoRefresh = true)
+	@DatabaseField(canBeNull = false, foreign = true, foreignAutoRefresh = true)
 	private Uzytkownik uzytkownik;
 
 	@ForeignCollectionField
@@ -45,10 +45,11 @@ public class Wydarzenie {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Wydarzenie(String nazwa, String lokalizacja, String data,
+	public Wydarzenie(String nazwa, Uzytkownik uzytkownik, String lokalizacja, String data,
 			String godz_od, String godz_do, String opis, boolean otwarte) {
 		super();
 		this.nazwa = nazwa;
+		this.uzytkownik = uzytkownik;
 		this.lokalizacja = lokalizacja;
 		this.data = data;
 		this.godz_od = godz_od;
@@ -129,7 +130,7 @@ public class Wydarzenie {
 		this.uzytkownik = uzytkownik;
 	}
 
-	public List<Zaproszenie> getZaprozenia() {
+	public List<Zaproszenie> getZaproszenia() {
 		ArrayList<Zaproszenie> zaproszenieList = new ArrayList<Zaproszenie>();
 		for (Zaproszenie z : zaproszenia) {
 			zaproszenieList.add(z);

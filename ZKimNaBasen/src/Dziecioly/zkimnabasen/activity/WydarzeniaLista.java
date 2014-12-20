@@ -19,6 +19,8 @@ import android.widget.ListView;
 
 public class WydarzeniaLista extends Activity {
 
+	static final String DEBUG_TAG = "LOG";
+
 	private ListView rozbudowana_lista;
 	
 	@Override
@@ -57,7 +59,11 @@ public class WydarzeniaLista extends Activity {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				Log.d(DEBUG_TAG, "Listener");
+				
 				Intent startSzczegolowyWidok = new Intent(WydarzeniaLista.this, SzczegolyWydarzenia.class);
+				startSzczegolowyWidok.putExtra("id_wydarzenia", position);
+				Log.d(DEBUG_TAG, "PutExtra");
 				startActivity(startSzczegolowyWidok);
 			}
 			

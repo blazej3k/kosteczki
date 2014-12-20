@@ -40,5 +40,7 @@
     <string name="label_od">Od:</string>
     <string name="label_do">Do:</string>
     <string name="label_zaproszeni">Zaproszeni:</string>
+    <string name="label_data">Data</string>
+    <string name="label_opis">Opis:</string>
 
 </resources>
