@@ -42,5 +42,7 @@
     <string name="label_zaproszeni">Zaproszeni:</string>
     <string name="label_data">Data</string>
     <string name="label_opis">Opis:</string>
+    <string name="kategoria">Kategoria</string>
+    
 
 </resources>

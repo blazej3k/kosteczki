@@ -1,5 +1,5 @@
-/gen
-*gen
+/project.properties
 /bin
 *bin
-/project.properties
+/gen
+*gen

@@ -8,7 +8,6 @@ import Dziecioly.zkimnabasen.baza.dao.ZaproszenieDao;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -23,8 +22,8 @@ public class MojKalendarz extends ActionBarActivity {
 	private Button btnNoweWydarzenie;
 	private Button btnListaWydarzen;
 	private Button btnLogowanie;
-	private Button btnMapa;
-
+	private Button btnVeturillo;
+	
 	UzytkownikDao uzytkownikDao = new UzytkownikDao();
 	ZaproszenieDao zaproszenieDao = new ZaproszenieDao();
 	WydarzenieDao wydarzenieDao = new WydarzenieDao();
@@ -47,7 +46,7 @@ public class MojKalendarz extends ActionBarActivity {
 			btnNoweWydarzenie = (Button) findViewById(R.id.btnNoweWydarzenie);
 			btnListaWydarzen = (Button) findViewById(R.id.btnListaWydarzen);
 			btnLogowanie = (Button) findViewById(R.id.btnLogowanie);
-			btnMapa = (Button) findViewById(R.id.mapa);
+//			btnVeturillo= (Button) findViewById(R.id.btnVeturillo);
 
 			initBtnOnClickListeners();
 		}
@@ -95,12 +94,15 @@ public class MojKalendarz extends ActionBarActivity {
 			}
 		});
 		
-		btnMapa.setOnClickListener(new OnClickListener() {
+		btnVeturillo.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				Intent intent = new Intent(context, Mapa.class);
+				Intent intent = new Intent(context, Veturillo.class);
 				startActivity(intent);
 			}
 		});
+		
+		
+		
 		
 		
 

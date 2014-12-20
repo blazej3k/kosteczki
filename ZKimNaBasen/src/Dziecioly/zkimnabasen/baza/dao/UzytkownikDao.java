@@ -1,13 +1,10 @@
 package Dziecioly.zkimnabasen.baza.dao;
 
 import java.sql.SQLException;
-import java.util.List;
 
 import Dziecioly.zkimnabasen.baza.DatabaseManager;
 import Dziecioly.zkimnabasen.baza.model.Uzytkownik;
-import android.R.integer;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.j256.ormlite.stmt.Where;
 
