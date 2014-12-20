@@ -36,5 +36,9 @@
     <string name="title_activity_mapa">Mapa</string>
     <string name="mapa">Mapa</string>
     <string name="kategoria">Kategoria</string>
+    <string name="veturillo">Veturillo</string>
+    <string name="szukaj">Szukaj</string>
+    <string name="ok">OK</string>
+    <string name="znajdz">Znajdź</string>
 
 </resources>
