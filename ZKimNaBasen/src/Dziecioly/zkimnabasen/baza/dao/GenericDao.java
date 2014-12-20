@@ -56,7 +56,7 @@ public class GenericDao<E, K> {
 		}
 	}
 
-	//delate
+	//delete
 	public void remove(E entity) {
 		try {
 			getDao().delete(entity);

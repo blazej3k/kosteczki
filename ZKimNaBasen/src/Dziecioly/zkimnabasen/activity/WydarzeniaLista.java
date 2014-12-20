@@ -58,8 +58,7 @@ public class WydarzeniaLista extends Activity {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				Intent startSzczegolowyWidok = new Intent(WydarzeniaLista.this, SzczegolyWydarzenia.class);
-//				startSzczegolowyWidok = new Intent
-//				startActivity(startSzczegolowyWidok);
+				startActivity(startSzczegolowyWidok);
 			}
 			
 		});

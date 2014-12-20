@@ -35,5 +35,10 @@
     <string name="logowanie">Logowanie</string>
     <string name="title_activity_mapa">Mapa</string>
     <string name="mapa">Mapa</string>
+    <string name="label_nazwa_wydarzenia">Nazwa wydarzenia:</string>
+    <string name="label_tworca_wydarzenia">Twórca wydarzenia:</string>
+    <string name="label_od">Od:</string>
+    <string name="label_do">Do:</string>
+    <string name="label_zaproszeni">Zaproszeni:</string>
 
 </resources>
