@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class WydarzeniaLista extends Activity {
 
@@ -28,14 +29,18 @@ public class WydarzeniaLista extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_wydarzenia_lista);
 
-		//new PompeczkaWydarzenia(0);
+		new PompeczkaWydarzenia();
 
 		WydarzenieDao wydDao = new WydarzenieDao();
 		List<Wydarzenie> wydarzenia = wydDao.list();
 		String [] sWydarzenia = null;
 
-		if (wydarzenia.size() == 0)
+		if (wydarzenia.size() == 0) {
 			Log.d(DatabaseManager.DEBUG_TAG, "PUSTA LISTA");
+			
+			Toast.makeText(this, "Lista wydarzeñ jest pusta w ciul!", Toast.LENGTH_LONG).show();
+		}
+		
 		else {
 			sWydarzenia = new String[wydarzenia.size()];
 
@@ -44,12 +49,13 @@ public class WydarzeniaLista extends Activity {
 
 			for (Wydarzenie x: wydarzenia)
 				Log.d(DatabaseManager.DEBUG_TAG, "ID: "+ x.getId());
+			
+			//String[] przykladowe_dane = {"Wlaz³ kotek", "na p³otek", "i mruga.", "piêkna to", "piosneczka nied³uga.", "Wlaz³ kurek", "na murek", "i pieje", "niech siê nikt", "z tych piosnek", "nie œmieje."};
+			rozbudowana_lista = (ListView) findViewById(R.id.lv_prostalista);
+			List_Custom_ListaWydarzen adapter_listy = new List_Custom_ListaWydarzen(sWydarzenia, this);
+			rozbudowana_lista.setAdapter(adapter_listy);
 		}
 
-		//String[] przykladowe_dane = {"Wlaz³ kotek", "na p³otek", "i mruga.", "piêkna to", "piosneczka nied³uga.", "Wlaz³ kurek", "na murek", "i pieje", "niech siê nikt", "z tych piosnek", "nie œmieje."};
-		rozbudowana_lista = (ListView) findViewById(R.id.lv_prostalista);
-		List_Custom_ListaWydarzen adapter_listy = new List_Custom_ListaWydarzen(sWydarzenia, this);
-		rozbudowana_lista.setAdapter(adapter_listy);
 		
 		initOnItemClickListener();
 	}

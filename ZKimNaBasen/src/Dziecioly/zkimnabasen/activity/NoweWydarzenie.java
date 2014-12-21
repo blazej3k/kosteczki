@@ -175,7 +175,7 @@ public class NoweWydarzenie extends FragmentActivity implements
 		String w_godzinaZakonczenia = godzinaZakonczenia.getText().toString();
 		boolean w_czyOtwarte = czyOtwarte.isChecked();
 
-		Wydarzenie w = new Wydarzenie(w_nazwa, w_lokalizacja, w_data,
+		Wydarzenie w = new Wydarzenie(w_nazwa, w_data,
 				w_godzinaRozpoczecia, w_godzinaZakonczenia, null, w_czyOtwarte);
 
 		SharedPreferences pref = context.getSharedPreferences("MyPref", 0);

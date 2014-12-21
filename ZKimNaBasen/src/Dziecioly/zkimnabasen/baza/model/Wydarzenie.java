@@ -1,6 +1,8 @@
 package Dziecioly.zkimnabasen.baza.model;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import com.j256.ormlite.dao.ForeignCollection;
@@ -32,28 +34,28 @@ public class Wydarzenie {
 	@DatabaseField
 	private boolean otwarte;
 
-	@DatabaseField(canBeNull = false, foreign = true, foreignAutoRefresh = true)
+	//TODO wylaczyc docelowo foreignAutoCreate
+	@DatabaseField(canBeNull = false, foreign = true, foreignAutoRefresh = true, foreignAutoCreate = true)
 	private Uzytkownik uzytkownik;
 	
-	@DatabaseField(foreign = true, foreignAutoRefresh = true)
+	//TODO wylaczyc docelowo foreignAutoCreate
+	@DatabaseField(foreign = true, foreignAutoRefresh = true, foreignAutoCreate = true)
 	private Lokalizacja lokalizacja;
 
-	@ForeignCollectionField
+	@ForeignCollectionField (eager = true, maxEagerLevel = 99)
 	private ForeignCollection<Zaproszenie> zaproszenia;
+	
+//	@ForeignCollectionField(eager = true, maxEagerLevel = 99)
+//	private Collection <Zaproszenie> zaproszenia = new ArrayList<Zaproszenie>();
 
 	public Wydarzenie() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Wydarzenie(String nazwa, Uzytkownik uzytkownik, String lokalizacja, String data,
+	public Wydarzenie(String nazwa, String data,
 			String godz_od, String godz_do, String opis, boolean otwarte) {
 		super();
 		this.nazwa = nazwa;
-<<<<<<< HEAD
-		this.uzytkownik = uzytkownik;
-		this.lokalizacja = lokalizacja;
-=======
->>>>>>> refs/remotes/origin/master
 		this.data = data;
 		this.godz_od = godz_od;
 		this.godz_do = godz_do;
@@ -131,12 +133,13 @@ public class Wydarzenie {
 			zaproszenieList.add(z);
 		}
 		return zaproszenieList;
+//		return new ArrayList<Zaproszenie>(zaproszenia) ;
 	}
 
-	public void setZaproszenia(ForeignCollection<Zaproszenie> zaproszenia) {
-		this.zaproszenia = zaproszenia;
+	public void setZaproszenia(List<Zaproszenie> zaproszeniaL) {
+		this.zaproszenia.addAll(zaproszeniaL);	
 	}
-
+		
 	public Lokalizacja getLokalizacja() {
 		return lokalizacja;
 	}

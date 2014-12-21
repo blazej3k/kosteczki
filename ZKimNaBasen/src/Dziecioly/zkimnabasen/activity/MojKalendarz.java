@@ -46,7 +46,7 @@ public class MojKalendarz extends ActionBarActivity {
 			btnNoweWydarzenie = (Button) findViewById(R.id.btnNoweWydarzenie);
 			btnListaWydarzen = (Button) findViewById(R.id.btnListaWydarzen);
 			btnLogowanie = (Button) findViewById(R.id.btnLogowanie);
-//			btnVeturillo= (Button) findViewById(R.id.btnVeturillo);
+//			btnVeturillo = (Button) findViewById(R.id.btnVeturillo);
 
 			initBtnOnClickListeners();
 		}
@@ -94,12 +94,12 @@ public class MojKalendarz extends ActionBarActivity {
 			}
 		});
 		
-		btnVeturillo.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				Intent intent = new Intent(context, Veturillo.class);
-				startActivity(intent);
-			}
-		});
+//		btnVeturillo.setOnClickListener(new OnClickListener() {
+//			public void onClick(View v) {
+//				Intent intent = new Intent(context, Veturillo.class);
+//				startActivity(intent);
+//			}
+//		});
 		
 		
 		

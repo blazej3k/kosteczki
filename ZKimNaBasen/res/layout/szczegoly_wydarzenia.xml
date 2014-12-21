@@ -1,6 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_centerHorizontal="true"
     android:layout_centerVertical="true"
@@ -8,7 +8,7 @@
 
     <TextView
         android:id="@+id/textView1"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/label_tworca_wydarzenia"
         android:textAppearance="?android:attr/textAppearanceSmall"
@@ -18,8 +18,8 @@
         android:id="@+id/tv_tworca"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-		android:textAppearance="?android:attr/textAppearanceSmall"
-		android:singleLine="true" />
+        android:singleLine="true"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 		
     <TextView
         android:id="@+id/textView2"
@@ -42,10 +42,9 @@
         android:text="@string/label_data" />
 
     <TextView
-        android:id="@+id/textView7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:id="@+id/tv_data"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <LinearLayout
         android:id="@+id/LinearLay1"
@@ -91,13 +90,13 @@
 
     <TextView
         android:id="@+id/textView8"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/label_opis" />
 
     <TextView
         android:id="@+id/tv_opis"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <TextView
@@ -110,7 +109,7 @@
     <ListView
         android:id="@+id/lv_prostalista"
         android:layout_width="match_parent"
-        android:layout_height="301dp" >
+        android:layout_height="wrap_content" >
     </ListView>
 
 </LinearLayout>

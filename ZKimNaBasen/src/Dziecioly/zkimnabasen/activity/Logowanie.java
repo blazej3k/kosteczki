@@ -1,7 +1,5 @@
 package Dziecioly.zkimnabasen.activity;
 
-import java.io.ObjectOutputStream.PutField;
-
 import Dziecioly.zkimnabasen.R;
 import Dziecioly.zkimnabasen.baza.dao.UzytkownikDao;
 import android.content.Context;

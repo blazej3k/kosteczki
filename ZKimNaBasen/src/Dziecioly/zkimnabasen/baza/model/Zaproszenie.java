@@ -12,15 +12,17 @@ public class Zaproszenie {
 	@DatabaseField(canBeNull = false)
 	boolean wezmie_udzial;
 	
+	//TODO docelowo AutoCreate = false
 	@DatabaseField(foreign = true, foreignAutoRefresh = true, foreignAutoCreate=true)
 	private Uzytkownik uzytkownik;
-	
+
+	//TODO docelowo AutoCreate = false
 	@DatabaseField(foreign = true, foreignAutoRefresh = true, foreignAutoCreate=true)
 	private Wydarzenie wydarzenie;
 	
 	
 	public Zaproszenie() {
-		// TODO Auto-generated constructor stub
+		// nie uzywac :)
 	}
 	
 

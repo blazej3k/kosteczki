@@ -7,14 +7,14 @@ import Dziecioly.zkimnabasen.baza.DatabaseManager;
 import Dziecioly.zkimnabasen.baza.dao.WydarzenieDao;
 import Dziecioly.zkimnabasen.baza.model.List_Custom_ListaWydarzen;
 import Dziecioly.zkimnabasen.baza.model.Wydarzenie;
+import Dziecioly.zkimnabasen.baza.model.Zaproszenie;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class SzczegolyWydarzenia extends Activity {
 
@@ -22,8 +22,10 @@ public class SzczegolyWydarzenia extends Activity {
 	
 	private TextView tv_tworca;
 	private TextView tv_nazwa;
+	private TextView tv_data;
 	private TextView tv_od;
 	private TextView tv_do;
+	private TextView tv_opis; 
 	private ListView rozbudowana_lista;
 	
 	@Override
@@ -36,37 +38,58 @@ public class SzczegolyWydarzenia extends Activity {
 		
 		tv_tworca = (TextView) findViewById(R.id.tv_tworca);
 		tv_nazwa = (TextView) findViewById(R.id.tv_nazwa_wydarzenia);
+		tv_data = (TextView) findViewById(R.id.tv_data);
 		tv_od = (TextView) findViewById(R.id.tv_od);
 		tv_do = (TextView) findViewById(R.id.tv_do);
+		tv_opis = (TextView) findViewById(R.id.tv_opis);
 		rozbudowana_lista = (ListView) findViewById(R.id.lv_prostalista);
 		
 		czytajWydarzenie(id);
 	}
 	
 	private void czytajWydarzenie(int id) {
-		id++;
+		id++; // bo id z listy jest o 1 mniejsze niz bazy
 		
 		WydarzenieDao wydDao = new WydarzenieDao();
-		Wydarzenie wydarzenie = wydDao.find(id);
+		Wydarzenie wydarzenie = wydDao.find(id); // pobierz wydarzenie, select do bazy
 		
 		Log.d(DEBUG_TAG, "czytajWydarzenie2 id="+id);
 		
-		String [] sWydarzenie = null;
-
-		if (wydarzenie.equals(null))
+		if (wydarzenie.equals(null))	// czy wydarzenie sie pobralo
 			Log.d(DatabaseManager.DEBUG_TAG, "Brak wydarzenia");
-		else {
-//			tv_tworca.setText(wydarzenie.getUzytkownik().getNazwa());
+		else { // jesli tak to dzialaj
+			tv_tworca.setText(wydarzenie.getUzytkownik().getNazwa());	// wprowadzenie do wszystkich TextView info o wydarzeniu
 			tv_nazwa.setText(wydarzenie.getNazwa());
+			tv_data.setText(wydarzenie.getData());
 			tv_od.setText(wydarzenie.getGodz_od());
 			tv_do.setText(wydarzenie.getGodz_do());
+			tv_opis.setText(wydarzenie.getOpis());
 			
-		}
+			List<Zaproszenie> zaproszeniaL = wydarzenie.getZaproszenia();
+			Log.d(DEBUG_TAG, "Iloœc zaproszeñ: "+ zaproszeniaL.size());
+			
+			
+			if(zaproszeniaL.isEmpty())
+				Toast.makeText(this, "Lista zaproszeñ jest pusta w ciul!", Toast.LENGTH_LONG).show();
 
-		//String[] przykladowe_dane = {"Wlaz³ kotek", "na p³otek", "i mruga.", "piêkna to", "piosneczka nied³uga.", "Wlaz³ kurek", "na murek", "i pieje", "niech siê nikt", "z tych piosnek", "nie œmieje."};
-//		rozbudowana_lista = (ListView) findViewById(R.id.lv_prostalista);
-//		List_Custom_ListaWydarzen adapter_listy = new List_Custom_ListaWydarzen(sWydarzenie, this);
-//		rozbudowana_lista.setAdapter(adapter_listy);
+			else {
+				String[] sZaproszenia = new String[zaproszeniaL.size()];
+
+				for (int i=0; i < sZaproszenia.length; i++)
+					sZaproszenia[i] = zaproszeniaL.get(i).getUzytkownik().getNazwa();
+
+				rozbudowana_lista = (ListView) findViewById(R.id.lv_prostalista);
+				List_Custom_ListaWydarzen adapter_listy = new List_Custom_ListaWydarzen(sZaproszenia, this);
+				rozbudowana_lista.setAdapter(adapter_listy);
+			}
+		}
 	}
 
+
+	//String[] przykladowe_dane = {"Wlaz³ kotek", "na p³otek", "i mruga.", "piêkna to", "piosneczka nied³uga.", "Wlaz³ kurek", "na murek", "i pieje", "niech siê nikt", "z tych piosnek", "nie œmieje."};
+	//		rozbudowana_lista = (ListView) findViewById(R.id.lv_prostalista);
+	//		List_Custom_ListaWydarzen adapter_listy = new List_Custom_ListaWydarzen(sWydarzenie, this);
+	//		rozbudowana_lista.setAdapter(adapter_listy);
 }
+
+
