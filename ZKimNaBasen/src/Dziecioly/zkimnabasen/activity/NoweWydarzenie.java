@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.google.android.gms.drive.internal.w;
+
 import Dziecioly.zkimnabasen.R;
 import Dziecioly.zkimnabasen.baza.DatabaseManager;
 import Dziecioly.zkimnabasen.baza.dao.LokalizacjaDao;
@@ -125,10 +127,17 @@ public class NoweWydarzenie extends FragmentActivity implements
 		String w_godzinaRozpoczecia = godzinaRozpoczecia.getText().toString();
 		String w_godzinaZakonczenia = godzinaZakonczenia.getText().toString();
 		String w_opis = opis.getText().toString();
+
+		if (w_godzinaRozpoczecia.equals("Godzina rozpoczêcia"))
+			w_godzinaRozpoczecia = null;
+		if (w_godzinaZakonczenia.equals("Godzina zakoñczenia"))
+			w_godzinaZakonczenia = null;
+		
 		boolean w_czyOtwarte = czyOtwarte.isChecked();
 
 		Wydarzenie wydarzenie = new Wydarzenie(w_nazwa, w_data,
-				w_godzinaRozpoczecia, w_godzinaZakonczenia, w_opis, w_czyOtwarte);
+				w_godzinaRozpoczecia, w_godzinaZakonczenia, w_opis,
+				w_czyOtwarte);
 
 		SharedPreferences pref = context.getSharedPreferences("MyPref", 0);
 		String login = pref.getString("loggedIn", "null");
@@ -155,7 +164,6 @@ public class NoweWydarzenie extends FragmentActivity implements
 		}
 		Intent intent = new Intent(context, SzczegolyWydarzenia.class);
 		intent.putExtra("id_wydarzenia", id_wydarzenia);
-		Log.d(DatabaseManager.DEBUG_TAG, "!!!!! " + Integer.toString(id_wydarzenia));
 		startActivity(intent);
 	}
 
@@ -180,10 +188,14 @@ public class NoweWydarzenie extends FragmentActivity implements
 		zapisz.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				String nazwa_w = nazwa.getText().toString();
+				String data_w = data.getText().toString();
 				if (nazwa_w == null || nazwa_w.equals(""))
 					Toast.makeText(context, "Podaj nazwê wydarzenia",
 							Toast.LENGTH_SHORT).show();
-				else {
+				else if (data_w.equals("Data")) {
+					Toast.makeText(context, "Podaj datê wydarzenia",
+							Toast.LENGTH_SHORT).show();
+				} else {
 					if (lokalizacja != null
 							&& lokalizacja.isLokalizacjaUzytkownika()) {
 						textFrag = new TextFragment(btnMapa.getText()
@@ -328,7 +340,7 @@ public class NoweWydarzenie extends FragmentActivity implements
 		lokalizacja = null;
 		btnMapa.setText("Lokalizacja");
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -343,10 +355,8 @@ public class NoweWydarzenie extends FragmentActivity implements
 		if (id == R.id.action_logout) {
 			General.clearSharedPrefs(context);
 			return true;
-		}
-		else if(id == R.id.action_clear)
-		{
-			General.clearData(context);	
+		} else if (id == R.id.action_clear) {
+			General.clearData(context);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
