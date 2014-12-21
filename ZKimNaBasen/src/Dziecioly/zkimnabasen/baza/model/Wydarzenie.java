@@ -19,7 +19,7 @@ public class Wydarzenie {
 	@DatabaseField(canBeNull = false)
 	private String nazwa;
 
-	@DatabaseField(dataType = DataType.DATE_STRING)
+	@DatabaseField(dataType = DataType.DATE_STRING, canBeNull = false)
 	private Date data;
 
 	@DatabaseField

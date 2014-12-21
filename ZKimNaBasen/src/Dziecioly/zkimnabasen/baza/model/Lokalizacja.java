@@ -14,10 +14,10 @@ public class Lokalizacja {
 	@DatabaseField(generatedId = true)
 	private int id;
 
-	@DatabaseField
+	@DatabaseField(canBeNull = false)
 	private double lat;
 
-	@DatabaseField
+	@DatabaseField(canBeNull = false)
 	private double lon;
 
 	@DatabaseField
@@ -26,10 +26,10 @@ public class Lokalizacja {
 	@DatabaseField
 	private String opis;
 
-	@DatabaseField
+	@DatabaseField(canBeNull = false)
 	private boolean publiczna;
 
-	@DatabaseField
+	@DatabaseField(canBeNull = false)
 	private String kategoria;
 
 	@ForeignCollectionField

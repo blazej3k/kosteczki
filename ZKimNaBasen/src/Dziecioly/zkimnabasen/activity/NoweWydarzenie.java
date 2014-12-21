@@ -19,6 +19,7 @@ import Dziecioly.zkimnabasen.fragment.DatePickerFragment;
 import Dziecioly.zkimnabasen.fragment.ListFragment;
 import Dziecioly.zkimnabasen.fragment.TextFragment;
 import Dziecioly.zkimnabasen.fragment.TimePickerFragment;
+import android.R.integer;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.Context;
@@ -74,13 +75,15 @@ public class NoweWydarzenie extends FragmentActivity implements
 	public static final int FLAG_START_TIME = 0;
 	public static final int FLAG_END_TIME = 1;
 	private int flag;
+	
+	private int id_wydarzenia = 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		context = getApplicationContext();
 		setContentView(R.layout.nowe_wydarzenie);
-
+		
 		nazwa = (EditText) findViewById(R.id.nazwa);
 		data = (Button) findViewById(R.id.data);
 		godzinaRozpoczecia = (Button) findViewById(R.id.godzinaRozpoczecia);
@@ -94,6 +97,10 @@ public class NoweWydarzenie extends FragmentActivity implements
 		btnVeturillo = (Button) findViewById(R.id.btnVeturillo);
 
 		initBtnOnClickListeners();
+		
+		id_wydarzenia = getIntent().getIntExtra("id", 0);
+		if (id_wydarzenia != 0)
+			wpiszDane();
 
 		wszyscyZnajomi = pobierzZnajomych();
 		wybraniZnajomi = new boolean[wszyscyZnajomi.size()];
@@ -371,6 +378,37 @@ public class NoweWydarzenie extends FragmentActivity implements
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	
+	
+	private void wpiszDane()
+	{
+		Wydarzenie w = wydarzenieDao.find(id_wydarzenia);
+		String w_nazwa = w.getNazwa();
+		String w_data = General.stringFromDate(w.getData());
+		String w_godzOd = w.getGodz_od();
+				String w_godzDo = w.getGodz_do();
+		String w_opis = w.getOpis();
+		boolean w_otwarte = w.isOtwarte();
+				
+				nazwa.setText(w_nazwa);
+		data.setText(w_data);
+		
+		if(!w_godzOd.equals(null))
+		godzinaRozpoczecia.setText(w_godzOd);
+		
+		if(!w_godzDo.equals(null))
+			godzinaRozpoczecia.setText(w_godzDo);
+		
+		if(!w_opis.equals(null))
+			opis.setText(w_opis);
+			
+		czyOtwarte.setChecked(w_otwarte);
+		
+	/*	zaprosZnajomych = (Button) findViewById(R.id.zaprosZnajomych);
+		btnKategoria */
+		
+		
 	}
 
 }
