@@ -2072,7 +2072,8 @@ containing a value of this type.
         public static final int powered_by_google_light=0x7f020053;
     }
     public static final class id {
-        public static final int FrameLayout1=0x7f0c005b;
+        public static final int FrameLayout1=0x7f0c005d;
+        public static final int RelativeLayout1=0x7f0c0073;
         public static final int action_bar=0x7f0c0045;
         public static final int action_bar_activity_content=0x7f0c0003;
         public static final int action_bar_container=0x7f0c0044;
@@ -2086,21 +2087,25 @@ containing a value of this type.
         public static final int action_mode_bar=0x7f0c0042;
         public static final int action_mode_bar_stub=0x7f0c0041;
         public static final int action_mode_close_button=0x7f0c0034;
-        public static final int action_settings=0x7f0c0072;
+        public static final int action_settings=0x7f0c0079;
         public static final int activity_chooser_view_content=0x7f0c0035;
         public static final int adjust_height=0x7f0c0009;
         public static final int adjust_width=0x7f0c000a;
         public static final int always=0x7f0c0028;
         public static final int beginning=0x7f0c002f;
         public static final int book_now=0x7f0c0019;
-        public static final int btnListaWydarzen=0x7f0c0060;
-        public static final int btnLogowanie=0x7f0c0061;
-        public static final int btnNoweWydarzenie=0x7f0c005f;
-        public static final int btnVeturillo=0x7f0c0062;
-        public static final int btnZnajdz=0x7f0c005e;
+        public static final int btnListaWydarzen=0x7f0c0062;
+        public static final int btnLogowanie=0x7f0c0063;
+        public static final int btnNoweWydarzenie=0x7f0c0061;
+        public static final int btnOrigin=0x7f0c0075;
+        public static final int btnVeturillo=0x7f0c006c;
+        public static final int btnWyznacz=0x7f0c0077;
+        public static final int btnZnajdz=0x7f0c0060;
         public static final int buyButton=0x7f0c0015;
         public static final int buy_now=0x7f0c001a;
         public static final int buy_with_google=0x7f0c001b;
+        public static final int checkBoxMojaLokalizacja=0x7f0c0078;
+        public static final int checkBoxRowery=0x7f0c0076;
         public static final int checkbox=0x7f0c003d;
         public static final int classic=0x7f0c001d;
         public static final int collapseActionView=0x7f0c0029;
@@ -2112,7 +2117,8 @@ containing a value of this type.
         public static final int disableHome=0x7f0c0022;
         public static final int donate_with_google=0x7f0c001c;
         public static final int dropdown=0x7f0c002e;
-        public static final int editText=0x7f0c005d;
+        public static final int editText=0x7f0c005f;
+        public static final int editTextDialog=0x7f0c0054;
         public static final int edit_query=0x7f0c0047;
         public static final int end=0x7f0c0030;
         public static final int expand_activities_button=0x7f0c0036;
@@ -2120,7 +2126,7 @@ containing a value of this type.
         public static final int godzinaRozpoczecia=0x7f0c0069;
         public static final int godzinaZakonczenia=0x7f0c0067;
         public static final int grayscale=0x7f0c001e;
-        public static final int haslo=0x7f0c0059;
+        public static final int haslo=0x7f0c005b;
         public static final int holo_dark=0x7f0c0010;
         public static final int holo_light=0x7f0c0011;
         public static final int home=0x7f0c0000;
@@ -2129,27 +2135,26 @@ containing a value of this type.
         public static final int icon=0x7f0c003a;
         public static final int ifRoom=0x7f0c002a;
         public static final int image=0x7f0c0037;
-        public static final int imageView1=0x7f0c0054;
-        public static final int kategoria=0x7f0c006c;
+        public static final int imageView1=0x7f0c0056;
+        public static final int kategoria=0x7f0c006b;
         public static final int listMode=0x7f0c0020;
         public static final int list_item=0x7f0c0039;
-        public static final int login=0x7f0c0058;
-        public static final int lokalizacja=0x7f0c0064;
+        public static final int login=0x7f0c005a;
         public static final int lv_prostalista=0x7f0c0053;
-        public static final int map=0x7f0c005a;
-        public static final int map2=0x7f0c005c;
-        public static final int mapa=0x7f0c006b;
+        public static final int map=0x7f0c005c;
+        public static final int map2=0x7f0c005e;
+        public static final int mapa=0x7f0c006d;
         public static final int match_parent=0x7f0c0017;
         public static final int middle=0x7f0c0031;
         public static final int monochrome=0x7f0c001f;
-        public static final int nazwa=0x7f0c0063;
+        public static final int nazwa=0x7f0c0064;
         public static final int never=0x7f0c002b;
-        public static final int nick=0x7f0c006f;
+        public static final int nick=0x7f0c0070;
         public static final int none=0x7f0c000b;
         public static final int normal=0x7f0c000d;
-        public static final int numerTel=0x7f0c0070;
-        public static final int podajHaslo=0x7f0c006d;
-        public static final int powtorzHaslo=0x7f0c006e;
+        public static final int numerTel=0x7f0c0071;
+        public static final int podajHaslo=0x7f0c006e;
+        public static final int powtorzHaslo=0x7f0c006f;
         public static final int production=0x7f0c0012;
         public static final int progress_circular=0x7f0c0007;
         public static final int progress_horizontal=0x7f0c0008;
@@ -2176,17 +2181,19 @@ containing a value of this type.
         public static final int submit_area=0x7f0c0050;
         public static final int tabMode=0x7f0c0021;
         public static final int terrain=0x7f0c000f;
-        public static final int textView_item_custom=0x7f0c0055;
+        public static final int textDestination=0x7f0c0074;
+        public static final int textViewDIalog=0x7f0c0055;
+        public static final int textView_item_custom=0x7f0c0057;
         public static final int title=0x7f0c003b;
         public static final int up=0x7f0c0001;
         public static final int useLogo=0x7f0c0027;
-        public static final int utworzKonto=0x7f0c0056;
+        public static final int utworzKonto=0x7f0c0058;
         public static final int withText=0x7f0c002c;
         public static final int wrap_content=0x7f0c0018;
-        public static final int zaloguj=0x7f0c0057;
+        public static final int zaloguj=0x7f0c0059;
         public static final int zapisz=0x7f0c0065;
         public static final int zaprosZnajomych=0x7f0c0066;
-        public static final int zarejestruj=0x7f0c0071;
+        public static final int zarejestruj=0x7f0c0072;
     }
     public static final class integer {
         /**  The maximum number of action buttons that should be permitted within
@@ -2239,17 +2246,18 @@ containing a value of this type.
         public static final int abc_search_view=0x7f030015;
         public static final int abc_simple_dropdown_hint=0x7f030016;
         public static final int activity_wydarzenia_lista=0x7f030017;
-        public static final int edycja_wydarzenia=0x7f030018;
-        public static final int list_item_view_lista_wydarzen=0x7f030019;
-        public static final int logowanie=0x7f03001a;
-        public static final int mapa=0x7f03001b;
-        public static final int mapa_text=0x7f03001c;
-        public static final int moj_kalendarz=0x7f03001d;
-        public static final int nowe_wydarzenie=0x7f03001e;
-        public static final int rejestracja=0x7f03001f;
-        public static final int support_simple_spinner_dropdown_item=0x7f030020;
-        public static final int szczegoly_wydarzenia=0x7f030021;
-        public static final int veturillo=0x7f030022;
+        public static final int dialog=0x7f030018;
+        public static final int edycja_wydarzenia=0x7f030019;
+        public static final int list_item_view_lista_wydarzen=0x7f03001a;
+        public static final int logowanie=0x7f03001b;
+        public static final int mapa=0x7f03001c;
+        public static final int mapa_text=0x7f03001d;
+        public static final int moj_kalendarz=0x7f03001e;
+        public static final int nowe_wydarzenie=0x7f03001f;
+        public static final int rejestracja=0x7f030020;
+        public static final int support_simple_spinner_dropdown_item=0x7f030021;
+        public static final int szczegoly_wydarzenia=0x7f030022;
+        public static final int veturillo=0x7f030023;
     }
     public static final class menu {
         public static final int edycja_wydarzenia=0x7f0d0000;
@@ -2440,13 +2448,18 @@ containing a value of this type.
         public static final int noweWydarzenie=0x7f070042;
         public static final int numerTelefonu=0x7f07004f;
         public static final int ok=0x7f070058;
+        public static final int opis=0x7f07005a;
         public static final int otwarte=0x7f070045;
         public static final int penis_str=0x7f070049;
+        public static final int pobierzLokalizacje=0x7f070060;
         public static final int powtorzHaslo=0x7f070050;
+        public static final int skad=0x7f07005c;
+        public static final int stacjaZRowerami=0x7f07005d;
         public static final int store_picture_message=0x7f070001;
         public static final int store_picture_title=0x7f070000;
         public static final int string_dupa=0x7f070036;
         public static final int szukaj=0x7f070057;
+        public static final int textDialog=0x7f07005b;
         public static final int title_activity_edycja_wydarzenia=0x7f070043;
         public static final int title_activity_mapa=0x7f070053;
         public static final int title_activity_nowe_wydarzenie=0x7f070037;
@@ -2460,11 +2473,13 @@ containing a value of this type.
          available or up-to-date 
          */
         public static final int wallet_buy_button_place_holder=0x7f070022;
+        public static final int wyznaczTrase=0x7f07005f;
         public static final int zaloguj=0x7f07004c;
         public static final int zapisz=0x7f07003c;
         public static final int zaprosZnajomych=0x7f070041;
         public static final int zarejestruj=0x7f070051;
         public static final int znajdz=0x7f070059;
+        public static final int znajdzTrase=0x7f07005e;
     }
     public static final class style {
         /** 

@@ -42,5 +42,25 @@ public class VeturilloAsynTask extends AsyncTask<Void, String, String> {
 		return urlVeturillo + "?circle=" + latLng.longitude + ","
 				+ latLng.latitude + "," + promien;
 	}
+	
+	
+	public static float calcDistance(LatLng latLng1, LatLng latLng2) {
+		double lat1 = latLng1.latitude;
+		double lng1 = latLng1.longitude;
+		double lat2 = latLng2.latitude;
+		double lng2 = latLng2.longitude;
+
+		double earthRadius = 6371; // kilometers
+		double dLat = Math.toRadians(lat2 - lat1);
+		double dLng = Math.toRadians(lng2 - lng1);
+		double a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
+				+ Math.cos(Math.toRadians(lat1))
+				* Math.cos(Math.toRadians(lat2)) * Math.sin(dLng / 2)
+				* Math.sin(dLng / 2);
+		double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+		float dist = (float) (earthRadius * c);
+
+		return dist;
+	}
 
 }

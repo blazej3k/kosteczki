@@ -19,6 +19,5 @@
 			<attribute name="javadoc_location" value="jar:platform:/resource/ZKimNaBasen/libs/docs/ormlite-android-4.48-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="libs/org.apache.commons.io.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

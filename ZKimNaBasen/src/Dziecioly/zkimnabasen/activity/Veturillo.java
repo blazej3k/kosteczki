@@ -74,8 +74,6 @@ public class Veturillo extends Activity {
 		wybranaLokalizacja = null;
 	}
 
-	
-
 	private void wyznacz() {
 		if (lokalizacja == null)
 			Toast.makeText(context, "Wybierz sk¹d wyznaczyæ trasê",
@@ -115,5 +113,6 @@ public class Veturillo extends Activity {
 		});
 	}
 
-	
+
+
 }
