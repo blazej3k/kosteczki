@@ -1,6 +1,7 @@
 package Dziecioly.zkimnabasen.baza.model;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import com.j256.ormlite.dao.ForeignCollection;
@@ -38,14 +39,14 @@ public class Wydarzenie {
 	@DatabaseField(foreign = true, foreignAutoRefresh = true)
 	private Lokalizacja lokalizacja;
 
-	@ForeignCollectionField
+	@ForeignCollectionField(eager = true)
 	private ForeignCollection<Zaproszenie> zaproszenia;
 
 	public Wydarzenie() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Wydarzenie(String nazwa, String lokalizacja, String data,
+	public Wydarzenie(String nazwa, String data,
 			String godz_od, String godz_do, String opis, boolean otwarte) {
 		super();
 		this.nazwa = nazwa;

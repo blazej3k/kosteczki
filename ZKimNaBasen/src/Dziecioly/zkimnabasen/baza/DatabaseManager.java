@@ -16,17 +16,13 @@ import com.j256.ormlite.table.TableUtils;
 public class DatabaseManager extends OrmLiteSqliteOpenHelper {
 
 	private static final String DATABASE_NAME = "zKimNaBasen.sqlite";
-	private static final int DATABASE_VERSION = 8;
+	private static final int DATABASE_VERSION = 11;
 	public static final String DEBUG_TAG = "SqLiteBasen";
-	
-	private static final String DROP_TABLE_UZYTKOWNIK = 
-			"DROP TABLE IF EXISTS Uzytkownik";
-	private static final String DROP_TABLE_ZAPROSZENIE = 
-			"DROP TABLE IF EXISTS Zaproszenie";
-	private static final String DROP_TABLE_WYDARZENIE = 
-			"DROP TABLE IF EXISTS Wydarzenie";
-	private static final String DROP_TABLE_LOKALIZACJA = 
-			"DROP TABLE IF EXISTS Lokalizacja";
+
+	private static final String DROP_TABLE_UZYTKOWNIK = "DROP TABLE IF EXISTS Uzytkownik";
+	private static final String DROP_TABLE_ZAPROSZENIE = "DROP TABLE IF EXISTS Zaproszenie";
+	private static final String DROP_TABLE_WYDARZENIE = "DROP TABLE IF EXISTS Wydarzenie";
+	private static final String DROP_TABLE_LOKALIZACJA = "DROP TABLE IF EXISTS Lokalizacja";
 
 	static private DatabaseManager instance;
 
@@ -59,6 +55,7 @@ public class DatabaseManager extends OrmLiteSqliteOpenHelper {
 			TableUtils.createTable(connectionSource, Wydarzenie.class);
 			TableUtils.createTable(connectionSource, Zaproszenie.class);
 			TableUtils.createTable(connectionSource, Lokalizacja.class);
+			new PompeczkaLokalizacje();
 			Log.d(DEBUG_TAG, "Database creating...");
 		} catch (SQLException e) {
 			Log.e(DatabaseManager.class.getName(), "Can't create database", e);
@@ -72,17 +69,16 @@ public class DatabaseManager extends OrmLiteSqliteOpenHelper {
 	@Override
 	public void onUpgrade(SQLiteDatabase db, ConnectionSource connectionSource,
 			int oldVersion, int newVersion) {
-		
+
 		db.execSQL(DROP_TABLE_UZYTKOWNIK);
 		db.execSQL(DROP_TABLE_WYDARZENIE);
 		db.execSQL(DROP_TABLE_ZAPROSZENIE);
 		db.execSQL(DROP_TABLE_LOKALIZACJA);
-		
+
 		Log.d(DEBUG_TAG, "Database updating...");
-        Log.d(DEBUG_TAG, "All data is lost.");
-        
-        onCreate(db, connectionSource);
-	
+		Log.d(DEBUG_TAG, "All data is lost.");
+
+		onCreate(db, connectionSource);
 
 	}
 

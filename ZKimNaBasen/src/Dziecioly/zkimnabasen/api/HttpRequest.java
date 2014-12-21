@@ -2,23 +2,14 @@ package Dziecioly.zkimnabasen.api;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
-import Dziecioly.zkimnabasen.activity.Mapa;
-import Dziecioly.zkimnabasen.activity.Mapa2;
 import Dziecioly.zkimnabasen.baza.DatabaseManager;
-import Dziecioly.zkimnabasen.baza.model.Lokalizacja;
-import android.os.AsyncTask;
 import android.util.Base64;
 import android.util.Log;
 
@@ -26,17 +17,7 @@ public class HttpRequest {
 
 	private String username = "48514168764";
 	private String password = "NhmQ8cUyZdksr5S";
-	private Mapa2 mapa;
 	
-	
-	public HttpRequest() {
-		// TODO Auto-generated constructor stub
-	}
-
-	public HttpRequest(Mapa2 mapa) {
-		this.mapa = mapa;
-	}
-
 	private String getB64Auth(String login, String pass) {
 		String source = login + ":" + pass;
 		String ret = "Basic "

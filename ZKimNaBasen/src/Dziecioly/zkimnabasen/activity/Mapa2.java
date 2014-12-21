@@ -30,7 +30,7 @@ public class Mapa2 extends FragmentActivity implements OnMapClickListener,
 
 	private String swimmingPoolsUrl = "https://api.bihapi.pl/wfs/warszawa/swimmingPools";
 	private String sportFieldsUrl = "https://api.bihapi.pl/wfs/warszawa/sportFields?maxFeatures";
-	private HttpRequest request = new HttpRequest(this);
+	private HttpRequest request = new HttpRequest();
 
 	private GoogleMap map;
 	private boolean mapIsReady;
@@ -57,13 +57,7 @@ public class Mapa2 extends FragmentActivity implements OnMapClickListener,
 		Log.d(DatabaseManager.DEBUG_TAG, "mapa onCreate");
 
 		kategoria = (String) getIntent().getExtras().get("kategoria");
-		if (kategoria.equals(Lokalizacja.kategorie[7]))
-			request.execute(swimmingPoolsUrl);
-		else if (kategoria.equals(Lokalizacja.kategorie[5]))
-			request.execute(sportFieldsUrl);
-		else
-			request.setListIsReady(true);
-
+		
 		Object user = getIntent().getExtras().get("userAddress");
 		if (user != null) {
 			boolean userAddress = (Boolean) user;
@@ -124,7 +118,7 @@ public class Mapa2 extends FragmentActivity implements OnMapClickListener,
 		map.setOnMarkerClickListener(this);
 
 		mapIsReady = true;
-		if (request.isListIsReady())
+		//if (request.isListIsReady())
 			addMarkers(lokalizacje);
 
 	}
@@ -234,7 +228,7 @@ public class Mapa2 extends FragmentActivity implements OnMapClickListener,
 						.equals(userMarker.getPosition()))
 			return new Lokalizacja(selectedMarker.getPosition().latitude,
 					selectedMarker.getPosition().longitude, null, null, false,
-					null, true);
+					null);
 		else {
 			for (Lokalizacja l : lokalizacje) {
 				LatLng p = new LatLng(l.getLat(), l.getLon());

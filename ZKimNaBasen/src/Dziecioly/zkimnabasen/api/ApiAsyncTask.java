@@ -8,21 +8,26 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.os.AsyncTask;
+import android.util.Log;
+import android.widget.Toast;
 
 import Dziecioly.zkimnabasen.activity.Mapa;
+import Dziecioly.zkimnabasen.baza.DatabaseManager;
+import Dziecioly.zkimnabasen.baza.dao.LokalizacjaDao;
 import Dziecioly.zkimnabasen.baza.model.Lokalizacja;
 
 public class ApiAsyncTask extends AsyncTask<Void, String, List<Lokalizacja>> {
 
 	private final String swimmingPoolsUrl = "https://api.bihapi.pl/wfs/warszawa/swimmingPools";
 	private final String sportFieldsUrl = "https://api.bihapi.pl/wfs/warszawa/sportFields?maxFeatures";
-	
+
 	private boolean listIsReady;
-	
+
 	private String kategoria;
 	private Mapa mapa;
 
 	HttpRequest request = new HttpRequest();
+	LokalizacjaDao lokalizacjaDao = new LokalizacjaDao();
 
 	public ApiAsyncTask(Mapa mapa, String kategoria) {
 		this.mapa = mapa;
@@ -32,13 +37,32 @@ public class ApiAsyncTask extends AsyncTask<Void, String, List<Lokalizacja>> {
 	@Override
 	protected List<Lokalizacja> doInBackground(Void... params) {
 		listIsReady = false;
-		List<Lokalizacja> lokalizacje = pobierzLokalizacjeApi(swimmingPoolsUrl);
+		List<Lokalizacja> lokalizacje = new ArrayList<Lokalizacja>();
+
+		Log.d(DatabaseManager.DEBUG_TAG, kategoria);
+		if (kategoria.equals(Lokalizacja.kategorie[7]))
+			lokalizacje = pobierzLokalizacjeApi(swimmingPoolsUrl);
+		else if (kategoria.equals(Lokalizacja.kategorie[5]))
+			lokalizacje = pobierzLokalizacjeApi(sportFieldsUrl);
+
+		if (lokalizacje == null) {
+			Log.d(DatabaseManager.DEBUG_TAG, "B³¹d pobierania API");
+			lokalizacje = new ArrayList<Lokalizacja>();
+		}
+
+		List<Lokalizacja> lokalizacjeDb = pobierzLokalizacjeDb(kategoria);
+		lokalizacje.addAll(lokalizacjeDb);
 
 		return lokalizacje;
 	}
-	
-	private List<Lokalizacja> pobierzLokalizacjeApi(String url)
-	{
+
+	private List<Lokalizacja> pobierzLokalizacjeDb(String kateroria) {
+
+		return lokalizacjaDao.pobierzPubliczne(kateroria);
+	}
+
+	private List<Lokalizacja> pobierzLokalizacjeApi(String url) {
+		Log.d(DatabaseManager.DEBUG_TAG, "pobieram z api...");
 		List<Lokalizacja> lokalizacje = new ArrayList<Lokalizacja>();
 		String responseString = request.getFromUrl(url, true);
 		lokalizacje = parseResponse(responseString);
@@ -63,6 +87,9 @@ public class ApiAsyncTask extends AsyncTask<Void, String, List<Lokalizacja>> {
 	private List<Lokalizacja> parseResponse(String responseString) {
 		try {
 			JSONObject json = new JSONObject(responseString);
+			if (json == null)
+				return null;
+
 			JSONArray data = json.getJSONArray("data");
 			List<Lokalizacja> lokalizacje = new ArrayList<Lokalizacja>();
 
@@ -82,7 +109,7 @@ public class ApiAsyncTask extends AsyncTask<Void, String, List<Lokalizacja>> {
 				String adres = ulica + " " + numer;
 
 				Lokalizacja l = new Lokalizacja(lat, lon, adres, opis, false,
-						Lokalizacja.kategorie[7], false);
+						Lokalizacja.kategorie[7]);
 				lokalizacje.add(l);
 
 			}
