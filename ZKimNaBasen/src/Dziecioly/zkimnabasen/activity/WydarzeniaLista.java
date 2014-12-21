@@ -7,6 +7,7 @@ import Dziecioly.zkimnabasen.baza.DatabaseManager;
 import Dziecioly.zkimnabasen.baza.PompeczkaWydarzenia;
 import Dziecioly.zkimnabasen.baza.dao.WydarzenieDao;
 import Dziecioly.zkimnabasen.baza.model.List_Custom_ListaWydarzen;
+import Dziecioly.zkimnabasen.baza.model.RowBeanListaWyd;
 import Dziecioly.zkimnabasen.baza.model.Wydarzenie;
 import android.app.Activity;
 import android.content.Context;
@@ -38,31 +39,34 @@ public class WydarzeniaLista extends Activity {
 		new PompeczkaWydarzenia();
 
 		WydarzenieDao wydDao = new WydarzenieDao();
-		List<Wydarzenie> wydarzenia = wydDao.list();
-		String [] sWydarzenia = null;
+		List<Wydarzenie> wydarzeniaL = wydDao.list();
+		RowBeanListaWyd[] WydarzeniaRB = null;
 
-		if (wydarzenia.size() == 0) {
+		if (wydarzeniaL.size() == 0) {
 			Log.d(DatabaseManager.DEBUG_TAG, "PUSTA LISTA");
 			
 			Toast.makeText(this, "Lista wydarzeñ jest pusta w ciul!", Toast.LENGTH_LONG).show();
 		}
 		
 		else {
-			sWydarzenia = new String[wydarzenia.size()];
+			WydarzeniaRB = new RowBeanListaWyd[wydarzeniaL.size()];
+			
+			for (int i=0; i < wydarzeniaL.size(); i++) {
+				WydarzeniaRB[i] = new RowBeanListaWyd();
+				WydarzeniaRB[i].setTekst(wydarzeniaL.get(i).getNazwa());
+				WydarzeniaRB[i].setIcon(R.drawable.niebieski);
+			}
 
-			for (int i=0; i < wydarzenia.size(); i++)
-				sWydarzenia[i] = wydarzenia.get(i).getNazwa();
-
-			for (Wydarzenie x: wydarzenia)
+			for (Wydarzenie x: wydarzeniaL)
 				Log.d(DatabaseManager.DEBUG_TAG, "ID: "+ x.getId());
 			
 			//String[] przykladowe_dane = {"Wlaz³ kotek", "na p³otek", "i mruga.", "piêkna to", "piosneczka nied³uga.", "Wlaz³ kurek", "na murek", "i pieje", "niech siê nikt", "z tych piosnek", "nie œmieje."};
 			rozbudowana_lista = (ListView) findViewById(R.id.lv_prostalista);
-			List_Custom_ListaWydarzen adapter_listy = new List_Custom_ListaWydarzen(sWydarzenia, this);
+			List_Custom_ListaWydarzen adapter_listy = new List_Custom_ListaWydarzen(this, R.layout.view_row_item_lista_wydarzen, WydarzeniaRB);
+
 			rozbudowana_lista.setAdapter(adapter_listy);
 		}
 
-		
 		initOnItemClickListener();
 	}
 	

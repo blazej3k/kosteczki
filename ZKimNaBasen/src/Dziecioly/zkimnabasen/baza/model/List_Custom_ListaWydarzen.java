@@ -5,36 +5,25 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-public class List_Custom_ListaWydarzen extends BaseAdapter {
+public class List_Custom_ListaWydarzen extends ArrayAdapter<RowBeanListaWyd> {
 
-	private String[] data;
-	private Context context;
+	Context context;
+    int layoutResourceId;  
+    RowBeanListaWyd data[] = null;
 	
-	public List_Custom_ListaWydarzen(String[] importeddata, Context context) {
+	public List_Custom_ListaWydarzen(Context context, int layoutResourceId, RowBeanListaWyd[] data) {
+		super(context, layoutResourceId, data);
 		this.context = context;
-		this.data = importeddata;
+		this.data = data;
 	}
 	
-	@Override
 	public int getCount() {
 		return data.length;
-	}
-
-	@Override
-	public Object getItem(int position) {
-		return null;
-	}
-
-	@Override
-	public long getItemId(int position) {
-		return 0;
-	}
-
-	private class ViewHolderPattern {
-		TextView tekst_w_layoucie;
 	}
 	
 	@Override
@@ -43,21 +32,37 @@ public class List_Custom_ListaWydarzen extends BaseAdapter {
 
 		if (convertView == null) {
 			LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			convertView = inflater.inflate(R.layout.list_item_view_lista_wydarzen, parent, false);
+			convertView = inflater.inflate(R.layout.view_row_item_lista_wydarzen, parent, false);
 
 			view_holder = new ViewHolderPattern();
-			view_holder.tekst_w_layoucie = (TextView) convertView.findViewById(R.id.textView_item_custom);
-
+			view_holder.tekst_w_layoucie = (TextView) convertView.findViewById(R.id.txtTitle);
+			view_holder.imgIcon = (ImageView) convertView.findViewById(R.id.imgIcon);
+			
 			convertView.setTag(view_holder);
 		}
 		else {
 			view_holder = (ViewHolderPattern) convertView.getTag();
 		} 
 
-		view_holder.tekst_w_layoucie.setText(data[position]);
+		RowBeanListaWyd object = data[position];
+		view_holder.tekst_w_layoucie.setText(object.getTekst());
+		view_holder.imgIcon.setImageResource(object.getIcon());
 
 		return convertView;
 	}
 	
+	private class ViewHolderPattern {
+		TextView tekst_w_layoucie;
+		ImageView imgIcon;
+	}
+	
+/*	public Object getItem(int position) {
+	return null;
+}
 
+@Override
+public long getItemId(int position) {
+	return 0;
+}*/
+	
 }

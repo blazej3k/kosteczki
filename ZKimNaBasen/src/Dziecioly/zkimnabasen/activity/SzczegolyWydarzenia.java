@@ -6,6 +6,7 @@ import Dziecioly.zkimnabasen.R;
 import Dziecioly.zkimnabasen.baza.DatabaseManager;
 import Dziecioly.zkimnabasen.baza.dao.WydarzenieDao;
 import Dziecioly.zkimnabasen.baza.model.List_Custom_ListaWydarzen;
+import Dziecioly.zkimnabasen.baza.model.RowBeanListaWyd;
 import Dziecioly.zkimnabasen.baza.model.Wydarzenie;
 import Dziecioly.zkimnabasen.baza.model.Zaproszenie;
 import android.app.Activity;
@@ -78,13 +79,16 @@ public class SzczegolyWydarzenia extends Activity {
 				Toast.makeText(this, "Lista zaproszeñ jest pusta w ciul!", Toast.LENGTH_LONG).show();
 
 			else {
-				String[] sZaproszenia = new String[zaproszeniaL.size()];
+				RowBeanListaWyd[] ZaproszeniaRB = new RowBeanListaWyd[zaproszeniaL.size()];
 
-				for (int i=0; i < sZaproszenia.length; i++)
-					sZaproszenia[i] = zaproszeniaL.get(i).getUzytkownik().getNazwa();
+				for (int i=0; i < ZaproszeniaRB.length; i++) {
+					ZaproszeniaRB[i] = new RowBeanListaWyd();
+					ZaproszeniaRB[i].setTekst(zaproszeniaL.get(i).getUzytkownik().getNazwa());
+					ZaproszeniaRB[i].setIcon(R.drawable.wiewiorka);
+				}
 
 				rozbudowana_lista = (ListView) findViewById(R.id.lv_prostalista);
-				List_Custom_ListaWydarzen adapter_listy = new List_Custom_ListaWydarzen(sZaproszenia, this);
+				List_Custom_ListaWydarzen adapter_listy = new List_Custom_ListaWydarzen(this, R.layout.view_row_item_lista_wydarzen, ZaproszeniaRB);
 				rozbudowana_lista.setAdapter(adapter_listy);
 			}
 		}
