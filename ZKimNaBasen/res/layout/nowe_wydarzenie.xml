@@ -64,16 +64,6 @@
             android:text="@string/godzinaRozpoczecia" />
 
         <Button
-            android:id="@+id/data"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/nazwa"
-            android:layout_alignRight="@+id/mapa"
-            android:layout_below="@+id/mapa"
-            android:layout_marginTop="26dp"
-            android:text="@string/data" />
-
-        <Button
             android:id="@+id/godzinaZakonczenia"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -94,14 +84,33 @@
             android:text="@string/kategoria" />
 
         <Button
+            android:id="@+id/btnVeturillo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/data"
+            android:layout_alignRight="@+id/mapa"
+            android:layout_below="@+id/mapa"
+            android:text="@string/veturillo" />
+
+        <Button
             android:id="@+id/mapa"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/kategoria"
             android:layout_alignRight="@+id/kategoria"
             android:layout_below="@+id/kategoria"
-            android:layout_marginTop="23dp"
+            android:layout_marginTop="14dp"
             android:text="@string/lokalizacja" />
+
+        <Button
+            android:id="@+id/data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/mapa"
+            android:layout_alignRight="@+id/mapa"
+            android:layout_below="@+id/btnVeturillo"
+            android:layout_marginTop="44dp"
+            android:text="@string/data" />
 
     </RelativeLayout>
 

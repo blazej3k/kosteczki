@@ -54,6 +54,7 @@ public class NoweWydarzenie extends FragmentActivity implements
 	private Button btnMapa;
 	private Button btnKategoria;
 	private CheckBox czyOtwarte;
+	private Button btnVeturillo;
 
 	private List<Uzytkownik> wszyscyZnajomi = new ArrayList<Uzytkownik>();
 	private boolean[] wybraniZnajomi;
@@ -88,6 +89,7 @@ public class NoweWydarzenie extends FragmentActivity implements
 		czyOtwarte = (CheckBox) findViewById(R.id.czyOtwarte);
 		btnKategoria = (Button) findViewById(R.id.kategoria);
 		btnMapa = (Button) findViewById(R.id.mapa);
+		btnVeturillo = (Button) findViewById(R.id.btnVeturillo);
 
 		initBtnOnClickListeners();
 
@@ -194,15 +196,17 @@ public class NoweWydarzenie extends FragmentActivity implements
 			public void onClick(View v) {
 				String nazwa_w = nazwa.getText().toString();
 				if (nazwa_w == null || nazwa_w.equals(""))
-					Toast.makeText(context, "Podaj nazwê wydarzenia", Toast.LENGTH_SHORT).show();
+					Toast.makeText(context, "Podaj nazwê wydarzenia",
+							Toast.LENGTH_SHORT).show();
 				else {
-				if (lokalizacja != null
-						&& lokalizacja.isLokalizacjaUzytkownika()) {
-					textFrag = new TextFragment(btnMapa.getText().toString());
-					textFrag.show(getSupportFragmentManager(), "Text");
-				} else {
-					zapisz();
-				}
+					if (lokalizacja != null
+							&& lokalizacja.isLokalizacjaUzytkownika()) {
+						textFrag = new TextFragment(btnMapa.getText()
+								.toString());
+						textFrag.show(getSupportFragmentManager(), "Text");
+					} else {
+						zapisz();
+					}
 				}
 
 			}
@@ -259,6 +263,20 @@ public class NoweWydarzenie extends FragmentActivity implements
 			}
 		});
 
+		btnVeturillo.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				if (lokalizacja == null)
+					Toast.makeText(context, "Wybierz lokalizacjê",
+							Toast.LENGTH_SHORT).show();
+				else {
+					Intent intent = new Intent(context, Veturillo.class);
+					intent.putExtra("lat", lokalizacja.getLat());
+					intent.putExtra("lon", lokalizacja.getLon());
+					intent.putExtra("adres", lokalizacja.getAdres());
+					startActivity(intent);
+				}
+			}
+		});
 	}
 
 	private void wczytajMape() {

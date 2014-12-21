@@ -36,13 +36,5 @@
         android:layout_marginTop="20dp"
         android:text="@string/logowanie" />
 
-    <Button
-        android:id="@+id/btnVeturillo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/btnLogowanie"
-        android:layout_below="@+id/btnLogowanie"
-        android:layout_marginTop="21dp"
-        android:text="@string/veturillo" />
-
+  
 </RelativeLayout>

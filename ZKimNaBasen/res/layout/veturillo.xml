@@ -1,8 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/RelativeLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#ABCDEF"
     android:orientation="vertical" >
-    
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/textDestination"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="18dp"
+        android:layout_marginTop="15dp"
+        android:text="Large Text"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <Button
+        android:id="@+id/btnOrigin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textDestination"
+        android:layout_below="@+id/textDestination"
+        android:layout_marginTop="50dp"
+        android:text="@string/skad" />
+
+    <CheckBox
+        android:id="@+id/checkBoxRowery"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/btnOrigin"
+        android:layout_below="@+id/btnOrigin"
+        android:layout_marginTop="27dp"
+        android:text="@string/stacjaZRowerami" />
+
+    <Button
+        android:id="@+id/btnWyznacz"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/checkBoxRowery"
+        android:layout_below="@+id/checkBoxRowery"
+        android:layout_marginTop="16dp"
+        android:text="@string/wyznaczTrase" />
+
+    <CheckBox
+        android:id="@+id/checkBoxMojaLokalizacja"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/btnOrigin"
+        android:layout_below="@+id/btnOrigin"
+        android:text="@string/pobierzLokalizacje" />
+
+</RelativeLayout>
