@@ -121,11 +121,7 @@
             android:layout_below="@+id/godzinaZakonczenia"
             android:background="#FFFFFF"
             android:ems="10"
-            android:hint="@string/opiss" >
-
-            <requestFocus />
-        </EditText>
-
+            android:hint="@string/opiss" />
     </RelativeLayout>
 
 </ScrollView>

@@ -5,15 +5,11 @@ import Dziecioly.zkimnabasen.baza.model.Lokalizacja;
 import Dziecioly.zkimnabasen.baza.model.Uzytkownik;
 import Dziecioly.zkimnabasen.baza.model.Wydarzenie;
 import Dziecioly.zkimnabasen.baza.model.Zaproszenie;
-import android.R.integer;
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.google.android.gms.common.data.DataBuffer;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
