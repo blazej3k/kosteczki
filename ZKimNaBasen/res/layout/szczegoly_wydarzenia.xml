@@ -112,4 +112,26 @@
         android:layout_height="wrap_content" >
     </ListView>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <Button
+            android:id="@+id/btn_edytuj"
+            style="@style/button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/btn_edytuj" />
+
+        <Button
+            android:id="@+id/btn_usun"
+            style="@style/button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/btn_usun" />
+
+    </LinearLayout>
+
 </LinearLayout>
