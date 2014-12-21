@@ -1,5 +1,8 @@
 package Dziecioly.zkimnabasen.baza;
 
+import java.util.Date;
+
+import Dziecioly.zkimnabasen.activity.General;
 import Dziecioly.zkimnabasen.baza.dao.WydarzenieDao;
 import Dziecioly.zkimnabasen.baza.dao.ZaproszenieDao;
 import Dziecioly.zkimnabasen.baza.model.Uzytkownik;
@@ -29,29 +32,28 @@ public class PompeczkaWydarzenia {
 		
 		// nie robie tutaj userDao.add(user), bo ustawione jest tymczasowo foreignAutoCreate = true i samo sie potworzy.
 		
-		
-		wydarzenie = new Wydarzenie("Picie wódki", "16.12.2014", "16:00", "18:00", "pijemy na umór", true); // samo wydarzenie
+		wydarzenie = new Wydarzenie("Picie wódki", General.dateFromString("16.12.2014"), "14:00", "18:00", "pijemy na umór", true); // samo wydarzenie
 		wydarzenie.setUzytkownik(user1);
 		wydDao.add(wydarzenie);
 		zaproszenie.setUzytkownik(user2);	// stworzenie zaproszenia do wydarzenia, jedno per user
 		zaproszenie.setWydarzenie(wydarzenie);
 		zapDao.add(zaproszenie);			// dodanie zaproszenia do bazy
 		
-		wydarzenie = new Wydarzenie("Picie bimbru", "16.12.2014", "16:00", "18:00", "pijemy na umór", true);
+		wydarzenie = new Wydarzenie("Picie bimbru", General.dateFromString("16.12.2014"), "15:00", "18:00", "pijemy na umór", true);
 		wydarzenie.setUzytkownik(user1);
 		wydDao.add(wydarzenie);
 		zaproszenie.setUzytkownik(user2);	// stworzenie zaproszenia do wydarzenia, jedno per user
 		zaproszenie.setWydarzenie(wydarzenie);
 		zapDao.add(zaproszenie);			// dodanie zaproszenia do bazy
 		
-		wydarzenie = new Wydarzenie("Picie spirytusu", "16.12.2014", "16:00", "18:00", "pijemy na umór", true);
+		wydarzenie = new Wydarzenie("Picie spirytusu", General.dateFromString("16.12.2014"), "16:00", "18:00", "pijemy na umór", true);
 		wydarzenie.setUzytkownik(user2);
 		wydDao.add(wydarzenie);
 		zaproszenie.setUzytkownik(user3);	// stworzenie zaproszenia do wydarzenia, jedno per user
 		zaproszenie.setWydarzenie(wydarzenie);
 		zapDao.add(zaproszenie);			// dodanie zaproszenia do bazy
 		
-		wydarzenie = new Wydarzenie("Picie Komandosa", "16.12.2014", "16:00", "18:00", "pijemy na umór", true);
+		wydarzenie = new Wydarzenie("Picie Komandosa", General.dateFromString("16.12.2014"), "17:00", "18:00", "pijemy na umór", true);
 		wydarzenie.setUzytkownik(user2);
 		wydDao.add(wydarzenie);
 		zaproszenie.setUzytkownik(user3);	// stworzenie zaproszenia do wydarzenia, jedno per user
@@ -61,7 +63,7 @@ public class PompeczkaWydarzenia {
 		zaproszenie.setWydarzenie(wydarzenie);
 		zapDao.add(zaproszenie);
 		
-		wydarzenie = new Wydarzenie("Picie skrzynki Harnasi", "16.12.2014", "16:00", "18:00", "pijemy na umór", true);
+		wydarzenie = new Wydarzenie("Picie skrzynki Harnasi", General.dateFromString("16.12.2014"), "16:00", "18:00", "pijemy na umór", true);
 		wydarzenie.setUzytkownik(user3);
 		wydDao.add(wydarzenie);
 		zaproszenie.setUzytkownik(user2);	// stworzenie zaproszenia do wydarzenia, jedno per user

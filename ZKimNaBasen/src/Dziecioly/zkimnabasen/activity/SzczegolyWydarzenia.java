@@ -64,7 +64,7 @@ public class SzczegolyWydarzenia extends Activity {
 		else { // jesli tak to dzialaj
 			tv_tworca.setText(wydarzenie.getUzytkownik().getNazwa());	// wprowadzenie do wszystkich TextView info o wydarzeniu
 			tv_nazwa.setText(wydarzenie.getNazwa());
-			tv_data.setText(wydarzenie.getData());
+			tv_data.setText(General.stringFromDate(wydarzenie.getData()));
 			tv_od.setText(wydarzenie.getGodz_od());
 			tv_do.setText(wydarzenie.getGodz_do());
 			tv_opis.setText(wydarzenie.getOpis());

@@ -135,7 +135,7 @@ public class NoweWydarzenie extends FragmentActivity implements
 		
 		boolean w_czyOtwarte = czyOtwarte.isChecked();
 
-		Wydarzenie wydarzenie = new Wydarzenie(w_nazwa, w_data,
+		Wydarzenie wydarzenie = new Wydarzenie(w_nazwa, General.dateFromString(w_data),
 				w_godzinaRozpoczecia, w_godzinaZakonczenia, w_opis,
 				w_czyOtwarte);
 
@@ -169,7 +169,13 @@ public class NoweWydarzenie extends FragmentActivity implements
 
 	@Override
 	public void onDateSet(DatePicker view, int year, int month, int day) {
-		String dateText = day + "-" + String.valueOf(month + 1) + "-" + year;
+		String dday = Integer.toString(day);
+		String mmonth = String.valueOf(month + 1);
+		if (day < 10)
+			dday = "0"+dday;
+		if (month < 9)
+			mmonth ="0"+mmonth;
+		String dateText = dday + "." + mmonth + "." + year;
 		data.setText(dateText);
 	}
 
