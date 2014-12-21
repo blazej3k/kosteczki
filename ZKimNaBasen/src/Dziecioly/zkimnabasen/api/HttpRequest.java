@@ -44,7 +44,6 @@ public class HttpRequest {
 				response.getEntity().writeTo(out);
 				out.close();
 				responseString = out.toString();
-				Log.d(DatabaseManager.DEBUG_TAG, responseString);
 			} else {
 				// Closes the connection.
 				response.getEntity().getContent().close();

@@ -1,16 +1,14 @@
 package Dziecioly.zkimnabasen.activity;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import Dziecioly.zkimnabasen.R;
 import Dziecioly.zkimnabasen.api.ApiAsyncTask;
+import Dziecioly.zkimnabasen.api.Obs³ugaMapy;
 import Dziecioly.zkimnabasen.baza.DatabaseManager;
 import Dziecioly.zkimnabasen.baza.model.Lokalizacja;
 import android.content.Context;
-import android.location.Address;
-import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -22,7 +20,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.android.gms.analytics.l;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
@@ -44,7 +41,7 @@ public class Mapa extends FragmentActivity implements OnMapClickListener,
 
 	private ApiAsyncTask asyncTask;
 
-	private Geocoder geocoder;
+	private Obs³ugaMapy obs³ugaMapy;
 	private GoogleMap map;
 	private final LatLng defaultLatLng = new LatLng(52.23, 21);
 	private boolean mapIsReady;
@@ -70,7 +67,7 @@ public class Mapa extends FragmentActivity implements OnMapClickListener,
 		setContentView(R.layout.mapa_text);
 		context = getApplicationContext();
 
-		geocoder = new Geocoder(context);
+		obs³ugaMapy = new Obs³ugaMapy(context);
 		btnZnajdz = (Button) findViewById(R.id.btnZnajdz);
 		editText = (EditText) findViewById(R.id.editText);
 		initBtnOnClickListener();
@@ -157,7 +154,7 @@ public class Mapa extends FragmentActivity implements OnMapClickListener,
 					zoom));
 
 			// pobierz adres punktu i wyœwietl go
-			String adres = pobierzAdres(selectedLanLon);
+			String adres = obs³ugaMapy.pobierzAdres(selectedLanLon);
 			if (adres == null) {
 				Log.d(DatabaseManager.DEBUG_TAG, "Nie mo¿na ogkreœliæ adresu");
 				Toast.makeText(context, "Nie mo¿na ogkreœliæ adresu",
@@ -257,7 +254,7 @@ public class Mapa extends FragmentActivity implements OnMapClickListener,
 		selectedMarker = userMarker;
 
 		// pobierz adres punktu i wyœwietl go
-		String adres = pobierzAdres(arg);
+		String adres = obs³ugaMapy.pobierzAdres(arg);
 		if (adres == null) {
 			Log.d(DatabaseManager.DEBUG_TAG, "Nie mo¿na ogkreœliæ adresu");
 			Toast.makeText(context, "Nie mo¿na ogkreœliæ adresu",
@@ -266,6 +263,8 @@ public class Mapa extends FragmentActivity implements OnMapClickListener,
 			userMarker.setTitle(adres);
 			userMarker.showInfoWindow();
 		}
+		
+		map.moveCamera(CameraUpdateFactory.newLatLngZoom(arg, zoom));
 	}
 
 	public void setLokalizacje(List<Lokalizacja> lokalizacje) {
@@ -275,44 +274,11 @@ public class Mapa extends FragmentActivity implements OnMapClickListener,
 
 	}
 
-	private String pobierzAdres(LatLng arg) {
-		try {
-			Address a = geocoder
-					.getFromLocation(arg.latitude, arg.longitude, 1).get(0);
-			if (a == null)
-				return null;
-			return a.getAddressLine(0);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	private LatLng pobierzMarker(String adres) {
-		double[] lewyDolnyRog = { 52.116507, 20.870993 };
-		double[] prawyGornyRog = { 52.365419, 21.208823 };
-
-		LatLng latlon = null;
-		try {
-			List<Address> ad = geocoder.getFromLocationName(
-					adres + " Warszawa", 1, lewyDolnyRog[0], lewyDolnyRog[1],
-					prawyGornyRog[0], prawyGornyRog[1]);
-
-			if (ad.size() == 0)
-				return null;
-			else {
-				Address a = ad.get(0);
-				latlon = new LatLng(a.getLatitude(), a.getLongitude());
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return latlon;
-	}
+	
 
 	private void zaznaczWpisanyAdresNaMapie(String wpisanyAdres) {
 		if (wpisanyAdres != null && !wpisanyAdres.equals("")) {
-			LatLng latlon = pobierzMarker(wpisanyAdres);
+			LatLng latlon = obs³ugaMapy.pobierzMarker(wpisanyAdres);
 
 			if (latlon == null) {
 				Log.d(DatabaseManager.DEBUG_TAG, "Nieznany adres");

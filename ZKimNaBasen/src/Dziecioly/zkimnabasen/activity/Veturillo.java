@@ -5,6 +5,7 @@ import com.google.android.gms.maps.model.LatLng;
 import Dziecioly.zkimnabasen.R;
 import Dziecioly.zkimnabasen.baza.DatabaseManager;
 import Dziecioly.zkimnabasen.baza.model.Lokalizacja;
+import android.R.integer;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -73,10 +74,7 @@ public class Veturillo extends Activity {
 		wybranaLokalizacja = null;
 	}
 
-	private LatLng znajdzStacje(double lat, double lon) {
-		return null;
-
-	}
+	
 
 	private void wyznacz() {
 		if (lokalizacja == null)
@@ -116,4 +114,6 @@ public class Veturillo extends Activity {
 			}
 		});
 	}
+
+	
 }
