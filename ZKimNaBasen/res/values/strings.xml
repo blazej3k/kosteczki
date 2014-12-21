@@ -54,5 +54,8 @@
     <string name="znajdzTrase">Znajdź trasę</string>
     <string name="wyznaczTrase">Wyznacz trasę</string>
     <string name="pobierzLokalizacje">Pobierz moją lokalizację</string>
+    <string name="btn_nowe_wydarzenie">Nowe wydarzenie</string>
+    <string name="btn_wyswietlanie">Wyświetlanie</string>
+    <string name="lbl_moje_wydarzenia">Moje wydarzenia</string>
 
 </resources>

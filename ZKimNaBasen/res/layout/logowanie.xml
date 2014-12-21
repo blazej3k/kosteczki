@@ -42,7 +42,8 @@
         android:layout_marginTop="28dp"
         android:background="#FFFFFF"
         android:ems="10"
-        android:hint="@string/haslo" />
+        android:hint="@string/haslo"
+        android:inputType="textPassword" />
 
     <Button
         android:id="@+id/zaloguj"
