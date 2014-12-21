@@ -53,7 +53,6 @@ public class SzczegolyWydarzenia extends Activity {
 	}
 	
 	private void czytajWydarzenie(int id) {
-		id++; // bo id z listy jest o 1 mniejsze niz bazy
 		
 		WydarzenieDao wydDao = new WydarzenieDao();
 		Wydarzenie wydarzenie = wydDao.find(id); // pobierz wydarzenie, select do bazy

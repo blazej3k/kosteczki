@@ -129,7 +129,6 @@ public class NoweWydarzenie extends FragmentActivity implements
 
 		Wydarzenie wydarzenie = new Wydarzenie(w_nazwa, w_data,
 				w_godzinaRozpoczecia, w_godzinaZakonczenia, w_opis, w_czyOtwarte);
-		Intent intent = new Intent(context, SzczegolyWydarzenia.class);
 
 		SharedPreferences pref = context.getSharedPreferences("MyPref", 0);
 		String login = pref.getString("loggedIn", "null");
@@ -143,7 +142,7 @@ public class NoweWydarzenie extends FragmentActivity implements
 			wydarzenie.setLokalizacja(lokalizacjaDb);
 		}
 
-		wydarzenieDao.add(wydarzenie);
+		int id_wydarzenia = wydarzenieDao.add(wydarzenie).getId();
 
 		for (int i = 0; i < wybraniZnajomi.length; i++) {
 			if (wybraniZnajomi[i] == true) {
@@ -154,7 +153,9 @@ public class NoweWydarzenie extends FragmentActivity implements
 				zaproszenieDao.add(z);
 			}
 		}
-
+		Intent intent = new Intent(context, SzczegolyWydarzenia.class);
+		intent.putExtra("id_wydarzenia", id_wydarzenia);
+		Log.d(DatabaseManager.DEBUG_TAG, "!!!!! " + Integer.toString(id_wydarzenia));
 		startActivity(intent);
 	}
 

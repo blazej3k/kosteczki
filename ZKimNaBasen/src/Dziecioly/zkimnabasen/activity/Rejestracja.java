@@ -1,16 +1,17 @@
 package Dziecioly.zkimnabasen.activity;
 
 import Dziecioly.zkimnabasen.R;
+import Dziecioly.zkimnabasen.baza.DatabaseManager;
 import Dziecioly.zkimnabasen.baza.dao.UzytkownikDao;
 import Dziecioly.zkimnabasen.baza.model.Uzytkownik;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -53,27 +54,35 @@ public class Rejestracja extends ActionBarActivity {
 		String u_numerTel = numerTel.getText().toString();
 		String u_haslo = haslo.getText().toString();
 		String u_powtorzHaslo = powtorzHaslo.getText().toString();
+		if (u_nick == null || u_nick.equals("") || u_numerTel == null
+				|| u_numerTel.equals("") || u_haslo == null
+				|| u_haslo.equals("") || u_powtorzHaslo == null
+				|| u_powtorzHaslo.equals("")) {
+			Toast.makeText(context, "Wype³nij wszystkie pola",
+					Toast.LENGTH_LONG).show();
+			return;
 
-		if (!u_haslo.equals(u_powtorzHaslo))
+		}
+
+		if (!u_haslo.equals(u_powtorzHaslo)) {
 			Toast.makeText(context, "Podaj takie samo has³o", Toast.LENGTH_LONG)
 					.show();
+			return;
+		}
+		Uzytkownik u = new Uzytkownik(u_nick, u_numerTel, u_haslo);
+		Uzytkownik ur = uzytkownikDao.add(u);
+		if (ur == null)
+			Toast.makeText(context, "U¿ytkownik istnieje", Toast.LENGTH_LONG)
+					.show();
 		else {
-			Uzytkownik u = new Uzytkownik(u_nick, u_numerTel, u_haslo);
-			int result = uzytkownikDao.add(u);
-			if (result == 0)
-				Toast.makeText(context, "U¿ytkownik istnieje",
-						Toast.LENGTH_LONG).show();
-			else {
-				SharedPreferences pref = context.getSharedPreferences("MyPref",
-						0);
-				Editor editor = pref.edit();
-				editor.clear();
-				editor.putString("loggedIn", u_nick);
-				editor.commit();
+			SharedPreferences pref = context.getSharedPreferences("MyPref", 0);
+			Editor editor = pref.edit();
+			editor.clear();
+			editor.putString("loggedIn", u_nick);
+			editor.commit();
 
-				Intent intent = new Intent(context, MojKalendarz.class);
-				startActivity(intent);
-			}
+			Intent intent = new Intent(context, MojKalendarz.class);
+			startActivity(intent);
 		}
 
 	}

@@ -1,8 +1,6 @@
 package Dziecioly.zkimnabasen.baza.model;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 import com.j256.ormlite.dao.ForeignCollection;

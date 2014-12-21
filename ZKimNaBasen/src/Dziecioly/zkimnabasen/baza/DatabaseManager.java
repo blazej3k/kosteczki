@@ -38,14 +38,10 @@ public class DatabaseManager extends OrmLiteSqliteOpenHelper {
 			instance = new DatabaseManager(ctx);
 		}
 	}
-	
-	
 
 	public SQLiteDatabase getDb() {
 		return db;
 	}
-
-
 
 	static public DatabaseManager getInstance() {
 		return instance;
@@ -97,6 +93,8 @@ public class DatabaseManager extends OrmLiteSqliteOpenHelper {
 	}
 
 	public void upgrade(SQLiteDatabase db) {
+		if (db == null)
+			db = instance.getWritableDatabase();
 		Log.d(DEBUG_TAG2, "on update");
 
 		db.execSQL(DROP_TABLE_UZYTKOWNIK);

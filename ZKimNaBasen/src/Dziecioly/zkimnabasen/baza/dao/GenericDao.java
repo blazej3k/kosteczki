@@ -5,7 +5,6 @@ import java.sql.SQLException;
 import java.util.List;
 
 import Dziecioly.zkimnabasen.baza.DatabaseManager;
-
 import android.util.Log;
 
 import com.j256.ormlite.dao.Dao;
@@ -36,14 +35,14 @@ public class GenericDao<E, K> {
 
 	
 	//insert
-	public int add(E entity) {
+	public E add(E entity) {
 		try {
-			return getDao().create(entity);
+			return getDao().createIfNotExists(entity);	
 		} catch (SQLException e) {
 //			e.printStackTrace();
 			Log.d(DatabaseManager.DEBUG_TAG, e.toString());
 		}
-		return 0;
+		return null;
 	}
 
 	//update
