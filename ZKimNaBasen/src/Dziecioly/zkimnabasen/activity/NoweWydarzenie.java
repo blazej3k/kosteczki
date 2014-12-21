@@ -17,6 +17,7 @@ import Dziecioly.zkimnabasen.baza.model.Zaproszenie;
 import Dziecioly.zkimnabasen.fragment.ChecboxListFragment;
 import Dziecioly.zkimnabasen.fragment.DatePickerFragment;
 import Dziecioly.zkimnabasen.fragment.ListFragment;
+import Dziecioly.zkimnabasen.fragment.TextFragment;
 import Dziecioly.zkimnabasen.fragment.TimePickerFragment;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.TimePickerDialog.OnTimeSetListener;
@@ -41,7 +42,7 @@ import android.widget.Toast;
 public class NoweWydarzenie extends FragmentActivity implements
 		OnDateSetListener, OnTimeSetListener,
 		ChecboxListFragment.NoticeDialogListener,
-		ListFragment.NoticeDialogListener {
+		ListFragment.NoticeDialogListener, TextFragment.NoticeDialogListener {
 
 	private Context context;
 	private EditText nazwa;
@@ -66,6 +67,7 @@ public class NoweWydarzenie extends FragmentActivity implements
 	private LokalizacjaDao lokalizacjaDao = new LokalizacjaDao();
 
 	private ChecboxListFragment checkboxFrag;
+	private TextFragment textFrag;
 	private ListFragment listFrag;
 	public static final int FLAG_START_TIME = 0;
 	public static final int FLAG_END_TIME = 1;
@@ -114,42 +116,41 @@ public class NoweWydarzenie extends FragmentActivity implements
 	}
 
 	private void zapisz() {
-		Intent intent = new Intent(context, MojKalendarz.class);
-
 		String w_nazwa = nazwa.getText().toString();
 		String w_data = data.getText().toString();
 		String w_godzinaRozpoczecia = godzinaRozpoczecia.getText().toString();
 		String w_godzinaZakonczenia = godzinaZakonczenia.getText().toString();
 		boolean w_czyOtwarte = czyOtwarte.isChecked();
 
-		Wydarzenie w = new Wydarzenie(w_nazwa, w_data, w_godzinaRozpoczecia,
-				w_godzinaZakonczenia, null, w_czyOtwarte);
+		Wydarzenie wydarzenie = new Wydarzenie(w_nazwa, w_data,
+				w_godzinaRozpoczecia, w_godzinaZakonczenia, null, w_czyOtwarte);
+		Intent intent = new Intent(context, MojKalendarz.class);
 
 		SharedPreferences pref = context.getSharedPreferences("MyPref", 0);
-
 		String login = pref.getString("loggedIn", "null");
 		Uzytkownik uzytkownik = uzytkownikDao
 				.pobierzZalogowanegoUzytkownika(login);
-		w.setUzytkownik(uzytkownik);
+		wydarzenie.setUzytkownik(uzytkownik);
 
-		Lokalizacja lokalizacjaDb = lokalizacjaDao
-				.czyIstniejeJesliNieToDodaj(lokalizacja);
-		w.setLokalizacja(lokalizacjaDb);
-		
-		wydarzenieDao.add(w);
+		if (lokalizacja != null) {
+			Lokalizacja lokalizacjaDb = lokalizacjaDao
+					.czyIstniejeJesliNieToDodaj(lokalizacja);
+			wydarzenie.setLokalizacja(lokalizacjaDb);
+		}
+
+		wydarzenieDao.add(wydarzenie);
 
 		for (int i = 0; i < wybraniZnajomi.length; i++) {
 			if (wybraniZnajomi[i] == true) {
 				Uzytkownik u = wszyscyZnajomi.get(i);
 				Zaproszenie z = new Zaproszenie(false);
 				z.setUzytkownik(u);
-				z.setWydarzenie(w);
+				z.setWydarzenie(wydarzenie);
 				zaproszenieDao.add(z);
 			}
 		}
 
 		startActivity(intent);
-
 	}
 
 	@Override
@@ -191,7 +192,19 @@ public class NoweWydarzenie extends FragmentActivity implements
 	private void initBtnOnClickListeners() {
 		zapisz.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				zapisz();
+				String nazwa_w = nazwa.getText().toString();
+				if (nazwa_w == null || nazwa_w.equals(""))
+					Toast.makeText(context, "Podaj nazwê wydarzenia", Toast.LENGTH_SHORT).show();
+				else {
+				if (lokalizacja != null
+						&& lokalizacja.isLokalizacjaUzytkownika()) {
+					textFrag = new TextFragment(btnMapa.getText().toString());
+					textFrag.show(getSupportFragmentManager(), "Text");
+				} else {
+					zapisz();
+				}
+				}
+
 			}
 		});
 
@@ -253,28 +266,52 @@ public class NoweWydarzenie extends FragmentActivity implements
 		intent.putExtra("kategoria", wybranaKategoria);
 
 		String wpisanyAdres = btnMapa.getText().toString();
-		
-		  if (wpisanyAdres != null && !wpisanyAdres.equals("") && lokalizacja != null)
-		  {
-			  intent.putExtra("lok", true);
-			  intent.putExtra("lat", lokalizacja.getLat());
-			  intent.putExtra("lon", lokalizacja.getLon());
-		  }
-		  else {
-			  intent.putExtra("lok", false);
+
+		if (wpisanyAdres != null && !wpisanyAdres.equals("")
+				&& lokalizacja != null) {
+			intent.putExtra("lok", true);
+			intent.putExtra("lat", lokalizacja.getLat());
+			intent.putExtra("lon", lokalizacja.getLon());
+		} else {
+			intent.putExtra("lok", false);
 		}
-		  
+
 		startActivity(intent);
 	}
 
 	@Override
 	public void onDialogPositiveClick(DialogFragment dialog) {
 		this.wybraniZnajomi = checkboxFrag.getCheckedItems();
-		Toast.makeText(context, "1", Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
 	public void onDialogNegativeClick(DialogFragment dialog) {
+	}
+
+	@Override
+	public void onTextDialogPositiveClick(DialogFragment dialog) {
+		String opisLokalizacji = textFrag.getOpis();
+		Toast.makeText(context, opisLokalizacji, Toast.LENGTH_SHORT).show();
+		if (opisLokalizacji != "")
+			lokalizacja.setOpis(opisLokalizacji);
+		lokalizacja.setPubliczna(true);
+		zapisz();
+
+	}
+
+	@Override
+	public void onTextDialogNeutralClick(DialogFragment dialog) {
+		String opisLokalizacji = textFrag.getOpis();
+		Toast.makeText(context, opisLokalizacji, Toast.LENGTH_SHORT).show();
+		if (opisLokalizacji != "")
+			lokalizacja.setOpis(opisLokalizacji);
+		zapisz();
+	}
+
+	@Override
+	public void onTextDialogNegativeClick(DialogFragment dialog) {
+		// TODO Auto-generated method stub
+
 	}
 
 	public List<Uzytkownik> pobierzZnajomych() {
@@ -289,4 +326,5 @@ public class NoweWydarzenie extends FragmentActivity implements
 		lokalizacja = null;
 		btnMapa.setText("Lokalizacja");
 	}
+
 }

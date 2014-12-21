@@ -40,5 +40,7 @@
     <string name="szukaj">Szukaj</string>
     <string name="ok">OK</string>
     <string name="znajdz">Znajdź</string>
+    <string name="opis">Podaj opis..</string>
+    <string name="textDialog">Czy chcesz zapisać lokalizację, by była dostępna dla innych użytkowników?</string>
 
 </resources>

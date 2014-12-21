@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.analytics.l;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
@@ -351,17 +352,25 @@ public class Mapa extends FragmentActivity implements OnMapClickListener,
 	public Lokalizacja getSelectedMarker() {
 		if (selectedMarker == null)
 			return null;
+		//lokalizacja usera
 		else if (userMarker != null
 				&& selectedMarker.getPosition()
-						.equals(userMarker.getPosition()))
-			return new Lokalizacja(selectedMarker.getPosition().latitude,
+						.equals(userMarker.getPosition())) {
+			Lokalizacja l = new Lokalizacja(
+					selectedMarker.getPosition().latitude,
 					selectedMarker.getPosition().longitude,
 					selectedMarker.getTitle(), null, false, kategoria);
-		else {
+			l.setLokalizacjaUzytkownika(true);
+			return l;
+		//lokalizacja z bazy lub api
+		} else {
 			for (Lokalizacja l : lokalizacje) {
 				LatLng p = new LatLng(l.getLat(), l.getLon());
-				if (selectedMarker.getPosition().equals(p))
+				if (selectedMarker.getPosition().equals(p)) {
+					l.setLokalizacjaUzytkownika(false);
 					return l;
+
+				}
 			}
 		}
 		return null;
