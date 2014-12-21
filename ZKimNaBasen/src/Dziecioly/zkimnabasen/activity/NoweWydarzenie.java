@@ -132,12 +132,12 @@ public class NoweWydarzenie extends FragmentActivity implements
 			w_godzinaRozpoczecia = null;
 		if (w_godzinaZakonczenia.equals("Godzina zakoñczenia"))
 			w_godzinaZakonczenia = null;
-		
+
 		boolean w_czyOtwarte = czyOtwarte.isChecked();
 
-		Wydarzenie wydarzenie = new Wydarzenie(w_nazwa, General.dateFromString(w_data),
-				w_godzinaRozpoczecia, w_godzinaZakonczenia, w_opis,
-				w_czyOtwarte);
+		Wydarzenie wydarzenie = new Wydarzenie(w_nazwa,
+				General.dateFromString(w_data), w_godzinaRozpoczecia,
+				w_godzinaZakonczenia, w_opis, w_czyOtwarte);
 
 		SharedPreferences pref = context.getSharedPreferences("MyPref", 0);
 		String login = pref.getString("loggedIn", "null");
@@ -172,16 +172,23 @@ public class NoweWydarzenie extends FragmentActivity implements
 		String dday = Integer.toString(day);
 		String mmonth = String.valueOf(month + 1);
 		if (day < 10)
-			dday = "0"+dday;
+			dday = "0" + dday;
 		if (month < 9)
-			mmonth ="0"+mmonth;
+			mmonth = "0" + mmonth;
 		String dateText = dday + "." + mmonth + "." + year;
 		data.setText(dateText);
 	}
 
 	@Override
 	public void onTimeSet(TimePicker view, int hour, int minute) {
-		String timeText = hour + ":" + minute;
+		String hhour = Integer.toString(hour);
+		String mminute = Integer.toString(minute);
+		if (hour < 10)
+			hhour = "0" + hhour;
+		if (minute < 10)
+			mminute = "0" + mminute;
+		
+		String timeText = hhour + ":" + mminute;
 		if (flag == FLAG_START_TIME) {
 			godzinaRozpoczecia.setText(timeText);
 		} else if (flag == FLAG_END_TIME) {

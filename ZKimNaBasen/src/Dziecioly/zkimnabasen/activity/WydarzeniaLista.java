@@ -38,13 +38,13 @@ public class WydarzeniaLista extends Activity {
 		new PompeczkaWydarzenia();
 
 		WydarzenieDao wydDao = new WydarzenieDao();
-		List<Wydarzenie> wydarzenia = wydDao.list();
+		List<Wydarzenie> wydarzenia = wydDao.pobierzWydarzenia();
 		String [] sWydarzenia = null;
 
 		if (wydarzenia.size() == 0) {
 			Log.d(DatabaseManager.DEBUG_TAG, "PUSTA LISTA");
 			
-			Toast.makeText(this, "Lista wydarzeñ jest pusta w ciul!", Toast.LENGTH_LONG).show();
+			Toast.makeText(this, "Brak wydarzeñ", Toast.LENGTH_LONG).show();
 		}
 		
 		else {
@@ -60,10 +60,12 @@ public class WydarzeniaLista extends Activity {
 			rozbudowana_lista = (ListView) findViewById(R.id.lv_prostalista);
 			List_Custom_ListaWydarzen adapter_listy = new List_Custom_ListaWydarzen(sWydarzenia, this);
 			rozbudowana_lista.setAdapter(adapter_listy);
+			
+			initOnItemClickListener();
 		}
 
 		
-		initOnItemClickListener();
+		
 	}
 	
 	private void initOnItemClickListener() {
