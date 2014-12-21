@@ -84,12 +84,6 @@ public class SzczegolyWydarzenia extends Activity {
 			}
 		}
 	}
-
-
-	//String[] przykladowe_dane = {"Wlaz³ kotek", "na p³otek", "i mruga.", "piêkna to", "piosneczka nied³uga.", "Wlaz³ kurek", "na murek", "i pieje", "niech siê nikt", "z tych piosnek", "nie œmieje."};
-	//		rozbudowana_lista = (ListView) findViewById(R.id.lv_prostalista);
-	//		List_Custom_ListaWydarzen adapter_listy = new List_Custom_ListaWydarzen(sWydarzenie, this);
-	//		rozbudowana_lista.setAdapter(adapter_listy);
 }
 
 
