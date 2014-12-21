@@ -8,6 +8,7 @@ import Dziecioly.zkimnabasen.baza.dao.ZaproszenieDao;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -23,6 +24,7 @@ public class MojKalendarz extends ActionBarActivity {
 	private Button btnListaWydarzen;
 	private Button btnLogowanie;
 	
+	
 	UzytkownikDao uzytkownikDao = new UzytkownikDao();
 	ZaproszenieDao zaproszenieDao = new ZaproszenieDao();
 	WydarzenieDao wydarzenieDao = new WydarzenieDao();
@@ -33,9 +35,10 @@ public class MojKalendarz extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		context = getApplicationContext();
 		DatabaseManager.init(this);
+		
 
 		SharedPreferences pref = context.getSharedPreferences("MyPref", 0);
-		
+
 		if (!pref.contains("loggedIn")) {
 			Intent intent = new Intent(context, Logowanie.class);
 			startActivity(intent);
@@ -60,11 +63,14 @@ public class MojKalendarz extends ActionBarActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
-		if (id == R.id.action_settings) {
+		if (id == R.id.action_logout) {
+			General.clearSharedPrefs(context);
+			return true;
+		}
+		else if(id == R.id.action_clear)
+		{
+			General.clearData(context);	
 			return true;
 		}
 		return super.onOptionsItemSelected(item);

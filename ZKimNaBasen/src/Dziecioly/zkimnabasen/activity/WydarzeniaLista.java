@@ -9,9 +9,12 @@ import Dziecioly.zkimnabasen.baza.dao.WydarzenieDao;
 import Dziecioly.zkimnabasen.baza.model.List_Custom_ListaWydarzen;
 import Dziecioly.zkimnabasen.baza.model.Wydarzenie;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -24,10 +27,13 @@ public class WydarzeniaLista extends Activity {
 
 	private ListView rozbudowana_lista;
 	
+	private Context context;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_wydarzenia_lista);
+		context = getApplicationContext();
 
 		new PompeczkaWydarzenia();
 
@@ -74,5 +80,28 @@ public class WydarzeniaLista extends Activity {
 			}
 			
 		});
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.main, menu);
+
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		int id = item.getItemId();
+		if (id == R.id.action_logout) {
+			General.clearSharedPrefs(context);
+			return true;
+		}
+		else if(id == R.id.action_clear)
+		{
+			General.clearData(context);	
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 }

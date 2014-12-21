@@ -9,9 +9,12 @@ import Dziecioly.zkimnabasen.baza.model.List_Custom_ListaWydarzen;
 import Dziecioly.zkimnabasen.baza.model.Wydarzenie;
 import Dziecioly.zkimnabasen.baza.model.Zaproszenie;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,11 +30,13 @@ public class SzczegolyWydarzenia extends Activity {
 	private TextView tv_do;
 	private TextView tv_opis; 
 	private ListView rozbudowana_lista;
+	private Context context;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.szczegoly_wydarzenia);
+		context = getApplicationContext();
 		
 		Intent intent = getIntent();
 		int id = intent.getIntExtra("id_wydarzenia", -1);
@@ -83,6 +88,29 @@ public class SzczegolyWydarzenia extends Activity {
 				rozbudowana_lista.setAdapter(adapter_listy);
 			}
 		}
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.main, menu);
+
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		int id = item.getItemId();
+		if (id == R.id.action_logout) {
+			General.clearSharedPrefs(context);
+			return true;
+		}
+		else if(id == R.id.action_clear)
+		{
+			General.clearData(context);	
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 }
 

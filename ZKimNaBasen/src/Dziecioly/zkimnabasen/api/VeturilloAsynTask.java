@@ -1,7 +1,11 @@
 package Dziecioly.zkimnabasen.api;
 
+import java.util.List;
+
 import Dziecioly.zkimnabasen.activity.VeturilloMapa;
 import Dziecioly.zkimnabasen.baza.DatabaseManager;
+import Dziecioly.zkimnabasen.fragment.ListFragment;
+import android.R.integer;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -31,11 +35,24 @@ public class VeturilloAsynTask extends AsyncTask<Void, String, String> {
 	}
 
 	private LatLng znajdzStacje(LatLng latLng) {
-
-		String url = createUrl(latLng, 1000);
-		String response = request.getFromUrl(url, true);
-		Log.d(DatabaseManager.DEBUG_TAG, response);
+		int promien = 100;
+		boolean znaleziono = false;
+		while (znaleziono)
+		{
+			String url = createUrl(latLng, 1000);
+			String response = request.getFromUrl(url, true);
+			Log.d(DatabaseManager.DEBUG_TAG, response);
+			znaleziono = true;
+		}
+		
 		return null;
+	}
+	
+	
+	private List<LatLng> parseResponse(String response)
+	{
+		return null;
+		
 	}
 
 	private String createUrl(LatLng latLng, int promien) {
