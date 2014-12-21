@@ -53,6 +53,7 @@ public class NoweWydarzenie extends FragmentActivity implements
 	private Button zapisz;
 	private Button btnMapa;
 	private Button btnKategoria;
+	private EditText opis;
 	private CheckBox czyOtwarte;
 	private Button btnVeturillo;
 
@@ -86,6 +87,7 @@ public class NoweWydarzenie extends FragmentActivity implements
 		godzinaZakonczenia = (Button) findViewById(R.id.godzinaZakonczenia);
 		zaprosZnajomych = (Button) findViewById(R.id.zaprosZnajomych);
 		zapisz = (Button) findViewById(R.id.zapisz);
+		opis = (EditText) findViewById(R.id.opis);
 		czyOtwarte = (CheckBox) findViewById(R.id.czyOtwarte);
 		btnKategoria = (Button) findViewById(R.id.kategoria);
 		btnMapa = (Button) findViewById(R.id.mapa);
@@ -122,11 +124,12 @@ public class NoweWydarzenie extends FragmentActivity implements
 		String w_data = data.getText().toString();
 		String w_godzinaRozpoczecia = godzinaRozpoczecia.getText().toString();
 		String w_godzinaZakonczenia = godzinaZakonczenia.getText().toString();
+		String w_opis = opis.getText().toString();
 		boolean w_czyOtwarte = czyOtwarte.isChecked();
 
 		Wydarzenie wydarzenie = new Wydarzenie(w_nazwa, w_data,
-				w_godzinaRozpoczecia, w_godzinaZakonczenia, null, w_czyOtwarte);
-		Intent intent = new Intent(context, MojKalendarz.class);
+				w_godzinaRozpoczecia, w_godzinaZakonczenia, w_opis, w_czyOtwarte);
+		Intent intent = new Intent(context, SzczegolyWydarzenia.class);
 
 		SharedPreferences pref = context.getSharedPreferences("MyPref", 0);
 		String login = pref.getString("loggedIn", "null");
@@ -153,25 +156,6 @@ public class NoweWydarzenie extends FragmentActivity implements
 		}
 
 		startActivity(intent);
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.nowe_wydarzenie, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
 	}
 
 	@Override
@@ -241,7 +225,6 @@ public class NoweWydarzenie extends FragmentActivity implements
 		zaprosZnajomych.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Toast.makeText(context, "2", Toast.LENGTH_SHORT).show();
 				checkboxFrag = new ChecboxListFragment("Wybierz znajomych",
 						null, wybraniZnajomi);
 				checkboxFrag.setItems(wszyscyZnajomi);
@@ -343,6 +326,29 @@ public class NoweWydarzenie extends FragmentActivity implements
 		btnKategoria.setText(wybranaKategoria);
 		lokalizacja = null;
 		btnMapa.setText("Lokalizacja");
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.main, menu);
+
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		int id = item.getItemId();
+		if (id == R.id.action_logout) {
+			General.clearSharedPrefs(context);
+			return true;
+		}
+		else if(id == R.id.action_clear)
+		{
+			General.clearData(context);	
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 }

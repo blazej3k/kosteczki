@@ -57,5 +57,8 @@
     <string name="btn_nowe_wydarzenie">Nowe wydarzenie</string>
     <string name="btn_wyswietlanie">Wyświetlanie</string>
     <string name="lbl_moje_wydarzenia">Moje wydarzenia</string>
+	<string name="opiss">Opis</string>
+    <string name="wyczyscDane">Wyczyść dane</string>
+    <string name="wyloguj">Wyloguj</string>
 
 </resources>

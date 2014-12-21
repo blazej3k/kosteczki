@@ -11,6 +11,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -111,6 +113,30 @@ public class Veturillo extends Activity {
 
 			}
 		});
+	}
+	
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.main, menu);
+
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		int id = item.getItemId();
+		if (id == R.id.action_logout) {
+			General.clearSharedPrefs(context);
+			return true;
+		}
+		else if(id == R.id.action_clear)
+		{
+			General.clearData(context);	
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 

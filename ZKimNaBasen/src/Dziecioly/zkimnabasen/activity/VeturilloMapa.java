@@ -75,7 +75,7 @@ public class VeturilloMapa extends FragmentActivity implements
 	}
 
 	private String createUrl(LatLng origin, LatLng destination) {
-		return "http://maps.googleapis.com/maps/api/directions/json?origin="
+		return "http://maps.googleapis.com/maps/api/directions/json?mode=bicycle&origin="
 				+ origin.latitude + "," + origin.longitude + "&destination="
 				+ destination.latitude + "," + destination.longitude
 				+ "&sensor=false";
