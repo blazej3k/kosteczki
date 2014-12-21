@@ -112,16 +112,4 @@
         android:layout_height="210dp" >
     </ListView>
 
-    <Button
-        android:id="@+id/btnEdytuj"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/edytuj" />
-
-    <Button
-        android:id="@+id/btnUsun"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/usun" />
-
 </LinearLayout>
