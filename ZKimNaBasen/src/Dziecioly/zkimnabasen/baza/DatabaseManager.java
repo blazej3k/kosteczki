@@ -16,7 +16,7 @@ import com.j256.ormlite.table.TableUtils;
 public class DatabaseManager extends OrmLiteSqliteOpenHelper {
 
 	private static final String DATABASE_NAME = "zKimNaBasen.sqlite";
-	private static final int DATABASE_VERSION = 10;
+	private static final int DATABASE_VERSION = 11;
 	public static final String DEBUG_TAG = "SqLiteBasen";
 	
 	private static final String DROP_TABLE_UZYTKOWNIK = 
@@ -59,6 +59,9 @@ public class DatabaseManager extends OrmLiteSqliteOpenHelper {
 			TableUtils.createTable(connectionSource, Wydarzenie.class);
 			TableUtils.createTable(connectionSource, Zaproszenie.class);
 			TableUtils.createTable(connectionSource, Lokalizacja.class);
+			
+			new PompeczkaLokalizacje();
+			
 			Log.d(DEBUG_TAG, "Database creating...");
 		} catch (SQLException e) {
 			Log.e(DatabaseManager.class.getName(), "Can't create database", e);

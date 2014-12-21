@@ -43,6 +43,16 @@
     <string name="label_data">Data</string>
     <string name="label_opis">Opis:</string>
     <string name="kategoria">Kategoria</string>
-    
+    <string name="veturillo">Veturillo</string>
+    <string name="szukaj">Szukaj</string>
+    <string name="ok">OK</string>
+    <string name="znajdz">Znajdź</string>
+    <string name="opis">Podaj opis..</string>
+    <string name="textDialog">Czy chcesz zapisać lokalizację, by była dostępna dla innych użytkowników?</string>
+    <string name="skad">Skąd?</string>
+    <string name="stacjaZRowerami">Stacja z dostępnymi rowerami</string>
+    <string name="znajdzTrase">Znajdź trasę</string>
+    <string name="wyznaczTrase">Wyznacz trasę</string>
+    <string name="pobierzLokalizacje">Pobierz moją lokalizację</string>
 
 </resources>

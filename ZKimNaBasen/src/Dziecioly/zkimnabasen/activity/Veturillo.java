@@ -1,136 +1,118 @@
 package Dziecioly.zkimnabasen.activity;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.google.android.gms.maps.model.LatLng;
 
 import Dziecioly.zkimnabasen.R;
-import Dziecioly.zkimnabasen.api.HttpRequest;
 import Dziecioly.zkimnabasen.baza.DatabaseManager;
+import Dziecioly.zkimnabasen.baza.model.Lokalizacja;
+import android.R.integer;
+import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Polyline;
-import com.google.android.gms.maps.model.PolylineOptions;
+public class Veturillo extends Activity {
 
-public class Veturillo extends FragmentActivity implements OnMapReadyCallback {
-	private final LatLng defaultLatLng = new LatLng(52.23, 21);
-	
-	LatLng origin = new LatLng(52.267218, 20.962397);
-	LatLng destination = new LatLng(52.242196, 20.992990);
-	String url = "http://maps.googleapis.com/maps/api/directions/json?origin="
-			+ origin.latitude + "," + origin.longitude + "&destination="
-			+ destination.latitude + "," + destination.longitude
-			+ "&sensor=false";
 	private Context context;
+	private TextView textDestination;
+	private Button btnOrigin;
+	private CheckBox checkBoxMojaLokalizacja;
+	private CheckBox checkBoxRowery;
+	private Button btnWyznacz;
 
-	private List<LatLng> lines;
-	private GoogleMap map;
+	private double destLat;
+	private double destLon;
+	private String destAdres;
+
+	public static Lokalizacja wybranaLokalizacja;
+	private Lokalizacja lokalizacja;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.mapa);
+		setContentView(R.layout.veturillo);
 		context = getApplicationContext();
 
-		HttpRequest request = new HttpRequest();
-		String response = request.getFromUrl(url, false);
+		textDestination = (TextView) findViewById(R.id.textDestination);
+		btnOrigin = (Button) findViewById(R.id.btnOrigin);
+		checkBoxMojaLokalizacja = (CheckBox) findViewById(R.id.checkBoxMojaLokalizacja);
+		checkBoxRowery = (CheckBox) findViewById(R.id.checkBoxRowery);
+		btnWyznacz = (Button) findViewById(R.id.btnWyznacz);
 
-		lines = parseResponse(response);
-		
-		Log.d(DatabaseManager.DEBUG_TAG, Integer.toString(lines.size()));
+		destLat = getIntent().getExtras().getDouble("lat");
+		destLon = getIntent().getExtras().getDouble("lon");
+		destAdres = getIntent().getExtras().getString("adres");
 
-		SupportMapFragment myMapFragment = (SupportMapFragment) getSupportFragmentManager()
-				.findFragmentById(R.id.map);
-		myMapFragment.onCreate(savedInstanceState);
+		textDestination.setText("Lokalizacja docelowa:\n" + destAdres);
 
-		myMapFragment.getMapAsync(this);
+		initBtnOnClickListeners();
 
-	}
-
-	private List<LatLng> parseResponse(String response) {
-		try {
-
-			JSONObject result = new JSONObject(response);
-			JSONArray routes = result.getJSONArray("routes");
-
-			long distanceForSegment = routes.getJSONObject(0)
-					.getJSONArray("legs").getJSONObject(0)
-					.getJSONObject("distance").getInt("value");
-
-			JSONArray steps = routes.getJSONObject(0).getJSONArray("legs")
-					.getJSONObject(0).getJSONArray("steps");
-
-			List<LatLng> lines = new ArrayList<LatLng>();
-
-			for (int i = 0; i < steps.length(); i++) {
-				String polyline = steps.getJSONObject(i)
-						.getJSONObject("polyline").getString("points");
-
-				for (LatLng p : decodePolyline(polyline)) {
-					lines.add(p);
-				}
-			}
-
-			return lines;
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	private List<LatLng> decodePolyline(String encoded) {
-
-		List<LatLng> poly = new ArrayList<LatLng>();
-
-		int index = 0, len = encoded.length();
-		int lat = 0, lng = 0;
-
-		while (index < len) {
-			int b, shift = 0, result = 0;
-			do {
-				b = encoded.charAt(index++) - 63;
-				result |= (b & 0x1f) << shift;
-				shift += 5;
-			} while (b >= 0x20);
-			int dlat = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
-			lat += dlat;
-
-			shift = 0;
-			result = 0;
-			do {
-				b = encoded.charAt(index++) - 63;
-				result |= (b & 0x1f) << shift;
-				shift += 5;
-			} while (b >= 0x20);
-			int dlng = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
-			lng += dlng;
-
-			LatLng p = new LatLng((double) lat / 1E5, (double) lng / 1E5);
-			poly.add(p);
-		}
-
-		return poly;
 	}
 
 	@Override
-	public void onMapReady(GoogleMap mapp) {
-		this.map = mapp;
-		map.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLatLng, 12.0f));
-		Polyline polylineToAdd = map.addPolyline(new PolylineOptions()
-				.addAll(lines).width(3).color(Color.RED));
+	protected void onResume() {
+		super.onResume();
+		Log.d(DatabaseManager.DEBUG_TAG, "onResume");
+		if (wybranaLokalizacja != null) {
+			lokalizacja = wybranaLokalizacja;
+			String adres = wybranaLokalizacja.getAdres();
+			Log.d(DatabaseManager.DEBUG_TAG, adres);
+			if (adres != null) {
+				btnOrigin.setText(adres);
+				Log.d(DatabaseManager.DEBUG_TAG, adres);
+			} else {
+				btnOrigin.setText("");
+			}
+		}
+		wybranaLokalizacja = null;
+	}
+
+	private void wyznacz() {
+		if (lokalizacja == null)
+			Toast.makeText(context, "Wybierz sk¹d wyznaczyæ trasê",
+					Toast.LENGTH_SHORT).show();
+		double originLat = lokalizacja.getLat();
+		double originLon = lokalizacja.getLon();
+
+		boolean wolneRowery = checkBoxRowery.isChecked();
+		Intent intent = new Intent(context, VeturilloMapa.class);
+
+		intent.putExtra("originLat", originLat);
+		intent.putExtra("originLon", originLon);
+		intent.putExtra("destLat", destLat);
+		intent.putExtra("destLon", destLon);
+
+		startActivity(intent);
 
 	}
+
+	private void initBtnOnClickListeners() {
+		btnWyznacz.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				wyznacz();
+			}
+		});
+
+		btnOrigin.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(context,
+						VeturilloMapaLokalizacja.class);
+				startActivity(intent);
+
+			}
+		});
+	}
+
+
 
 }

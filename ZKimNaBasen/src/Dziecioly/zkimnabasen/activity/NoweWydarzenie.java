@@ -1,6 +1,5 @@
 package Dziecioly.zkimnabasen.activity;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -18,14 +17,13 @@ import Dziecioly.zkimnabasen.baza.model.Zaproszenie;
 import Dziecioly.zkimnabasen.fragment.ChecboxListFragment;
 import Dziecioly.zkimnabasen.fragment.DatePickerFragment;
 import Dziecioly.zkimnabasen.fragment.ListFragment;
+import Dziecioly.zkimnabasen.fragment.TextFragment;
 import Dziecioly.zkimnabasen.fragment.TimePickerFragment;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.location.Address;
-import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
@@ -44,11 +42,10 @@ import android.widget.Toast;
 public class NoweWydarzenie extends FragmentActivity implements
 		OnDateSetListener, OnTimeSetListener,
 		ChecboxListFragment.NoticeDialogListener,
-		ListFragment.NoticeDialogListener {
+		ListFragment.NoticeDialogListener, TextFragment.NoticeDialogListener {
 
 	private Context context;
 	private EditText nazwa;
-	private EditText lokalizacja;
 	private Button data;
 	private Button godzinaRozpoczecia;
 	private Button godzinaZakonczenia;
@@ -57,13 +54,13 @@ public class NoweWydarzenie extends FragmentActivity implements
 	private Button btnMapa;
 	private Button btnKategoria;
 	private CheckBox czyOtwarte;
+	private Button btnVeturillo;
 
 	private List<Uzytkownik> wszyscyZnajomi = new ArrayList<Uzytkownik>();
 	private boolean[] wybraniZnajomi;
 	private String wybranaKategoria = "";
 	public static Lokalizacja wybranaLokalizacja;
-
-	private String adresZMapy = "";
+	private Lokalizacja lokalizacja = null;
 
 	private WydarzenieDao wydarzenieDao = new WydarzenieDao();
 	private UzytkownikDao uzytkownikDao = new UzytkownikDao();
@@ -71,12 +68,11 @@ public class NoweWydarzenie extends FragmentActivity implements
 	private LokalizacjaDao lokalizacjaDao = new LokalizacjaDao();
 
 	private ChecboxListFragment checkboxFrag;
+	private TextFragment textFrag;
 	private ListFragment listFrag;
 	public static final int FLAG_START_TIME = 0;
 	public static final int FLAG_END_TIME = 1;
 	private int flag;
-
-	Geocoder geocoder;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -84,10 +80,7 @@ public class NoweWydarzenie extends FragmentActivity implements
 		context = getApplicationContext();
 		setContentView(R.layout.nowe_wydarzenie);
 
-		Log.d(DatabaseManager.DEBUG_TAG, "onCreate");
-
 		nazwa = (EditText) findViewById(R.id.nazwa);
-		lokalizacja = (EditText) findViewById(R.id.lokalizacja);
 		data = (Button) findViewById(R.id.data);
 		godzinaRozpoczecia = (Button) findViewById(R.id.godzinaRozpoczecia);
 		godzinaZakonczenia = (Button) findViewById(R.id.godzinaZakonczenia);
@@ -96,6 +89,7 @@ public class NoweWydarzenie extends FragmentActivity implements
 		czyOtwarte = (CheckBox) findViewById(R.id.czyOtwarte);
 		btnKategoria = (Button) findViewById(R.id.kategoria);
 		btnMapa = (Button) findViewById(R.id.mapa);
+		btnVeturillo = (Button) findViewById(R.id.btnVeturillo);
 
 		initBtnOnClickListeners();
 
@@ -104,8 +98,6 @@ public class NoweWydarzenie extends FragmentActivity implements
 		Arrays.fill(wybraniZnajomi, Boolean.FALSE);
 
 		wybranaLokalizacja = null;
-		geocoder = new Geocoder(context);
-
 	}
 
 	@Override
@@ -113,125 +105,56 @@ public class NoweWydarzenie extends FragmentActivity implements
 		super.onResume();
 		Log.d(DatabaseManager.DEBUG_TAG, "onResume");
 		if (wybranaLokalizacja != null) {
+			lokalizacja = wybranaLokalizacja;
 			String adres = wybranaLokalizacja.getAdres();
-			if (adres == null) {
-				adres = pobierzAdres(wybranaLokalizacja.getLat(),
-						wybranaLokalizacja.getLon());
+			if (adres != null) {
+				btnMapa.setText(adres);
+				Log.d(DatabaseManager.DEBUG_TAG, adres);
+			} else {
+				btnMapa.setText("");
 			}
-			if (adres != null)
-				lokalizacja.setText(adres);
-
-			if (!wybranaLokalizacja.isLokalizacjaUzytkownika())
-				adresZMapy = adres;
-
-			Log.d(DatabaseManager.DEBUG_TAG, adres);
-		} else {
-			lokalizacja.setText("");
 		}
-
 		wybranaLokalizacja = null;
 	}
 
-	private String pobierzAdres(double lat, double lon) {
-		try {
-			Address a = geocoder.getFromLocation(lat, lon, 1).get(0);
-			return a.getAddressLine(0);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	private double[] pobierzMarker(String adres) {
-		double[] lewyDolnyRog = { 52.116507, 20.870993 };
-		double[] prawyGornyRog = { 52.365419, 21.208823 };
-
-		double[] latlon = new double[2];
-		try {
-			List<Address> ad = geocoder.getFromLocationName(
-					adres + " Warszawa", 1, lewyDolnyRog[0], lewyDolnyRog[1],
-					prawyGornyRog[0], prawyGornyRog[1]);
-
-			if (ad.size() == 0)
-				return null;
-			else {
-				Address a = ad.get(0);
-				latlon[0] = a.getLatitude();
-				latlon[1] = a.getLongitude();
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return latlon;
-	}
-
 	private void zapisz() {
-		Intent intent = new Intent(context, MojKalendarz.class);
-
 		String w_nazwa = nazwa.getText().toString();
-		String w_lokalizacja = lokalizacja.getText().toString();
 		String w_data = data.getText().toString();
 		String w_godzinaRozpoczecia = godzinaRozpoczecia.getText().toString();
 		String w_godzinaZakonczenia = godzinaZakonczenia.getText().toString();
 		boolean w_czyOtwarte = czyOtwarte.isChecked();
 
-		Wydarzenie w = new Wydarzenie(w_nazwa, w_data,
+		Wydarzenie wydarzenie = new Wydarzenie(w_nazwa, w_data,
 				w_godzinaRozpoczecia, w_godzinaZakonczenia, null, w_czyOtwarte);
+		Intent intent = new Intent(context, MojKalendarz.class);
 
 		SharedPreferences pref = context.getSharedPreferences("MyPref", 0);
-
 		String login = pref.getString("loggedIn", "null");
 		Uzytkownik uzytkownik = uzytkownikDao
 				.pobierzZalogowanegoUzytkownika(login);
-		w.setUzytkownik(uzytkownik);
+		wydarzenie.setUzytkownik(uzytkownik);
 
-		String wpisanyAdres = lokalizacja.getText().toString();
-		if (wpisanyAdres != null && !wpisanyAdres.equals("")) {
-			Lokalizacja l = lokalizacjaDao.pobierzLokalizacje(wpisanyAdres,
-					wybranaKategoria);
-			// jeœli lokalizacja jest ju¿ w bazie
-			if (l != null)
-				Log.d(DatabaseManager.DEBUG_TAG, "Lokalizacja jest ju¿ w bazie");
-			else {
-				Log.d(DatabaseManager.DEBUG_TAG, "Lokalizacji nie ma w bazie");
-				if (wpisanyAdres.equalsIgnoreCase(adresZMapy)) {
-					Log.d(DatabaseManager.DEBUG_TAG, "Trzeba pobraæ lokalizacjê z api");
-					// jesli lokalizacja usera
-				} else {
-					// ustal lat lon
-					Log.d(DatabaseManager.DEBUG_TAG, "Lokalizacja u¿ytkownika");
-					double[] latlon = pobierzMarker(wpisanyAdres);
-					if (latlon == null) {
-						Toast.makeText(context, "Nieznana lokalizacja",
-								Toast.LENGTH_LONG).show();
-					} else {
-						Log.d(DatabaseManager.DEBUG_TAG, "Zapisujê now¹ lokalizacjê do bazy");
-						l = new Lokalizacja(latlon[0], latlon[1], wpisanyAdres,
-								null, false, wybranaKategoria, true);
-						lokalizacjaDao.add(l);
-					}
-				}
-			}
-			w.setLokalizacja(l);
-
+		if (lokalizacja != null) {
+			Lokalizacja lokalizacjaDb = lokalizacjaDao
+					.czyIstniejeJesliNieToDodaj(lokalizacja);
+			wydarzenie.setLokalizacja(lokalizacjaDb);
 		}
 
-		wydarzenieDao.add(w);
+		wydarzenieDao.add(wydarzenie);
 
 		for (int i = 0; i < wybraniZnajomi.length; i++) {
 			if (wybraniZnajomi[i] == true) {
 				Uzytkownik u = wszyscyZnajomi.get(i);
 				Zaproszenie z = new Zaproszenie(false);
 				z.setUzytkownik(u);
-				z.setWydarzenie(w);
+				z.setWydarzenie(wydarzenie);
 				zaproszenieDao.add(z);
 			}
 		}
 
 		startActivity(intent);
-
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -271,7 +194,21 @@ public class NoweWydarzenie extends FragmentActivity implements
 	private void initBtnOnClickListeners() {
 		zapisz.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				zapisz();
+				String nazwa_w = nazwa.getText().toString();
+				if (nazwa_w == null || nazwa_w.equals(""))
+					Toast.makeText(context, "Podaj nazwê wydarzenia",
+							Toast.LENGTH_SHORT).show();
+				else {
+					if (lokalizacja != null
+							&& lokalizacja.isLokalizacjaUzytkownika()) {
+						textFrag = new TextFragment(btnMapa.getText()
+								.toString());
+						textFrag.show(getSupportFragmentManager(), "Text");
+					} else {
+						zapisz();
+					}
+				}
+
 			}
 		});
 
@@ -326,31 +263,35 @@ public class NoweWydarzenie extends FragmentActivity implements
 			}
 		});
 
+		btnVeturillo.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				if (lokalizacja == null)
+					Toast.makeText(context, "Wybierz lokalizacjê",
+							Toast.LENGTH_SHORT).show();
+				else {
+					Intent intent = new Intent(context, Veturillo.class);
+					intent.putExtra("lat", lokalizacja.getLat());
+					intent.putExtra("lon", lokalizacja.getLon());
+					intent.putExtra("adres", lokalizacja.getAdres());
+					startActivity(intent);
+				}
+			}
+		});
 	}
 
 	private void wczytajMape() {
 		Intent intent = new Intent(context, Mapa.class);
 		intent.putExtra("kategoria", wybranaKategoria);
 
-		String wpisanyAdres = lokalizacja.getText().toString();
+		String wpisanyAdres = btnMapa.getText().toString();
 
-		if (wpisanyAdres != null && !wpisanyAdres.equals("")) {
-			if (wpisanyAdres.equalsIgnoreCase(adresZMapy)) {
-				intent.putExtra("zMapy", true);
-				intent.putExtra("adresZMapyText", wpisanyAdres);
-			} else
-				intent.putExtra("zMapy", false);
-			Log.d(DatabaseManager.DEBUG_TAG, wpisanyAdres);
-			double[] latlon = pobierzMarker(wpisanyAdres);
-			if (latlon == null)
-				intent.putExtra("userAddress", false);
-			else {
-				Log.d(DatabaseManager.DEBUG_TAG, Double.toString(latlon[0]));
-				Log.d(DatabaseManager.DEBUG_TAG, Double.toString(latlon[1]));
-				intent.putExtra("userAddress", true);
-				intent.putExtra("lat", latlon[0]);
-				intent.putExtra("lon", latlon[1]);
-			}
+		if (wpisanyAdres != null && !wpisanyAdres.equals("")
+				&& lokalizacja != null) {
+			intent.putExtra("lok", true);
+			intent.putExtra("lat", lokalizacja.getLat());
+			intent.putExtra("lon", lokalizacja.getLon());
+		} else {
+			intent.putExtra("lok", false);
 		}
 
 		startActivity(intent);
@@ -359,11 +300,36 @@ public class NoweWydarzenie extends FragmentActivity implements
 	@Override
 	public void onDialogPositiveClick(DialogFragment dialog) {
 		this.wybraniZnajomi = checkboxFrag.getCheckedItems();
-		Toast.makeText(context, "1", Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
 	public void onDialogNegativeClick(DialogFragment dialog) {
+	}
+
+	@Override
+	public void onTextDialogPositiveClick(DialogFragment dialog) {
+		String opisLokalizacji = textFrag.getOpis();
+		Toast.makeText(context, opisLokalizacji, Toast.LENGTH_SHORT).show();
+		if (opisLokalizacji != "")
+			lokalizacja.setOpis(opisLokalizacji);
+		lokalizacja.setPubliczna(true);
+		zapisz();
+
+	}
+
+	@Override
+	public void onTextDialogNeutralClick(DialogFragment dialog) {
+		String opisLokalizacji = textFrag.getOpis();
+		Toast.makeText(context, opisLokalizacji, Toast.LENGTH_SHORT).show();
+		if (opisLokalizacji != "")
+			lokalizacja.setOpis(opisLokalizacji);
+		zapisz();
+	}
+
+	@Override
+	public void onTextDialogNegativeClick(DialogFragment dialog) {
+		// TODO Auto-generated method stub
+
 	}
 
 	public List<Uzytkownik> pobierzZnajomych() {
@@ -375,5 +341,8 @@ public class NoweWydarzenie extends FragmentActivity implements
 	public void onDialogClick(DialogFragment dialog) {
 		wybranaKategoria = listFrag.getSelectedItem();
 		btnKategoria.setText(wybranaKategoria);
+		lokalizacja = null;
+		btnMapa.setText("Lokalizacja");
 	}
+
 }

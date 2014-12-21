@@ -25,17 +25,6 @@
             android:ems="10"
             android:hint="@string/nazwa" />
 
-        <EditText
-            android:id="@+id/lokalizacja"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/nazwa"
-            android:layout_below="@+id/nazwa"
-            android:layout_marginTop="18dp"
-            android:background="#FFFFFF"
-            android:ems="10"
-            android:hint="@string/adres" />
-
         <Button
             android:id="@+id/zapisz"
             android:layout_width="wrap_content"
@@ -68,30 +57,11 @@
             android:id="@+id/godzinaRozpoczecia"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/lokalizacja"
+            android:layout_alignLeft="@+id/nazwa"
             android:layout_alignRight="@+id/data"
             android:layout_below="@+id/data"
             android:layout_marginTop="19dp"
             android:text="@string/godzinaRozpoczecia" />
-
-        <Button
-            android:id="@+id/mapa"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignRight="@+id/lokalizacja"
-            android:layout_below="@+id/lokalizacja"
-            android:layout_marginTop="22dp"
-            android:text="@string/mapa" />
-
-        <Button
-            android:id="@+id/data"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/lokalizacja"
-            android:layout_alignRight="@+id/mapa"
-            android:layout_below="@+id/mapa"
-            android:layout_marginTop="26dp"
-            android:text="@string/data" />
 
         <Button
             android:id="@+id/godzinaZakonczenia"
@@ -107,9 +77,40 @@
             android:id="@+id/kategoria"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/lokalizacja"
-            android:layout_alignTop="@+id/mapa"
+            android:layout_alignLeft="@+id/nazwa"
+            android:layout_alignRight="@+id/nazwa"
+            android:layout_below="@+id/nazwa"
+            android:layout_marginTop="20dp"
             android:text="@string/kategoria" />
+
+        <Button
+            android:id="@+id/btnVeturillo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/data"
+            android:layout_alignRight="@+id/mapa"
+            android:layout_below="@+id/mapa"
+            android:text="@string/veturillo" />
+
+        <Button
+            android:id="@+id/mapa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/kategoria"
+            android:layout_alignRight="@+id/kategoria"
+            android:layout_below="@+id/kategoria"
+            android:layout_marginTop="14dp"
+            android:text="@string/lokalizacja" />
+
+        <Button
+            android:id="@+id/data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/mapa"
+            android:layout_alignRight="@+id/mapa"
+            android:layout_below="@+id/btnVeturillo"
+            android:layout_marginTop="44dp"
+            android:text="@string/data" />
 
     </RelativeLayout>
 
