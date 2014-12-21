@@ -57,5 +57,7 @@
     <string name="opiss">Opis</string>
     <string name="wyczyscDane">Wyczyść dane</string>
     <string name="wyloguj">Wyloguj</string>
+    <string name="edytuj">Edytuj</string>
+    <string name="usun">Usuń</string>
 
 </resources>

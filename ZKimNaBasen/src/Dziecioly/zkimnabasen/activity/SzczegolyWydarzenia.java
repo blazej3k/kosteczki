@@ -8,6 +8,7 @@ import Dziecioly.zkimnabasen.baza.dao.WydarzenieDao;
 import Dziecioly.zkimnabasen.baza.model.List_Custom_ListaWydarzen;
 import Dziecioly.zkimnabasen.baza.model.Wydarzenie;
 import Dziecioly.zkimnabasen.baza.model.Zaproszenie;
+import android.R.integer;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +16,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,7 +34,13 @@ public class SzczegolyWydarzenia extends Activity {
 	private TextView tv_do;
 	private TextView tv_opis; 
 	private ListView rozbudowana_lista;
+	private Button btnEdytuj;
+	private Button btnUsun;
 	private Context context;
+	
+	WydarzenieDao wydDao = new WydarzenieDao();
+	
+	private int id;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +49,7 @@ public class SzczegolyWydarzenia extends Activity {
 		context = getApplicationContext();
 		
 		Intent intent = getIntent();
-		int id = intent.getIntExtra("id_wydarzenia", -1);
+		id = intent.getIntExtra("id_wydarzenia", -1);
 		
 		tv_tworca = (TextView) findViewById(R.id.tv_tworca);
 		tv_nazwa = (TextView) findViewById(R.id.tv_nazwa_wydarzenia);
@@ -49,12 +59,16 @@ public class SzczegolyWydarzenia extends Activity {
 		tv_opis = (TextView) findViewById(R.id.tv_opis);
 		rozbudowana_lista = (ListView) findViewById(R.id.lv_prostalista);
 		
+		btnEdytuj = (Button) findViewById(R.id.btnEdytuj);
+		btnUsun = (Button) findViewById(R.id.btnUsun);
+		
+		initOnBtnClickListeners();
+		
 		czytajWydarzenie(id);
 	}
 	
 	private void czytajWydarzenie(int id) {
 		
-		WydarzenieDao wydDao = new WydarzenieDao();
 		Wydarzenie wydarzenie = wydDao.find(id); // pobierz wydarzenie, select do bazy
 		
 		Log.d(DEBUG_TAG, "czytajWydarzenie2 id="+id);
@@ -89,6 +103,30 @@ public class SzczegolyWydarzenia extends Activity {
 		}
 	}
 	
+	private void initOnBtnClickListeners()
+	{
+		btnEdytuj.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(context, NoweWydarzenie.class);
+				intent.putExtra("id", id);
+				startActivity(intent);
+		}
+		});
+		
+		btnUsun.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Wydarzenie w = wydDao.find(id);
+				wydDao.remove(w);
+				Toast.makeText(context, "Usuniêto", Toast.LENGTH_LONG).show();
+				Intent intent = new Intent(context, WydarzeniaLista.class);
+				startActivity(intent);
+				
+			}
+		});
+	}
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -111,6 +149,8 @@ public class SzczegolyWydarzenia extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
+	
+	
 }
 
 
