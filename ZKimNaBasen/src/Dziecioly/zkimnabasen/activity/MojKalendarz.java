@@ -5,26 +5,29 @@ import Dziecioly.zkimnabasen.baza.DatabaseManager;
 import Dziecioly.zkimnabasen.baza.dao.UzytkownikDao;
 import Dziecioly.zkimnabasen.baza.dao.WydarzenieDao;
 import Dziecioly.zkimnabasen.baza.dao.ZaproszenieDao;
+import Dziecioly.zkimnabasen.fragment.ChecboxListFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
-public class MojKalendarz extends ActionBarActivity {
+public class MojKalendarz extends FragmentActivity implements
+		ChecboxListFragment.NoticeDialogListener {
 
 	Context context;
 	private Button btnNoweWydarzenie;
 	private Button btnListaWydarzen;
 	private Button btnLogowanie;
-	
-	
+
+	private ChecboxListFragment frag;
+
 	UzytkownikDao uzytkownikDao = new UzytkownikDao();
 	ZaproszenieDao zaproszenieDao = new ZaproszenieDao();
 	WydarzenieDao wydarzenieDao = new WydarzenieDao();
@@ -35,7 +38,6 @@ public class MojKalendarz extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		context = getApplicationContext();
 		DatabaseManager.init(this);
-		
 
 		SharedPreferences pref = context.getSharedPreferences("MyPref", 0);
 
@@ -67,10 +69,8 @@ public class MojKalendarz extends ActionBarActivity {
 		if (id == R.id.action_logout) {
 			General.clearSharedPrefs(context);
 			return true;
-		}
-		else if(id == R.id.action_clear)
-		{
-			General.clearData(context);	
+		} else if (id == R.id.action_clear) {
+			General.clearData(context);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -97,5 +97,17 @@ public class MojKalendarz extends ActionBarActivity {
 				startActivity(intent);
 			}
 		});
+	}
+
+	@Override
+	public void onDialogPositiveClick(DialogFragment dialog) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onDialogNegativeClick(DialogFragment dialog) {
+		// TODO Auto-generated method stub
+		
 	}
 }

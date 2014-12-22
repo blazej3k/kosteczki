@@ -63,7 +63,7 @@ public class Pompeczka {
 		// wydarzenie 1 - uzytkownik 1, lokalizacja 7, zaproszenia (2 3 4)
 		Wydarzenie wydarzenie1 = new Wydarzenie("Wypad na basen",
 				General.dateFromString("01.02.2015"), "14:00", "16:00",
-				"Niedziela to œwietny dzieñ na odrobinê relaksu! :)", false); 																			
+				"Niedziela to œwietny dzieñ na odrobinê relaksu! :) Proponujê wspólne wyjœcie na basen. Tego dnia na Rydygiera jest promocja -wejœcie 50% taniej!", false); 																			
 		wydarzenie1.setUzytkownik(uzytkownik1);
 		wydarzenie1.setLokalizacja(lokalizacja7);
 		wydarzenieDao.add(wydarzenie1);
@@ -74,45 +74,50 @@ public class Pompeczka {
 		zaproszenieDao.add(zaproszenie1);
 		
 		Zaproszenie zaproszenie2 = new Zaproszenie(false);
-		zaproszenie1.setUzytkownik(uzytkownik3);
-		zaproszenie1.setWydarzenie(wydarzenie1);
+		zaproszenie2.setUzytkownik(uzytkownik3);
+		zaproszenie2.setWydarzenie(wydarzenie1);
 		zaproszenieDao.add(zaproszenie2);
 		
 		Zaproszenie zaproszenie3 = new Zaproszenie(true);
-		zaproszenie1.setUzytkownik(uzytkownik4);
-		zaproszenie1.setWydarzenie(wydarzenie1);
+		zaproszenie3.setUzytkownik(uzytkownik4);
+		zaproszenie3.setWydarzenie(wydarzenie1);
 		zaproszenieDao.add(zaproszenie3);
 		
 		
 		// wydarzenie 2 - uzytkownik 1, lokalizacja 1,  zaproszenie (3)
 		Wydarzenie wydarzenie2 = new Wydarzenie("Poniedzia³kowy fitness",
 				General.dateFromString("02.02.2015"), "18:30", "20:00",
-				"Trzeba dobrze rozpocz¹æ tydzieñ", false); 																	
-		wydarzenie1.setUzytkownik(uzytkownik1);
-		wydarzenie1.setLokalizacja(lokalizacja1);
+				"Trzeba dobrze rozpocz¹æ tydzieñ. W poniedzia³ki o 18:30 jest areobik Fitness Clubie; by³am w zesz³ym tygodniu - by³o super", false); 																	
+		wydarzenie2.setUzytkownik(uzytkownik1);
+		wydarzenie2.setLokalizacja(lokalizacja1);
 		wydarzenieDao.add(wydarzenie2);
 		
 		Zaproszenie zaproszenie4 = new Zaproszenie(false);
-		zaproszenie1.setUzytkownik(uzytkownik3);
-		zaproszenie1.setWydarzenie(wydarzenie2);
+		zaproszenie4.setUzytkownik(uzytkownik3);
+		zaproszenie4.setWydarzenie(wydarzenie2);
 		zaproszenieDao.add(zaproszenie4);
 		
 		
-		// wydarzenie 3 - uzytkownik 2, lokalizacja 4,  otwarte
+		// wydarzenie 3 - uzytkownik 2, lokalizacja 4,  otwarte (1)
 		Wydarzenie wydarzenie3 = new Wydarzenie("Tenis",
 				General.dateFromString("01.02.2015"), "11:00", null,
 				"Ktoœ chêtny? :)", true); 																	
-		wydarzenie1.setUzytkownik(uzytkownik2);
-		wydarzenie1.setLokalizacja(lokalizacja4);
+		wydarzenie3.setUzytkownik(uzytkownik2);
+		wydarzenie3.setLokalizacja(lokalizacja4);
 		wydarzenieDao.add(wydarzenie3);
+		
+		Zaproszenie zaproszenie7 = new Zaproszenie(true);
+		zaproszenie7.setUzytkownik(uzytkownik1);
+		zaproszenie7.setWydarzenie(wydarzenie3);
+		zaproszenieDao.add(zaproszenie7);
 		
 		
 		// wydarzenie 4 - uzytkownik 2, lokalizacja 6,  otwarte
 		Wydarzenie wydarzenie4 = new Wydarzenie("Godzinka p³ywania",
 				General.dateFromString("04.02.2015"), "17:30", "18:30",
-				"Zapraszam wspólne pokonanie kilku d³ugoœci basenu.", true); 																	
-		wydarzenie1.setUzytkownik(uzytkownik2);
-		wydarzenie1.setLokalizacja(lokalizacja6);
+				"Zapraszam na wspólne pokonanie kilku d³ugoœci basenu.", true); 																	
+		wydarzenie4.setUzytkownik(uzytkownik2);
+		wydarzenie4.setLokalizacja(lokalizacja6);
 		wydarzenieDao.add(wydarzenie4);
 		
 		
@@ -120,21 +125,18 @@ public class Pompeczka {
 		Wydarzenie wydarzenie5 = new Wydarzenie("Pilates",
 				General.dateFromString("07.02.2015"), "12:15", "14:00",
 				null, false); 																	
-		wydarzenie1.setUzytkownik(uzytkownik3);
-		wydarzenie1.setLokalizacja(lokalizacja1);
+		wydarzenie5.setUzytkownik(uzytkownik3);
+		wydarzenie5.setLokalizacja(lokalizacja1);
 		wydarzenieDao.add(wydarzenie5);
 		
 		Zaproszenie zaproszenie5 = new Zaproszenie(false);
-		zaproszenie1.setUzytkownik(uzytkownik1);
-		zaproszenie1.setWydarzenie(wydarzenie5);
+		zaproszenie5.setUzytkownik(uzytkownik1);
+		zaproszenie5.setWydarzenie(wydarzenie5);
 		zaproszenieDao.add(zaproszenie5);
 		
 		Zaproszenie zaproszenie6 = new Zaproszenie(true);
-		zaproszenie1.setUzytkownik(uzytkownik2);
-		zaproszenie1.setWydarzenie(wydarzenie5);
+		zaproszenie6.setUzytkownik(uzytkownik2);
+		zaproszenie6.setWydarzenie(wydarzenie5);
 		zaproszenieDao.add(zaproszenie6);
-
-
-
 	}
 }

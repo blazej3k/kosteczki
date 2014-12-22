@@ -2,7 +2,10 @@ package Dziecioly.zkimnabasen.baza.model;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+
+import Dziecioly.zkimnabasen.baza.dao.ZaproszenieDao;
 
 import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DataType;
@@ -48,6 +51,8 @@ public class Wydarzenie {
 	// @ForeignCollectionField(eager = true, maxEagerLevel = 99)
 	// private Collection <Zaproszenie> zaproszenia = new
 	// ArrayList<Zaproszenie>();
+	
+	private int tryb;
 
 	public Wydarzenie() {
 		// TODO Auto-generated constructor stub
@@ -137,8 +142,8 @@ public class Wydarzenie {
 		// return new ArrayList<Zaproszenie>(zaproszenia) ;
 	}
 
-	public void setZaproszenia(List<Zaproszenie> zaproszeniaL) {
-		this.zaproszenia.addAll(zaproszeniaL);
+	public void setZaproszenia(ForeignCollection<Zaproszenie> zaproszenia) {
+		this.zaproszenia = zaproszenia;
 	}
 
 	public Lokalizacja getLokalizacja() {
@@ -148,5 +153,15 @@ public class Wydarzenie {
 	public void setLokalizacja(Lokalizacja lokalizacja) {
 		this.lokalizacja = lokalizacja;
 	}
+
+	public int getTryb() {
+		return tryb;
+	}
+
+	public void setTryb(int tryb) {
+		this.tryb = tryb;
+	}
+	
+	
 
 }

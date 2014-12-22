@@ -23,7 +23,6 @@ import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
@@ -34,10 +33,14 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
+import com.j256.ormlite.dao.ForeignCollection;
 
 public class NoweWydarzenie extends FragmentActivity implements
 		OnDateSetListener, OnTimeSetListener,
@@ -97,15 +100,16 @@ public class NoweWydarzenie extends FragmentActivity implements
 
 		initBtnOnClickListeners();
 
-		id_wydarzenia = getIntent().getIntExtra("id", 0);
-		if (id_wydarzenia != 0)
-			wpiszDane();
-
 		wszyscyZnajomi = pobierzZnajomych();
 		wybraniZnajomi = new boolean[wszyscyZnajomi.size()];
 		Arrays.fill(wybraniZnajomi, Boolean.FALSE);
 
 		wybranaLokalizacja = null;
+
+		id_wydarzenia = getIntent().getIntExtra("id", 0);
+		if (id_wydarzenia != 0)
+			wpiszDane();
+
 	}
 
 	@Override
@@ -152,19 +156,30 @@ public class NoweWydarzenie extends FragmentActivity implements
 			wydarzenie.setLokalizacja(lokalizacjaDb);
 		}
 
-		int id_wydarzenia = wydarzenieDao.add(wydarzenie).getId();
-
+		ForeignCollection<Zaproszenie> zaproszenia = wydarzenieDao
+				.getEmptyCollection();
 		for (int i = 0; i < wybraniZnajomi.length; i++) {
 			if (wybraniZnajomi[i] == true) {
 				Uzytkownik u = wszyscyZnajomi.get(i);
 				Zaproszenie z = new Zaproszenie(false);
 				z.setUzytkownik(u);
 				z.setWydarzenie(wydarzenie);
-				zaproszenieDao.add(z);
+				zaproszenia.add(z);
 			}
 		}
+		wydarzenie.setZaproszenia(zaproszenia);
+
+		int id_w;
+		if (id_wydarzenia == 0)
+			id_w = wydarzenieDao.add(wydarzenie).getId();
+		else {
+			wydarzenie.setId(id_wydarzenia);
+			wydarzenieDao.update(wydarzenie);
+			id_w = id_wydarzenia;
+		}
+
 		Intent intent = new Intent(context, SzczegolyWydarzenia.class);
-		intent.putExtra("id_wydarzenia", id_wydarzenia);
+		intent.putExtra("id_wydarzenia", id_w);
 		startActivity(intent);
 	}
 
@@ -294,6 +309,25 @@ public class NoweWydarzenie extends FragmentActivity implements
 			}
 		});
 
+		czyOtwarte.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView,
+					boolean isChecked) {
+				if (isChecked)
+					zaprosZnajomych.setText("Zaproszeni: wszyscy");
+				else {
+					int licz = policzWybranych();
+					if (licz != 0)
+						zaprosZnajomych.setText("Zaproszonych: " + licz);
+					else
+						zaprosZnajomych.setText("Zaproœ znajomych");
+
+				}
+
+			}
+		});
+
 	}
 
 	private void wczytajMape() {
@@ -316,7 +350,18 @@ public class NoweWydarzenie extends FragmentActivity implements
 
 	@Override
 	public void onDialogPositiveClick(DialogFragment dialog) {
+
 		this.wybraniZnajomi = checkboxFrag.getCheckedItems();
+		zaprosZnajomych.setText("Zaproszonych: " + policzWybranych());
+
+	}
+
+	private int policzWybranych() {
+		int licznik = 0;
+		for (boolean b : wybraniZnajomi)
+			if (b)
+				licznik++;
+		return licznik;
 	}
 
 	@Override
@@ -401,7 +446,7 @@ public class NoweWydarzenie extends FragmentActivity implements
 		if (w_godzDo != null)
 			godzinaRozpoczecia.setText(w_godzDo);
 
-		if (!w_opis.equals(null))
+		if (w_opis != null)
 			opis.setText(w_opis);
 
 		czyOtwarte.setChecked(w_otwarte);
@@ -414,9 +459,27 @@ public class NoweWydarzenie extends FragmentActivity implements
 		}
 
 		List<Zaproszenie> list = w.getZaproszenia();
-		if (list != null)
-			Log.d(DatabaseManager.DEBUG_TAG, "ZAPROSZONE OSOBY");
+		if (list != null) {
+			for (int i = 0; i < list.size(); i++) {
+				int id_zaproszonego = list.get(i).getUzytkownik().getId();
+				Log.d(DatabaseManager.DEBUG_TAG,
+						"A " + Integer.toString(id_zaproszonego));
+				Integer j = index(id_zaproszonego);
+				if (j != null)
+					wybraniZnajomi[j] = true;
+			}
+		}
 
 	}
 
+	private Integer index(int id) {
+		for (int i = 0; i < wszyscyZnajomi.size(); i++)
+			if (wszyscyZnajomi.get(i).getId() == id) {
+				Log.d(DatabaseManager.DEBUG_TAG,
+						"B " + Integer.toString(wszyscyZnajomi.get(i).getId()));
+				return i;
+			}
+		return null;
+
+	}
 }
