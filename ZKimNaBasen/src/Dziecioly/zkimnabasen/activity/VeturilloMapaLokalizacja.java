@@ -2,12 +2,10 @@ package Dziecioly.zkimnabasen.activity;
 
 import Dziecioly.zkimnabasen.R;
 import Dziecioly.zkimnabasen.api.Obs³ugaMapy;
-import Dziecioly.zkimnabasen.baza.DatabaseManager;
 import Dziecioly.zkimnabasen.baza.model.Lokalizacja;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -74,7 +72,6 @@ public class VeturilloMapaLokalizacja extends FragmentActivity implements
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if ((keyCode == KeyEvent.KEYCODE_BACK)) {
-			Log.d(DatabaseManager.DEBUG_TAG, "back button pressed");
 			Veturillo.wybranaLokalizacja = getSelectedMarker();
 		}
 		return super.onKeyDown(keyCode, event);
@@ -86,7 +83,6 @@ public class VeturilloMapaLokalizacja extends FragmentActivity implements
 			@Override
 			public void onClick(View v) {
 				String wpisanyAdres = editText.getText().toString();
-				Log.d(DatabaseManager.DEBUG_TAG, wpisanyAdres);
 				InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 				imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
 				zaznaczWpisanyAdresNaMapie(wpisanyAdres);
@@ -112,13 +108,12 @@ public class VeturilloMapaLokalizacja extends FragmentActivity implements
 
 		String adres = obs³ugaMapy.pobierzAdres(arg);
 		if (adres == null) {
-			Log.d(DatabaseManager.DEBUG_TAG, "Nie mo¿na ogkreœliæ adresu");
 			Toast.makeText(context, "Nie mo¿na ogkreœliæ adresu",
 					Toast.LENGTH_SHORT).show();
 		} else if (onclick)
 			editText.setText(adres);
 		
-		map.moveCamera(CameraUpdateFactory.newLatLngZoom(arg, zoom));
+		map.moveCamera(CameraUpdateFactory.newLatLngZoom(arg, map.getCameraPosition().zoom));
 	}
 
 	private void zaznaczWpisanyAdresNaMapie(String wpisanyAdres) {
@@ -126,12 +121,11 @@ public class VeturilloMapaLokalizacja extends FragmentActivity implements
 			LatLng latlon = obs³ugaMapy.pobierzMarker(wpisanyAdres);
 
 			if (latlon == null) {
-				Log.d(DatabaseManager.DEBUG_TAG, "Nieznany adres");
 				Toast.makeText(context, "Nieznany adres", Toast.LENGTH_SHORT)
 						.show();
 			} else {
 				pyknijMapke(latlon, false);
-				map.moveCamera(CameraUpdateFactory.newLatLngZoom(latlon, zoom));
+				map.moveCamera(CameraUpdateFactory.newLatLngZoom(latlon, map.getCameraPosition().zoom));
 			}
 		}
 	}

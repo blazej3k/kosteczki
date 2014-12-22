@@ -61,7 +61,6 @@ public class Veturillo extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		Log.d(DatabaseManager.DEBUG_TAG, "onResume");
 		if (wybranaLokalizacja != null) {
 			lokalizacja = wybranaLokalizacja;
 			String adres = wybranaLokalizacja.getAdres();
@@ -77,9 +76,12 @@ public class Veturillo extends Activity {
 	}
 
 	private void wyznacz() {
-		if (lokalizacja == null)
+		if (lokalizacja == null) {
 			Toast.makeText(context, "Wybierz sk¹d wyznaczyæ trasê",
 					Toast.LENGTH_SHORT).show();
+			return;
+
+		}
 		double originLat = lokalizacja.getLat();
 		double originLon = lokalizacja.getLon();
 
@@ -114,8 +116,7 @@ public class Veturillo extends Activity {
 			}
 		});
 	}
-	
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -130,15 +131,11 @@ public class Veturillo extends Activity {
 		if (id == R.id.action_logout) {
 			General.clearSharedPrefs(context);
 			return true;
-		}
-		else if(id == R.id.action_clear)
-		{
-			General.clearData(context);	
+		} else if (id == R.id.action_clear) {
+			General.clearData(context);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
-
-
 
 }

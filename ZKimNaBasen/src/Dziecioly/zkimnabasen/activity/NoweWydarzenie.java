@@ -19,7 +19,6 @@ import Dziecioly.zkimnabasen.fragment.DatePickerFragment;
 import Dziecioly.zkimnabasen.fragment.ListFragment;
 import Dziecioly.zkimnabasen.fragment.TextFragment;
 import Dziecioly.zkimnabasen.fragment.TimePickerFragment;
-import android.R.integer;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.Context;
@@ -75,7 +74,7 @@ public class NoweWydarzenie extends FragmentActivity implements
 	public static final int FLAG_START_TIME = 0;
 	public static final int FLAG_END_TIME = 1;
 	private int flag;
-	
+
 	private int id_wydarzenia = 0;
 
 	@Override
@@ -83,7 +82,7 @@ public class NoweWydarzenie extends FragmentActivity implements
 		super.onCreate(savedInstanceState);
 		context = getApplicationContext();
 		setContentView(R.layout.nowe_wydarzenie);
-		
+
 		nazwa = (EditText) findViewById(R.id.nazwa);
 		data = (Button) findViewById(R.id.data);
 		godzinaRozpoczecia = (Button) findViewById(R.id.godzinaRozpoczecia);
@@ -97,7 +96,7 @@ public class NoweWydarzenie extends FragmentActivity implements
 		btnVeturillo = (Button) findViewById(R.id.btnVeturillo);
 
 		initBtnOnClickListeners();
-		
+
 		id_wydarzenia = getIntent().getIntExtra("id", 0);
 		if (id_wydarzenia != 0)
 			wpiszDane();
@@ -112,13 +111,11 @@ public class NoweWydarzenie extends FragmentActivity implements
 	@Override
 	protected void onResume() {
 		super.onResume();
-		Log.d(DatabaseManager.DEBUG_TAG, "onResume");
 		if (wybranaLokalizacja != null) {
 			lokalizacja = wybranaLokalizacja;
 			String adres = wybranaLokalizacja.getAdres();
 			if (adres != null) {
 				btnMapa.setText(adres);
-				Log.d(DatabaseManager.DEBUG_TAG, adres);
 			} else {
 				btnMapa.setText("");
 			}
@@ -192,7 +189,7 @@ public class NoweWydarzenie extends FragmentActivity implements
 			hhour = "0" + hhour;
 		if (minute < 10)
 			mminute = "0" + mminute;
-		
+
 		String timeText = hhour + ":" + mminute;
 		if (flag == FLAG_START_TIME) {
 			godzinaRozpoczecia.setText(timeText);
@@ -379,36 +376,41 @@ public class NoweWydarzenie extends FragmentActivity implements
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
-	
-	private void wpiszDane()
-	{
+
+	private void wpiszDane() {
 		Wydarzenie w = wydarzenieDao.find(id_wydarzenia);
 		String w_nazwa = w.getNazwa();
 		String w_data = General.stringFromDate(w.getData());
 		String w_godzOd = w.getGodz_od();
-				String w_godzDo = w.getGodz_do();
+		String w_godzDo = w.getGodz_do();
 		String w_opis = w.getOpis();
 		boolean w_otwarte = w.isOtwarte();
-				
-				nazwa.setText(w_nazwa);
+
+		nazwa.setText(w_nazwa);
 		data.setText(w_data);
-		
-		if(!w_godzOd.equals(null))
-		godzinaRozpoczecia.setText(w_godzOd);
-		
-		if(!w_godzDo.equals(null))
+
+		if (w_godzOd != null)
+			godzinaRozpoczecia.setText(w_godzOd);
+
+		if (w_godzDo != null)
 			godzinaRozpoczecia.setText(w_godzDo);
-		
-		if(!w_opis.equals(null))
+
+		if (!w_opis.equals(null))
 			opis.setText(w_opis);
-			
+
 		czyOtwarte.setChecked(w_otwarte);
-		
-	/*	zaprosZnajomych = (Button) findViewById(R.id.zaprosZnajomych);
-		btnKategoria */
-		
-		
+
+		Lokalizacja lok = w.getLokalizacja();
+		if (lok != null) {
+			lokalizacja = lok;
+			btnKategoria.setText(lok.getKategoria());
+			btnMapa.setText(lok.getAdres());
+		}
+
+		List<Zaproszenie> list = w.getZaproszenia();
+		if (list != null)
+			Log.d(DatabaseManager.DEBUG_TAG, "ZAPROSZONE OSOBY");
+
 	}
 
 }

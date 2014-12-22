@@ -59,8 +59,8 @@ public class SzczegolyWydarzenia extends Activity {
 		tv_opis = (TextView) findViewById(R.id.tv_opis);
 		rozbudowana_lista = (ListView) findViewById(R.id.lv_prostalista);
 
-		btnEdytuj = (Button) findViewById(R.id.btnEdytuj);
-		btnUsun = (Button) findViewById(R.id.btnUsun);
+		btnEdytuj = (Button) findViewById(R.id.btn_edytuj);
+		btnUsun = (Button) findViewById(R.id.btn_usun);
 
 		initOnBtnClickListeners();
 
