@@ -29,6 +29,18 @@
 		<item name="android:textSize">15sp</item>
     </style>
     
+    <style name="button_single">
+        <item name="android:background">@drawable/btn_single</item>
+        <item name="android:layout_marginLeft">5dp</item>
+	    <item name="android:layout_marginRight">5dp</item>
+	    <item name="android:layout_marginBottom">5dp</item>
+		<item name="android:layout_width">match_parent</item>
+		<item name="android:layout_height">40dp</item>
+		<item name="android:textSize">15sp</item>
+		<item name="android:textColor">@color/czarny</item>
+		<item name="android:textStyle">bold</item>
+    </style>
+    
     <style name="lista_rozb">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">0dp</item>
