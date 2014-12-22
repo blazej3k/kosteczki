@@ -179,6 +179,7 @@ public class NoweWydarzenie extends FragmentActivity implements
 		}
 
 		Intent intent = new Intent(context, SzczegolyWydarzenia.class);
+		Log.d(DatabaseManager.DEBUG_TAG, "ID WYD 2"  + Integer.toString(id_w));
 		intent.putExtra("id_wydarzenia", id_w);
 		startActivity(intent);
 	}

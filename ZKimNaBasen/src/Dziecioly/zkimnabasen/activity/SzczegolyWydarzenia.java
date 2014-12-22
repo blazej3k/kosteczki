@@ -126,7 +126,8 @@ public class SzczegolyWydarzenia extends FragmentActivity {
 			tv_od.setText(wydarzenie.getGodz_od());
 			tv_do.setText(wydarzenie.getGodz_do());
 			tv_opis.setText(wydarzenie.getOpis());
-			tv_lokalizacja.setText(wydarzenie.getLokalizacja().getAdres());
+			if (wydarzenie.getLokalizacja() != null)
+				tv_lokalizacja.setText(wydarzenie.getLokalizacja().getAdres());
 
 			List<Zaproszenie> zaproszeniaL = wydarzenie.getZaproszenia();
 			Log.d(DEBUG_TAG, "Iloœc zaproszeñ: " + zaproszeniaL.size());
@@ -192,22 +193,33 @@ public class SzczegolyWydarzenia extends FragmentActivity {
 		btn_mapa.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(context,
-						SzczegolyWydarzeniaMapa.class);
-				intent.putExtra("lat", wydarzenie.getLokalizacja().getLat());
-				intent.putExtra("lon", wydarzenie.getLokalizacja().getLon());
-				startActivity(intent);
+				if (wydarzenie.getLokalizacja() == null)
+					Toast.makeText(context, "Lokalizacja nie jest okreœlona",
+							Toast.LENGTH_SHORT).show();
+				else {
+					Intent intent = new Intent(context,
+							SzczegolyWydarzeniaMapa.class);
+					intent.putExtra("lat", wydarzenie.getLokalizacja().getLat());
+					intent.putExtra("lon", wydarzenie.getLokalizacja().getLon());
+					startActivity(intent);
+				}
 			}
 		});
 
 		btn_veturilo.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(context, Veturillo.class);
-				intent.putExtra("lat", wydarzenie.getLokalizacja().getLat());
-				intent.putExtra("lon", wydarzenie.getLokalizacja().getLon());
-				intent.putExtra("adres", wydarzenie.getLokalizacja().getAdres());
-				startActivity(intent);
+				if (wydarzenie.getLokalizacja() == null)
+					Toast.makeText(context, "Lokalizacja nie jest okreœlona",
+							Toast.LENGTH_SHORT).show();
+				else {
+					Intent intent = new Intent(context, Veturillo.class);
+					intent.putExtra("lat", wydarzenie.getLokalizacja().getLat());
+					intent.putExtra("lon", wydarzenie.getLokalizacja().getLon());
+					intent.putExtra("adres", wydarzenie.getLokalizacja()
+							.getAdres());
+					startActivity(intent);
+				}
 			}
 		});
 

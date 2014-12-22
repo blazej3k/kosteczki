@@ -139,7 +139,7 @@ ChecboxListFragment.NoticeDialogListener {
 
 			int zalogowany = General.loggedUser(context);
 			
-			Log.d(DatabaseManager.DEBUG_TAG, "USER " +Integer.toString(zalogowany));
+			//Log.d(DatabaseManager.DEBUG_TAG, "USER " +Integer.toString(zalogowany));
 
 			List<Wydarzenie> subList = new ArrayList<Wydarzenie>();
 			for (Wydarzenie wydarzenie : list) {
@@ -148,14 +148,14 @@ ChecboxListFragment.NoticeDialogListener {
 				boolean czyOtwarte = wydarzenie.isOtwarte();
 				
 				if (moje) {
-					Log.d(DatabaseManager.DEBUG_TAG, "Moje");
+					//Log.d(DatabaseManager.DEBUG_TAG, "Moje");
 					if (uzytkownik.getId() == zalogowany) {
 						wydarzenie.setTryb(0);
 						subList.add(wydarzenie);
 					}
 				}
 				if (wezmeUdzial) {
-					Log.d(DatabaseManager.DEBUG_TAG, "wezme udzial");
+					//Log.d(DatabaseManager.DEBUG_TAG, "wezme udzial");
 					for (Zaproszenie zaproszenie : zaproszenia) {
 						if (zaproszenie.getUzytkownik().getId() == zalogowany
 								&& zaproszenie.isWezmie_udzial()) {
@@ -166,7 +166,7 @@ ChecboxListFragment.NoticeDialogListener {
 				}
 
 				if (jestemZaproszona) {
-					Log.d(DatabaseManager.DEBUG_TAG, "jestem zaproszona");
+					//Log.d(DatabaseManager.DEBUG_TAG, "jestem zaproszona");
 					for (Zaproszenie zaproszenie : zaproszenia) {
 						if (zaproszenie.getUzytkownik().getId() == zalogowany
 								&& !zaproszenie.isWezmie_udzial()) {
@@ -177,7 +177,7 @@ ChecboxListFragment.NoticeDialogListener {
 				}
 
 				if (otwarte) {
-					Log.d(DatabaseManager.DEBUG_TAG, "otwarte");
+					//Log.d(DatabaseManager.DEBUG_TAG, "otwarte");
 					if (czyOtwarte && uzytkownik.getId() != zalogowany) {
 						boolean istniejeZaproszenie = false;
 						for (Zaproszenie zaproszenie : zaproszenia) {
