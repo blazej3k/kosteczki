@@ -3,6 +3,7 @@ package Dziecioly.zkimnabasen.baza.model;
 public class RowBeanListaWyd {
     private int icon;
     private String tekst;
+    private String data;
     
     public RowBeanListaWyd () { }
     
@@ -25,6 +26,14 @@ public class RowBeanListaWyd {
 
 	public void setTekst(String tekst) {
 		this.tekst = tekst;
+	}
+
+	public String getData() {
+		return data;
+	}
+
+	public void setData(String data) {
+		this.data = data;
 	}
 }
 
