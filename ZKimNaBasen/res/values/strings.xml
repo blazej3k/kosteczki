@@ -24,7 +24,7 @@
     <string name="title_activity_wydarzenia">Wydarzenia</string>
     <string name="title_activity_wydarzenia_lista">WydarzeniaLista</string>
     <string name="penis_str">penis</string>
-    <string name="nickLubNumer">Nick lub numer telefonu</string>
+    <string name="nickLubNumer">nick lub numer telefonu</string>
     <string name="haslo">hasło</string>
     <string name="zaloguj">Zaloguj</string>
     <string name="utworzKonto">Utwórz konto</string>
@@ -67,5 +67,6 @@
     <string name="label_lokalizacja">Lokalizacja:</string>
     <string name="btn_mapa">Mapa</string>
     <string name="btn_veturilo">Veturilo</string>
+    <string name="label_zaloguj">Zaloguj się</string>
 
 </resources>
