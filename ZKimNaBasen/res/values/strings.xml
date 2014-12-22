@@ -62,5 +62,7 @@
     <string name="wyloguj">Wyloguj</string>
     <string name="btn_edytuj">Edytuj</string>
     <string name="btn_usun">Usuń</string>
+    <string name="img_rowDesc">status</string>
+    <string name="tv_rowDesc">TextView_PINDOLINO</string>
 
 </resources>

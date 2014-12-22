@@ -5,14 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
  
-    <ImageView android:id="@+id/imgIcon"
+    <ImageView
+        android:id="@+id/imgIcon"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
-        android:gravity="center_vertical"
-        android:layout_marginRight="5dp"
+        android:layout_marginBottom="5dp"
         android:layout_marginLeft="10dp"
+        android:layout_marginRight="5dp"
         android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp" />
+        android:contentDescription="@string/img_rowDesc"
+        android:gravity="center_vertical" />
  
      <TextView
          android:id="@+id/txtTitle"
@@ -23,7 +25,7 @@
          android:layout_marginTop="5dp"
          android:gravity="center_vertical"
          android:paddingLeft="60dp"
-         android:text="TextView_PINDOLINO"
+         android:text="@string/tv_rowDesc"
          android:textColor="#000000"
          android:textSize="16sp"
          android:textStyle="bold" />
