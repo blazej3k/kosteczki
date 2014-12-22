@@ -13,13 +13,10 @@ import Dziecioly.zkimnabasen.baza.model.Wydarzenie;
 import Dziecioly.zkimnabasen.baza.model.Zaproszenie;
 import Dziecioly.zkimnabasen.fragment.ChecboxListFragment;
 import android.annotation.SuppressLint;
-import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
@@ -45,6 +42,7 @@ ChecboxListFragment.NoticeDialogListener {
 
 	private Context context;
 
+	List<Wydarzenie> wydarzeniaL;
 	private WydarzenieDao wydarzenieDao = new WydarzenieDao();
 	private ChecboxListFragment frag;
 	private CharSequence[] items = { "Moje", "Wezmê udzia³",
@@ -66,7 +64,7 @@ ChecboxListFragment.NoticeDialogListener {
 		} 
 		else {
 
-			List<Wydarzenie> wydarzeniaL = wydarzenieDao.pobierzWydarzenia();
+			wydarzeniaL = wydarzenieDao.pobierzWydarzenia();
 
 			setContentView(R.layout.activity_wydarzenia_lista);
 			btn_nowe_wydarzenie = (Button) findViewById(R.id.btn_nowe_wydarzenie);
@@ -184,7 +182,7 @@ ChecboxListFragment.NoticeDialogListener {
 					Log.d(DEBUG_TAG, "Listener");
 
 					Intent startSzczegolowyWidok = new Intent(WydarzeniaLista.this, SzczegolyWydarzenia.class);
-					startSzczegolowyWidok.putExtra("id_wydarzenia", position+1);
+					startSzczegolowyWidok.putExtra("id_wydarzenia",  wydarzeniaL.get(position).getId());
 					Log.d(DEBUG_TAG, "PutExtra");
 					startActivity(startSzczegolowyWidok);
 				}
@@ -238,6 +236,7 @@ ChecboxListFragment.NoticeDialogListener {
 			List<Wydarzenie> list = wydarzenieDao.pobierzWydarzenia();
 			List<Wydarzenie> subList = wybierzWydarzenia(list);
 
+			wydarzeniaL = subList;
 			zbudujListe(subList);
 		}
 
