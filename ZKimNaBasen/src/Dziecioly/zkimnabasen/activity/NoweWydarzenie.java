@@ -19,6 +19,7 @@ import Dziecioly.zkimnabasen.fragment.DatePickerFragment;
 import Dziecioly.zkimnabasen.fragment.ListFragment;
 import Dziecioly.zkimnabasen.fragment.TextFragment;
 import Dziecioly.zkimnabasen.fragment.TimePickerFragment;
+import android.R.integer;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.Context;
@@ -171,20 +172,29 @@ public class NoweWydarzenie extends FragmentActivity implements
 		int id_w;
 		Log.d(DatabaseManager.DEBUG_TAG,
 				"ID WYD " + Integer.toString(id_wydarzenia));
-		if (id_wydarzenia == 0)
-			id_w = wydarzenieDao.add(wydarzenie).getId();
-		else {
-			wydarzenie.setId(id_wydarzenia);
-			id_w = wydarzenieDao.update(wydarzenie).getId();
-		}
-
+		//edycja -> najpierw usun, potem normalnie zapisz
+		if (id_wydarzenia != 0)
+			usun(id_wydarzenia);
+			
+		id_w = wydarzenieDao.add(wydarzenie).getId();
 		Intent intent = new Intent(context, SzczegolyWydarzenia.class);
 		Log.d(DatabaseManager.DEBUG_TAG, "ID WYD 2" + Integer.toString(id_w));
 		intent.putExtra("id_wydarzenia", id_w);
 		startActivity(intent);
 	}
-	
-	
+
+	private void usun(int id_wyd) {
+		Wydarzenie w = wydarzenieDao.find(id_wyd);
+		Lokalizacja lok = w.getLokalizacja();
+		if (lok != null && !lok.isPubliczna())
+			lokalizacjaDao.remove(lok);
+		List<Zaproszenie> zaproszenia = w.getZaproszenia();
+		if (zaproszenia != null)
+			for (Zaproszenie z : zaproszenia)
+				zaproszenieDao.remove(z);
+		wydarzenieDao.remove(w);
+	}
+
 	@Override
 	public void onDateSet(DatePicker view, int year, int month, int day) {
 		String dday = Integer.toString(day);

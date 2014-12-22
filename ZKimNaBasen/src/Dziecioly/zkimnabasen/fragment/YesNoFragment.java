@@ -1,8 +1,14 @@
 package Dziecioly.zkimnabasen.fragment;
 
+import java.util.List;
+
 import Dziecioly.zkimnabasen.activity.WydarzeniaLista;
+import Dziecioly.zkimnabasen.baza.dao.LokalizacjaDao;
 import Dziecioly.zkimnabasen.baza.dao.WydarzenieDao;
+import Dziecioly.zkimnabasen.baza.dao.ZaproszenieDao;
+import Dziecioly.zkimnabasen.baza.model.Lokalizacja;
 import Dziecioly.zkimnabasen.baza.model.Wydarzenie;
+import Dziecioly.zkimnabasen.baza.model.Zaproszenie;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -18,6 +24,8 @@ public class YesNoFragment extends DialogFragment {
 	public YesNoFragment(int id_wydarzenia) {
 		this.id_wydarzenia = id_wydarzenia;
 	}
+	
+	
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -27,9 +35,7 @@ public class YesNoFragment extends DialogFragment {
 				.setPositiveButton("Tak",
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id) {
-								WydarzenieDao wydarzenieDao = new WydarzenieDao();
-								Wydarzenie w = wydarzenieDao.find(id_wydarzenia);
-								wydarzenieDao.remove(w);
+								usun(id_wydarzenia);
 								Intent intent = new Intent(getActivity(), WydarzeniaLista.class);
 								startActivity(intent);
 								Toast.makeText(getActivity(), "Wydarzenie usuniête", Toast.LENGTH_SHORT).show();
@@ -43,6 +49,23 @@ public class YesNoFragment extends DialogFragment {
 						});
 		// Create the AlertDialog object and return it
 		return builder.create();
+	}
+	
+	
+	private void usun(int id_wyd) {
+		WydarzenieDao wydarzenieDao = new WydarzenieDao();
+		LokalizacjaDao lokalizacjaDao = new LokalizacjaDao();
+		ZaproszenieDao zaproszenieDao = new ZaproszenieDao();
+		
+		Wydarzenie w = wydarzenieDao.find(id_wyd);
+		Lokalizacja lok = w.getLokalizacja();
+		if (lok != null && !lok.isPubliczna())
+			lokalizacjaDao.remove(lok);
+		List<Zaproszenie> zaproszenia = w.getZaproszenia();
+		if (zaproszenia != null)
+			for (Zaproszenie z : zaproszenia)
+				zaproszenieDao.remove(z);
+		wydarzenieDao.remove(w);
 	}
 
 }

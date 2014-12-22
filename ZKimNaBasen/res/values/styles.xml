@@ -7,8 +7,8 @@
 	-->
 
 
-<!-- 	<style name="AppBaseTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        API 14 theme customizations can go here.
+	<style name="AppBaseTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- API 14 theme customizations can go here. -->
     </style>
 
     <style name="text">
@@ -74,9 +74,11 @@
 		<item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginLeft">5dp</item>
+        <item name="android:layout_marginRight">5dp</item>
        	<item name="android:background">#FFFFFF</item>
         <item name="android:ems">10</item>
         <item name="android:textSize">20sp</item>
-    </style> -->
+    </style>
     
 </resources>
