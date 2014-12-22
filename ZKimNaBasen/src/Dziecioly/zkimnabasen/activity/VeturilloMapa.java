@@ -57,7 +57,7 @@ public class VeturilloMapa extends FragmentActivity implements
 				bundle.getDouble("originLon"));
 		destination = new LatLng(bundle.getDouble("destLat"),
 				bundle.getDouble("destLon"));
-
+		
 		// znajdz najblizsze stacje i wyznacz trase
 		asyncTask = new VeturilloAsynTask(this, origin, destination,
 				obs³ugaMapy);

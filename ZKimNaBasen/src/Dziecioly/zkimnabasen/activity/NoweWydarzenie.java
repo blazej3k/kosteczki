@@ -175,8 +175,7 @@ public class NoweWydarzenie extends FragmentActivity implements
 			id_w = wydarzenieDao.add(wydarzenie).getId();
 		else {
 			wydarzenie.setId(id_wydarzenia);
-			wydarzenieDao.update(wydarzenie);
-			id_w = id_wydarzenia;
+			id_w = wydarzenieDao.update(wydarzenie).getId();
 		}
 
 		Intent intent = new Intent(context, SzczegolyWydarzenia.class);
@@ -184,7 +183,8 @@ public class NoweWydarzenie extends FragmentActivity implements
 		intent.putExtra("id_wydarzenia", id_w);
 		startActivity(intent);
 	}
-
+	
+	
 	@Override
 	public void onDateSet(DatePicker view, int year, int month, int day) {
 		String dday = Integer.toString(day);

@@ -22,7 +22,6 @@ public class Veturillo extends ActionBarActivity {
 	private Context context;
 	private TextView textDestination;
 	private Button btnOrigin;
-	private CheckBox checkBoxMojaLokalizacja;
 	private CheckBox checkBoxRowery;
 	private Button btnWyznacz;
 
@@ -41,8 +40,6 @@ public class Veturillo extends ActionBarActivity {
 
 		textDestination = (TextView) findViewById(R.id.textDestination);
 		btnOrigin = (Button) findViewById(R.id.btnOrigin);
-		checkBoxMojaLokalizacja = (CheckBox) findViewById(R.id.checkBoxMojaLokalizacja);
-		checkBoxRowery = (CheckBox) findViewById(R.id.checkBoxRowery);
 		btnWyznacz = (Button) findViewById(R.id.btnWyznacz);
 
 		destLat = getIntent().getExtras().getDouble("lat");
@@ -89,6 +86,7 @@ public class Veturillo extends ActionBarActivity {
 		intent.putExtra("originLon", originLon);
 		intent.putExtra("destLat", destLat);
 		intent.putExtra("destLon", destLon);
+		intent.putExtra("wolneRowery", wolneRowery);
 
 		startActivity(intent);
 

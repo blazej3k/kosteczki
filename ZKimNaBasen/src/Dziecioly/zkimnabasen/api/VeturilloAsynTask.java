@@ -49,7 +49,7 @@ public class VeturilloAsynTask extends AsyncTask<Void, Void, List<LatLng>> {
 
 		// wyznacz trase
 		if (vetOrigin != null && vetDest != null && vetOrigin != vetDest) {
-				lines.addAll(wyznaczTrase(vetOrigin, vetDest));
+			lines.addAll(wyznaczTrase(vetOrigin, vetDest));
 		}
 		Log.d(DatabaseManager.DEBUG_TAG,
 				"Origin " + Double.toString(origin.latitude) + "  "
@@ -117,8 +117,11 @@ public class VeturilloAsynTask extends AsyncTask<Void, Void, List<LatLng>> {
 	}
 
 	private String createUrl(LatLng latLng, int promien) {
-		return urlVeturillo + "?circle=" + latLng.longitude + ","
+		String url = urlVeturillo + "?circle=" + latLng.longitude + ","
 				+ latLng.latitude + "," + promien;
+		return url;
+		
+
 	}
 
 	private String createUrlGoogle(LatLng origin, LatLng destination) {
@@ -261,7 +264,5 @@ public class VeturilloAsynTask extends AsyncTask<Void, Void, List<LatLng>> {
 	public void setVetDest(LatLng vetDest) {
 		this.vetDest = vetDest;
 	}
-	
-	
 
 }
