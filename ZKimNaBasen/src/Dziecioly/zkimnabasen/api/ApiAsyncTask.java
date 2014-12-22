@@ -40,9 +40,9 @@ public class ApiAsyncTask extends AsyncTask<Void, String, List<Lokalizacja>> {
 		List<Lokalizacja> lokalizacje = new ArrayList<Lokalizacja>();
 
 		Log.d(DatabaseManager.DEBUG_TAG, kategoria);
-		if (kategoria.equals(Lokalizacja.kategorie[7]))
+		if (kategoria.equals("P³ywalnia"))
 			lokalizacje = pobierzLokalizacjeApi(swimmingPoolsUrl);
-		else if (kategoria.equals(Lokalizacja.kategorie[5]))
+		else if (kategoria.equals("Boisko"))
 			lokalizacje = pobierzLokalizacjeApi(sportFieldsUrl);
 
 		if (lokalizacje == null) {
@@ -109,7 +109,7 @@ public class ApiAsyncTask extends AsyncTask<Void, String, List<Lokalizacja>> {
 				String adres = ulica + " " + numer;
 
 				Lokalizacja l = new Lokalizacja(lat, lon, adres, opis, false,
-						Lokalizacja.kategorie[7]);
+						kategoria);
 				lokalizacje.add(l);
 
 			}
