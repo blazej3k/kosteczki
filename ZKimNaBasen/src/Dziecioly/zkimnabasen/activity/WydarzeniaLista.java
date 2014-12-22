@@ -4,7 +4,6 @@ import java.util.List;
 
 import Dziecioly.zkimnabasen.R;
 import Dziecioly.zkimnabasen.baza.DatabaseManager;
-import Dziecioly.zkimnabasen.baza.PompeczkaWydarzenia;
 import Dziecioly.zkimnabasen.baza.dao.WydarzenieDao;
 import Dziecioly.zkimnabasen.baza.model.List_Custom_ListaWydarzen;
 import Dziecioly.zkimnabasen.baza.model.RowBeanListaWyd;
@@ -35,8 +34,6 @@ public class WydarzeniaLista extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_wydarzenia_lista);
 		context = getApplicationContext();
-
-		new PompeczkaWydarzenia();
 
 		WydarzenieDao wydDao = new WydarzenieDao();
 		List<Wydarzenie> wydarzeniaL = wydDao.pobierzWydarzenia();

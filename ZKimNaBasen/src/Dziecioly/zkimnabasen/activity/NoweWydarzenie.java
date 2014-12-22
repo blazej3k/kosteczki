@@ -254,7 +254,7 @@ public class NoweWydarzenie extends FragmentActivity implements
 			public void onClick(View v) {
 				if (czyOtwarte.isChecked())
 					Toast.makeText(context, "Zaznaczono wydarzenie otwarte",
-							Toast.LENGTH_SHORT);
+							Toast.LENGTH_SHORT).show();
 				else {
 					checkboxFrag = new ChecboxListFragment("Wybierz znajomych",
 							null, wybraniZnajomi);

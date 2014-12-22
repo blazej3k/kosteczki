@@ -67,6 +67,7 @@
         </activity>
         <activity android:name=".activity.VeturilloMapa"></activity>
         <activity android:name=".activity.VeturilloMapaLokalizacja"></activity>
+        <activity android:name=".activity.SzczegolyWydarzeniaMapa"></activity>
        
     </application>
 

@@ -45,17 +45,17 @@ public class UzytkownikDao extends GenericDao<Uzytkownik, Integer> {
 		}
 		return null;
 	}
-	
-	public List<Uzytkownik> pobierzZnajomych(String login)
-	{
+
+	public List<Uzytkownik> pobierzZnajomych(String login) {
 		try {
-			return getDao().queryBuilder().where().ne("nazwa", login).query();
+			return getDao().queryBuilder().orderBy("nazwa", true).where()
+					.ne("nazwa", login).query();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
-		
+
 	}
 
 }
