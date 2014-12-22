@@ -169,7 +169,8 @@ public class NoweWydarzenie extends FragmentActivity implements
 		wydarzenie.setZaproszenia(zaproszenia);
 
 		int id_w;
-		Log.d(DatabaseManager.DEBUG_TAG, "ID WYD "  + Integer.toString(id_wydarzenia));
+		Log.d(DatabaseManager.DEBUG_TAG,
+				"ID WYD " + Integer.toString(id_wydarzenia));
 		if (id_wydarzenia == 0)
 			id_w = wydarzenieDao.add(wydarzenie).getId();
 		else {
@@ -179,7 +180,7 @@ public class NoweWydarzenie extends FragmentActivity implements
 		}
 
 		Intent intent = new Intent(context, SzczegolyWydarzenia.class);
-		Log.d(DatabaseManager.DEBUG_TAG, "ID WYD 2"  + Integer.toString(id_w));
+		Log.d(DatabaseManager.DEBUG_TAG, "ID WYD 2" + Integer.toString(id_w));
 		intent.putExtra("id_wydarzenia", id_w);
 		startActivity(intent);
 	}
@@ -291,7 +292,11 @@ public class NoweWydarzenie extends FragmentActivity implements
 
 		btnMapa.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				wczytajMape();
+				if (wybranaKategoria.equals("Kategoria"))
+					Toast.makeText(context, "Wybierz kategoriê",
+							Toast.LENGTH_SHORT).show();
+				else
+					wczytajMape();
 			}
 		});
 

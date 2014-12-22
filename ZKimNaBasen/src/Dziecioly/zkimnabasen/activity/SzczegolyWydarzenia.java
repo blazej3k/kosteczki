@@ -62,7 +62,7 @@ public class SzczegolyWydarzenia extends FragmentActivity {
 
 		Intent intent = getIntent();
 		id = intent.getIntExtra("id_wydarzenia", -1);
-		tryb = intent.getIntExtra("tryb", 4);
+		tryb = intent.getIntExtra("tryb", 0);
 
 		zalogowany = General.loggedUser(context);
 
