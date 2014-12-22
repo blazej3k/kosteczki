@@ -38,6 +38,7 @@ public class SzczegolyWydarzenia extends FragmentActivity {
 	private TextView tv_do;
 	private TextView tv_opis;
 	private TextView tv_lokalizacja;
+	private TextView tv_zaproszeni;
 	private ListView rozbudowana_lista;
 	private Button btnEdytuj;
 	private Button btnUsun;
@@ -70,6 +71,7 @@ public class SzczegolyWydarzenia extends FragmentActivity {
 		tv_od = (TextView) findViewById(R.id.tv_od);
 		tv_do = (TextView) findViewById(R.id.tv_do);
 		tv_opis = (TextView) findViewById(R.id.tv_opis);
+		tv_zaproszeni = (TextView) findViewById(R.id.tv_zaproszeni);
 		tv_lokalizacja = (TextView) findViewById(R.id.tv_lokalizacja);
 		rozbudowana_lista = (ListView) findViewById(R.id.lv_prostalista);
 
@@ -111,12 +113,12 @@ public class SzczegolyWydarzenia extends FragmentActivity {
 			Log.d(DatabaseManager.DEBUG_TAG, "Brak wydarzenia");
 		else { // jesli tak to dzialaj
 			tv_tworca.setText(wydarzenie.getUzytkownik().getNazwa()); // wprowadzenie
-																		// do
-																		// wszystkich
-																		// TextView
-																		// info
-																		// o
-																		// wydarzeniu
+			// do
+			// wszystkich
+			// TextView
+			// info
+			// o
+			// wydarzeniu
 			tv_nazwa.setText(wydarzenie.getNazwa());
 			tv_data.setText(General.stringFromDate(wydarzenie.getData()));
 			tv_od.setText(wydarzenie.getGodz_od());
@@ -127,19 +129,25 @@ public class SzczegolyWydarzenia extends FragmentActivity {
 			List<Zaproszenie> zaproszeniaL = wydarzenie.getZaproszenia();
 			Log.d(DEBUG_TAG, "Iloœc zaproszeñ: " + zaproszeniaL.size());
 
-			if (zaproszeniaL.isEmpty())
-				Toast.makeText(this, "Lista zaproszeñ jest pusta w ciul!",
-						Toast.LENGTH_LONG).show();
+			if (zaproszeniaL.isEmpty()) {
+				Toast.makeText(this, "Brak osób bior¹cych udzia³ w wydarzeniu.", Toast.LENGTH_LONG).show();
+				tv_zaproszeni.setVisibility(View.INVISIBLE);
+			}
 
 			else {
-				RowBeanListaWyd[] ZaproszeniaRB = new RowBeanListaWyd[zaproszeniaL
-						.size()];
+				RowBeanListaWyd[] ZaproszeniaRB = new RowBeanListaWyd[zaproszeniaL.size()];
+				
+				tv_zaproszeni.setVisibility(View.VISIBLE);
+				
+				if (wydarzenie.isOtwarte())
+					tv_zaproszeni.setText("Osoby bior¹ce udzia³ w wydarzeniu:");
 
 				for (int i = 0; i < ZaproszeniaRB.length; i++) {
 					ZaproszeniaRB[i] = new RowBeanListaWyd();
-					ZaproszeniaRB[i].setTekst(zaproszeniaL.get(i)
-							.getUzytkownik().getNazwa());
-					ZaproszeniaRB[i].setIcon(R.drawable.wiewiorka);
+					ZaproszeniaRB[i].setTekst(zaproszeniaL.get(i).getUzytkownik().getNazwa());
+					
+					if (zaproszeniaL.get(i).isWezmie_udzial())
+						ZaproszeniaRB[i].setIcon(R.drawable.zielony);
 				}
 
 				rozbudowana_lista = (ListView) findViewById(R.id.lv_prostalista);

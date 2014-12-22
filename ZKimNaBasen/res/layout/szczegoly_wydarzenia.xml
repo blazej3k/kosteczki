@@ -117,12 +117,11 @@
         android:singleLine="false" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/tv_zaproszeni"
         style="@style/tv_lbl"
         android:layout_gravity="left"
         android:layout_marginTop="5dp"
-        android:text="@string/label_zaproszeni"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+        android:text="@string/label_zaproszeni" />
 
     <ListView
         android:id="@+id/lv_prostalista"
