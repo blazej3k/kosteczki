@@ -16,6 +16,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,8 +34,14 @@ public class SzczegolyWydarzenia extends Activity {
 	private TextView tv_do;
 	private TextView tv_opis; 
 	private ListView rozbudowana_lista;
+	private Button btnEdytuj;
+	private Button btnUsun;
 	private Context context;
-	
+
+	WydarzenieDao wydDao = new WydarzenieDao();
+
+	private int id;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -40,8 +49,8 @@ public class SzczegolyWydarzenia extends Activity {
 		context = getApplicationContext();
 		
 		Intent intent = getIntent();
-		int id = intent.getIntExtra("id_wydarzenia", -1);
-		
+		id = intent.getIntExtra("id_wydarzenia", -1);
+
 		tv_tworca = (TextView) findViewById(R.id.tv_tworca);
 		tv_nazwa = (TextView) findViewById(R.id.tv_nazwa_wydarzenia);
 		tv_data = (TextView) findViewById(R.id.tv_data);
@@ -49,14 +58,17 @@ public class SzczegolyWydarzenia extends Activity {
 		tv_do = (TextView) findViewById(R.id.tv_do);
 		tv_opis = (TextView) findViewById(R.id.tv_opis);
 		rozbudowana_lista = (ListView) findViewById(R.id.lv_prostalista);
-		
+
+		btnEdytuj = (Button) findViewById(R.id.btnEdytuj);
+		btnUsun = (Button) findViewById(R.id.btnUsun);
+
+		initOnBtnClickListeners();
+
 		czytajWydarzenie(id);
 	}
 	
 	private void czytajWydarzenie(int id) {
-		id++; // bo id z listy jest o 1 mniejsze niz bazy
 		
-		WydarzenieDao wydDao = new WydarzenieDao();
 		Wydarzenie wydarzenie = wydDao.find(id); // pobierz wydarzenie, select do bazy
 		
 		Log.d(DEBUG_TAG, "czytajWydarzenie2 id="+id);
@@ -66,7 +78,7 @@ public class SzczegolyWydarzenia extends Activity {
 		else { // jesli tak to dzialaj
 			tv_tworca.setText(wydarzenie.getUzytkownik().getNazwa());	// wprowadzenie do wszystkich TextView info o wydarzeniu
 			tv_nazwa.setText(wydarzenie.getNazwa());
-			tv_data.setText(wydarzenie.getData());
+			tv_data.setText(General.stringFromDate(wydarzenie.getData()));
 			tv_od.setText(wydarzenie.getGodz_od());
 			tv_do.setText(wydarzenie.getGodz_do());
 			tv_opis.setText(wydarzenie.getOpis());
@@ -93,7 +105,30 @@ public class SzczegolyWydarzenia extends Activity {
 			}
 		}
 	}
-	
+
+	private void initOnBtnClickListeners() {
+		btnEdytuj.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(context, NoweWydarzenie.class);
+				intent.putExtra("id", id);
+				startActivity(intent);
+			}
+		});
+
+		btnUsun.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Wydarzenie w = wydDao.find(id);
+				wydDao.remove(w);
+				Toast.makeText(context, "Usuniêto", Toast.LENGTH_LONG).show();
+				Intent intent = new Intent(context, WydarzeniaLista.class);
+				startActivity(intent);
+
+			}
+		});
+	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -109,8 +144,7 @@ public class SzczegolyWydarzenia extends Activity {
 			General.clearSharedPrefs(context);
 			return true;
 		}
-		else if(id == R.id.action_clear)
-		{
+		else if(id == R.id.action_clear) {
 			General.clearData(context);	
 			return true;
 		}

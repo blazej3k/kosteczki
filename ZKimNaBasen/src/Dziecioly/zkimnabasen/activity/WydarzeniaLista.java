@@ -39,7 +39,7 @@ public class WydarzeniaLista extends Activity {
 		new PompeczkaWydarzenia();
 
 		WydarzenieDao wydDao = new WydarzenieDao();
-		List<Wydarzenie> wydarzeniaL = wydDao.list();
+		List<Wydarzenie> wydarzeniaL = wydDao.pobierzWydarzenia();
 		RowBeanListaWyd[] WydarzeniaRB = null;
 
 		if (wydarzeniaL.size() == 0) {
@@ -78,7 +78,7 @@ public class WydarzeniaLista extends Activity {
 				Log.d(DEBUG_TAG, "Listener");
 				
 				Intent startSzczegolowyWidok = new Intent(WydarzeniaLista.this, SzczegolyWydarzenia.class);
-				startSzczegolowyWidok.putExtra("id_wydarzenia", position);
+				startSzczegolowyWidok.putExtra("id_wydarzenia", position+1);
 				Log.d(DEBUG_TAG, "PutExtra");
 				startActivity(startSzczegolowyWidok);
 			}

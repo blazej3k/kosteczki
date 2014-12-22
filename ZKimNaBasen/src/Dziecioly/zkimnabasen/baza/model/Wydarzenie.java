@@ -1,11 +1,11 @@
 package Dziecioly.zkimnabasen.baza.model;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
+import java.util.Date;
 import java.util.List;
 
 import com.j256.ormlite.dao.ForeignCollection;
+import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
@@ -19,8 +19,8 @@ public class Wydarzenie {
 	@DatabaseField(canBeNull = false)
 	private String nazwa;
 
-	@DatabaseField
-	private String data;
+	@DatabaseField(dataType = DataType.DATE_STRING, canBeNull = false)
+	private Date data;
 
 	@DatabaseField
 	private String godz_od;
@@ -34,26 +34,27 @@ public class Wydarzenie {
 	@DatabaseField
 	private boolean otwarte;
 
-	//TODO wylaczyc docelowo foreignAutoCreate
+	// TODO wylaczyc docelowo foreignAutoCreate
 	@DatabaseField(canBeNull = false, foreign = true, foreignAutoRefresh = true, foreignAutoCreate = true)
 	private Uzytkownik uzytkownik;
-	
-	//TODO wylaczyc docelowo foreignAutoCreate
+
+	// TODO wylaczyc docelowo foreignAutoCreate
 	@DatabaseField(foreign = true, foreignAutoRefresh = true, foreignAutoCreate = true)
 	private Lokalizacja lokalizacja;
 
-	@ForeignCollectionField (eager = true, maxEagerLevel = 99)
+	@ForeignCollectionField(eager = true, maxEagerLevel = 99)
 	private ForeignCollection<Zaproszenie> zaproszenia;
-	
-//	@ForeignCollectionField(eager = true, maxEagerLevel = 99)
-//	private Collection <Zaproszenie> zaproszenia = new ArrayList<Zaproszenie>();
+
+	// @ForeignCollectionField(eager = true, maxEagerLevel = 99)
+	// private Collection <Zaproszenie> zaproszenia = new
+	// ArrayList<Zaproszenie>();
 
 	public Wydarzenie() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Wydarzenie(String nazwa, String data,
-			String godz_od, String godz_do, String opis, boolean otwarte) {
+	public Wydarzenie(String nazwa, Date data, String godz_od, String godz_do,
+			String opis, boolean otwarte) {
 		super();
 		this.nazwa = nazwa;
 		this.data = data;
@@ -79,11 +80,11 @@ public class Wydarzenie {
 		this.nazwa = nazwa;
 	}
 
-	public String getData() {
+	public Date getData() {
 		return data;
 	}
 
-	public void setData(String data) {
+	public void setData(Date data) {
 		this.data = data;
 	}
 
@@ -133,13 +134,13 @@ public class Wydarzenie {
 			zaproszenieList.add(z);
 		}
 		return zaproszenieList;
-//		return new ArrayList<Zaproszenie>(zaproszenia) ;
+		// return new ArrayList<Zaproszenie>(zaproszenia) ;
 	}
 
 	public void setZaproszenia(List<Zaproszenie> zaproszeniaL) {
-		this.zaproszenia.addAll(zaproszeniaL);	
+		this.zaproszenia.addAll(zaproszeniaL);
 	}
-		
+
 	public Lokalizacja getLokalizacja() {
 		return lokalizacja;
 	}
@@ -147,7 +148,5 @@ public class Wydarzenie {
 	public void setLokalizacja(Lokalizacja lokalizacja) {
 		this.lokalizacja = lokalizacja;
 	}
-	
-	
 
 }

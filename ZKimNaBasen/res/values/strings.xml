@@ -60,7 +60,12 @@
 	<string name="opiss">Opis</string>
     <string name="wyczyscDane">Wyczyść dane</string>
     <string name="wyloguj">Wyloguj</string>
+<<<<<<< HEAD
     <string name="btn_edytuj">Edytuj</string>
     <string name="btn_usun">Usuń</string>
+=======
+    <string name="edytuj">Edytuj</string>
+    <string name="usun">Usuń</string>
+>>>>>>> refs/heads/maly_dzieciolek
 
 </resources>

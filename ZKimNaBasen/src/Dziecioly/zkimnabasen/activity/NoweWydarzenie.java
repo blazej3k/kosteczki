@@ -19,6 +19,7 @@ import Dziecioly.zkimnabasen.fragment.DatePickerFragment;
 import Dziecioly.zkimnabasen.fragment.ListFragment;
 import Dziecioly.zkimnabasen.fragment.TextFragment;
 import Dziecioly.zkimnabasen.fragment.TimePickerFragment;
+import android.R.integer;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.Context;
@@ -74,13 +75,15 @@ public class NoweWydarzenie extends FragmentActivity implements
 	public static final int FLAG_START_TIME = 0;
 	public static final int FLAG_END_TIME = 1;
 	private int flag;
+	
+	private int id_wydarzenia = 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		context = getApplicationContext();
 		setContentView(R.layout.nowe_wydarzenie);
-
+		
 		nazwa = (EditText) findViewById(R.id.nazwa);
 		data = (Button) findViewById(R.id.data);
 		godzinaRozpoczecia = (Button) findViewById(R.id.godzinaRozpoczecia);
@@ -94,6 +97,10 @@ public class NoweWydarzenie extends FragmentActivity implements
 		btnVeturillo = (Button) findViewById(R.id.btnVeturillo);
 
 		initBtnOnClickListeners();
+		
+		id_wydarzenia = getIntent().getIntExtra("id", 0);
+		if (id_wydarzenia != 0)
+			wpiszDane();
 
 		wszyscyZnajomi = pobierzZnajomych();
 		wybraniZnajomi = new boolean[wszyscyZnajomi.size()];
@@ -125,11 +132,17 @@ public class NoweWydarzenie extends FragmentActivity implements
 		String w_godzinaRozpoczecia = godzinaRozpoczecia.getText().toString();
 		String w_godzinaZakonczenia = godzinaZakonczenia.getText().toString();
 		String w_opis = opis.getText().toString();
+
+		if (w_godzinaRozpoczecia.equals("Godzina rozpoczêcia"))
+			w_godzinaRozpoczecia = null;
+		if (w_godzinaZakonczenia.equals("Godzina zakoñczenia"))
+			w_godzinaZakonczenia = null;
+
 		boolean w_czyOtwarte = czyOtwarte.isChecked();
 
-		Wydarzenie wydarzenie = new Wydarzenie(w_nazwa, w_data,
-				w_godzinaRozpoczecia, w_godzinaZakonczenia, w_opis, w_czyOtwarte);
-		Intent intent = new Intent(context, SzczegolyWydarzenia.class);
+		Wydarzenie wydarzenie = new Wydarzenie(w_nazwa,
+				General.dateFromString(w_data), w_godzinaRozpoczecia,
+				w_godzinaZakonczenia, w_opis, w_czyOtwarte);
 
 		SharedPreferences pref = context.getSharedPreferences("MyPref", 0);
 		String login = pref.getString("loggedIn", "null");
@@ -143,7 +156,7 @@ public class NoweWydarzenie extends FragmentActivity implements
 			wydarzenie.setLokalizacja(lokalizacjaDb);
 		}
 
-		wydarzenieDao.add(wydarzenie);
+		int id_wydarzenia = wydarzenieDao.add(wydarzenie).getId();
 
 		for (int i = 0; i < wybraniZnajomi.length; i++) {
 			if (wybraniZnajomi[i] == true) {
@@ -154,19 +167,33 @@ public class NoweWydarzenie extends FragmentActivity implements
 				zaproszenieDao.add(z);
 			}
 		}
-
+		Intent intent = new Intent(context, SzczegolyWydarzenia.class);
+		intent.putExtra("id_wydarzenia", id_wydarzenia);
 		startActivity(intent);
 	}
 
 	@Override
 	public void onDateSet(DatePicker view, int year, int month, int day) {
-		String dateText = day + "-" + String.valueOf(month + 1) + "-" + year;
+		String dday = Integer.toString(day);
+		String mmonth = String.valueOf(month + 1);
+		if (day < 10)
+			dday = "0" + dday;
+		if (month < 9)
+			mmonth = "0" + mmonth;
+		String dateText = dday + "." + mmonth + "." + year;
 		data.setText(dateText);
 	}
 
 	@Override
 	public void onTimeSet(TimePicker view, int hour, int minute) {
-		String timeText = hour + ":" + minute;
+		String hhour = Integer.toString(hour);
+		String mminute = Integer.toString(minute);
+		if (hour < 10)
+			hhour = "0" + hhour;
+		if (minute < 10)
+			mminute = "0" + mminute;
+		
+		String timeText = hhour + ":" + mminute;
 		if (flag == FLAG_START_TIME) {
 			godzinaRozpoczecia.setText(timeText);
 		} else if (flag == FLAG_END_TIME) {
@@ -179,10 +206,14 @@ public class NoweWydarzenie extends FragmentActivity implements
 		zapisz.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				String nazwa_w = nazwa.getText().toString();
+				String data_w = data.getText().toString();
 				if (nazwa_w == null || nazwa_w.equals(""))
 					Toast.makeText(context, "Podaj nazwê wydarzenia",
 							Toast.LENGTH_SHORT).show();
-				else {
+				else if (data_w.equals("Data")) {
+					Toast.makeText(context, "Podaj datê wydarzenia",
+							Toast.LENGTH_SHORT).show();
+				} else {
 					if (lokalizacja != null
 							&& lokalizacja.isLokalizacjaUzytkownika()) {
 						textFrag = new TextFragment(btnMapa.getText()
@@ -327,7 +358,7 @@ public class NoweWydarzenie extends FragmentActivity implements
 		lokalizacja = null;
 		btnMapa.setText("Lokalizacja");
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -342,13 +373,42 @@ public class NoweWydarzenie extends FragmentActivity implements
 		if (id == R.id.action_logout) {
 			General.clearSharedPrefs(context);
 			return true;
-		}
-		else if(id == R.id.action_clear)
-		{
-			General.clearData(context);	
+		} else if (id == R.id.action_clear) {
+			General.clearData(context);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	
+	
+	private void wpiszDane()
+	{
+		Wydarzenie w = wydarzenieDao.find(id_wydarzenia);
+		String w_nazwa = w.getNazwa();
+		String w_data = General.stringFromDate(w.getData());
+		String w_godzOd = w.getGodz_od();
+				String w_godzDo = w.getGodz_do();
+		String w_opis = w.getOpis();
+		boolean w_otwarte = w.isOtwarte();
+				
+				nazwa.setText(w_nazwa);
+		data.setText(w_data);
+		
+		if(!w_godzOd.equals(null))
+		godzinaRozpoczecia.setText(w_godzOd);
+		
+		if(!w_godzDo.equals(null))
+			godzinaRozpoczecia.setText(w_godzDo);
+		
+		if(!w_opis.equals(null))
+			opis.setText(w_opis);
+			
+		czyOtwarte.setChecked(w_otwarte);
+		
+	/*	zaprosZnajomych = (Button) findViewById(R.id.zaprosZnajomych);
+		btnKategoria */
+		
+		
 	}
 
 }
