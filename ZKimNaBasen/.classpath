@@ -19,5 +19,6 @@
 			<attribute name="javadoc_location" value="jar:platform:/resource/ZKimNaBasen/libs/docs/ormlite-android-4.48-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/Teodor/Desktop/actionbarsherlock-4.2.0.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
