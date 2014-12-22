@@ -8,108 +8,125 @@
     tools:context="${relativePackage}.${activityClass}" >
 
     <TextView
-        android:id="@+id/tv_moje_wydarzenia"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/label_tworca_wydarzenia"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-		android:singleLine="true" />
-
-    <TextView
-        android:id="@+id/tv_tworca"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:singleLine="true"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
-		
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/label_nazwa_wydarzenia"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
-
-    <TextView
         android:id="@+id/tv_nazwa_wydarzenia"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-		android:textAppearance="?android:attr/textAppearanceSmall"
-		android:singleLine="true" />
-
-    <TextView
-        android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/label_data" />
-
-    <TextView
-        android:id="@+id/tv_data"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_gravity="center"
+        android:singleLine="true"
+        android:text="@string/penis_str"
+        android:textSize="22sp"
+        android:textStyle="bold" />
 
     <LinearLayout
-        android:id="@+id/LinearLay1"
+        android:id="@+id/horiz_big"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:layout_marginTop="5dp"
+        android:baselineAligned="false" >
 
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/label_od"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
-
-        <TextView
-            android:id="@+id/tv_od"
+        <LinearLayout
+            android:id="@+id/vertic1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:singleLine="true" />
+            android:layout_weight="1"
+            android:orientation="vertical" >
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/tv_tworca_wydarzenia"
+                style="@style/tv_lbl"
+                android:text="@string/label_tworca_wydarzenia" />
 
-    <LinearLayout
-        android:id="@+id/LinearLay2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" 
-        android:orientation="horizontal" >
+            <TextView
+                android:id="@+id/textView6"
+                style="@style/tv_lbl"
+                android:text="@string/label_data" />
 
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/label_do"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
-        
-        <TextView
-            android:id="@+id/tv_do"
+            <TextView
+                android:id="@+id/textView3"
+                style="@style/tv_lbl"
+                android:text="@string/label_od" />
+
+            <TextView
+                android:id="@+id/textView4"
+                style="@style/tv_lbl"
+                android:text="@string/label_do" />
+            
+            <TextView
+                android:id="@+id/lbl_lokalizacja"
+                style="@style/tv_lbl"
+                android:text="@string/label_lokalizacja" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/vertic2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:singleLine="true" />
+            android:layout_weight="1"
+            android:orientation="vertical" >
 
+            <TextView
+                android:id="@+id/tv_tworca"
+                style="@style/tv_text"
+                android:text="@string/penis_str" />
+
+            <TextView
+                android:id="@+id/tv_data"
+                style="@style/tv_text" />
+
+            <TextView
+                android:id="@+id/tv_od"
+                style="@style/tv_text" />
+
+            <TextView
+                android:id="@+id/tv_do"
+                style="@style/tv_text" />
+            
+            <TextView
+                android:id="@+id/tv_lokalizacja"
+                style="@style/tv_text" />
+        </LinearLayout>
     </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_weight="0" >
+
+        <Button
+            android:id="@+id/btn_mapa"
+            style="@style/button"
+            android:text="@string/btn_mapa" />
+
+        <Button
+            android:id="@+id/btn_veturilo"
+            style="@style/button"
+            android:text="@string/btn_veturilo" />
+    </LinearLayout>
+    
     <TextView
         android:id="@+id/textView8"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/tv_lbl"
+        android:layout_gravity="left"
         android:text="@string/label_opis" />
 
     <TextView
         android:id="@+id/tv_opis"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        style="@style/tv_text"
+        android:singleLine="true" />
 
     <TextView
         android:id="@+id/textView5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/tv_lbl"
+        android:layout_gravity="left"
+        android:layout_marginTop="5dp"
         android:text="@string/label_zaproszeni"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <ListView
         android:id="@+id/lv_prostalista"
-		style="@style/lista_rozb" >
+        style="@style/lista_rozb" >
     </ListView>
 
     <LinearLayout
@@ -126,7 +143,6 @@
             android:id="@+id/btn_usun"
             style="@style/button"
             android:text="@string/btn_usun" />
-
     </LinearLayout>
 
 </LinearLayout>

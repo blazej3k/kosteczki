@@ -91,7 +91,26 @@ ChecboxListFragment.NoticeDialogListener {
 			for (int i = 0; i < wydarzeniaL.size(); i++) {
 				WydarzeniaRB[i] = new RowBeanListaWyd();
 				WydarzeniaRB[i].setTekst(wydarzeniaL.get(i).getNazwa());
-				WydarzeniaRB[i].setIcon(R.drawable.niebieski);
+				
+				switch(wydarzeniaL.get(i).getTryb()) {
+				case 0: 
+					WydarzeniaRB[i].setIcon(R.drawable.niebieski);
+					break;
+				case 1: 
+					WydarzeniaRB[i].setIcon(R.drawable.zielony);
+					break;
+				case 2: 
+					WydarzeniaRB[i].setIcon(R.drawable.zolty);
+					break;
+				case 3: 
+					WydarzeniaRB[i].setIcon(R.drawable.czerwony);
+					break;
+				default:
+					WydarzeniaRB[i].setIcon(R.drawable.czerwony);
+					break;
+				}
+				
+				
 			}
 
 			/*

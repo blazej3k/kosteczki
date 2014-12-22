@@ -38,5 +38,20 @@
         <item name="android:scrollbarAlwaysDrawVerticalTrack">true</item>
         <item name="android:scrollbarStyle">insideInset</item>
     </style>
+    
+    <style name="tv_text">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+    
+    <style name="tv_lbl">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 
 </resources>

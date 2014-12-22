@@ -36,7 +36,7 @@
     <string name="title_activity_mapa">Mapa</string>
     <string name="mapa">Mapa</string>
     <string name="label_nazwa_wydarzenia">Nazwa wydarzenia:</string>
-    <string name="label_tworca_wydarzenia">Twórca wydarzenia:</string>
+    <string name="label_tworca_wydarzenia">Utworzone przez:</string>
     <string name="label_od">Od:</string>
     <string name="label_do">Do:</string>
     <string name="label_zaproszeni">Zaproszeni:</string>
@@ -64,5 +64,8 @@
     <string name="btn_usun">Usuń</string>
     <string name="img_rowDesc">status</string>
     <string name="tv_rowDesc">TextView_PINDOLINO</string>
+    <string name="label_lokalizacja">Lokalizacja:</string>
+    <string name="btn_mapa">Mapa</string>
+    <string name="btn_veturilo">Veturilo</string>
 
 </resources>
