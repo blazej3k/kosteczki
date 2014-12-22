@@ -19,12 +19,10 @@ import Dziecioly.zkimnabasen.fragment.DatePickerFragment;
 import Dziecioly.zkimnabasen.fragment.ListFragment;
 import Dziecioly.zkimnabasen.fragment.TextFragment;
 import Dziecioly.zkimnabasen.fragment.TimePickerFragment;
-import android.R.integer;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
@@ -35,10 +33,14 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
+import com.j256.ormlite.dao.ForeignCollection;
 
 public class NoweWydarzenie extends FragmentActivity implements
 		OnDateSetListener, OnTimeSetListener,
@@ -75,7 +77,7 @@ public class NoweWydarzenie extends FragmentActivity implements
 	public static final int FLAG_START_TIME = 0;
 	public static final int FLAG_END_TIME = 1;
 	private int flag;
-	
+
 	private int id_wydarzenia = 0;
 
 	@Override
@@ -83,7 +85,7 @@ public class NoweWydarzenie extends FragmentActivity implements
 		super.onCreate(savedInstanceState);
 		context = getApplicationContext();
 		setContentView(R.layout.nowe_wydarzenie);
-		
+
 		nazwa = (EditText) findViewById(R.id.nazwa);
 		data = (Button) findViewById(R.id.data);
 		godzinaRozpoczecia = (Button) findViewById(R.id.godzinaRozpoczecia);
@@ -97,28 +99,27 @@ public class NoweWydarzenie extends FragmentActivity implements
 		btnVeturillo = (Button) findViewById(R.id.btnVeturillo);
 
 		initBtnOnClickListeners();
-		
-		id_wydarzenia = getIntent().getIntExtra("id", 0);
-		if (id_wydarzenia != 0)
-			wpiszDane();
 
 		wszyscyZnajomi = pobierzZnajomych();
 		wybraniZnajomi = new boolean[wszyscyZnajomi.size()];
 		Arrays.fill(wybraniZnajomi, Boolean.FALSE);
 
 		wybranaLokalizacja = null;
+
+		id_wydarzenia = getIntent().getIntExtra("id", 0);
+		if (id_wydarzenia != 0)
+			wpiszDane();
+
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
-		Log.d(DatabaseManager.DEBUG_TAG, "onResume");
 		if (wybranaLokalizacja != null) {
 			lokalizacja = wybranaLokalizacja;
 			String adres = wybranaLokalizacja.getAdres();
 			if (adres != null) {
 				btnMapa.setText(adres);
-				Log.d(DatabaseManager.DEBUG_TAG, adres);
 			} else {
 				btnMapa.setText("");
 			}
@@ -144,10 +145,8 @@ public class NoweWydarzenie extends FragmentActivity implements
 				General.dateFromString(w_data), w_godzinaRozpoczecia,
 				w_godzinaZakonczenia, w_opis, w_czyOtwarte);
 
-		SharedPreferences pref = context.getSharedPreferences("MyPref", 0);
-		String login = pref.getString("loggedIn", "null");
-		Uzytkownik uzytkownik = uzytkownikDao
-				.pobierzZalogowanegoUzytkownika(login);
+		int id = General.loggedUser(context);
+		Uzytkownik uzytkownik = uzytkownikDao.find(id);
 		wydarzenie.setUzytkownik(uzytkownik);
 
 		if (lokalizacja != null) {
@@ -156,19 +155,30 @@ public class NoweWydarzenie extends FragmentActivity implements
 			wydarzenie.setLokalizacja(lokalizacjaDb);
 		}
 
-		int id_wydarzenia = wydarzenieDao.add(wydarzenie).getId();
-
+		ForeignCollection<Zaproszenie> zaproszenia = wydarzenieDao
+				.getEmptyCollection();
 		for (int i = 0; i < wybraniZnajomi.length; i++) {
 			if (wybraniZnajomi[i] == true) {
 				Uzytkownik u = wszyscyZnajomi.get(i);
 				Zaproszenie z = new Zaproszenie(false);
 				z.setUzytkownik(u);
 				z.setWydarzenie(wydarzenie);
-				zaproszenieDao.add(z);
+				zaproszenia.add(z);
 			}
 		}
+		wydarzenie.setZaproszenia(zaproszenia);
+
+		int id_w;
+		if (id_wydarzenia == 0)
+			id_w = wydarzenieDao.add(wydarzenie).getId();
+		else {
+			wydarzenie.setId(id_wydarzenia);
+			wydarzenieDao.update(wydarzenie);
+			id_w = id_wydarzenia;
+		}
+
 		Intent intent = new Intent(context, SzczegolyWydarzenia.class);
-		intent.putExtra("id_wydarzenia", id_wydarzenia);
+		intent.putExtra("id_wydarzenia", id_w);
 		startActivity(intent);
 	}
 
@@ -192,7 +202,7 @@ public class NoweWydarzenie extends FragmentActivity implements
 			hhour = "0" + hhour;
 		if (minute < 10)
 			mminute = "0" + mminute;
-		
+
 		String timeText = hhour + ":" + mminute;
 		if (flag == FLAG_START_TIME) {
 			godzinaRozpoczecia.setText(timeText);
@@ -256,10 +266,16 @@ public class NoweWydarzenie extends FragmentActivity implements
 		zaprosZnajomych.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				checkboxFrag = new ChecboxListFragment("Wybierz znajomych",
-						null, wybraniZnajomi);
-				checkboxFrag.setItems(wszyscyZnajomi);
-				checkboxFrag.show(getSupportFragmentManager(), "Checkbox list");
+				if (czyOtwarte.isChecked())
+					Toast.makeText(context, "Zaznaczono wydarzenie otwarte",
+							Toast.LENGTH_SHORT).show();
+				else {
+					checkboxFrag = new ChecboxListFragment("Wybierz znajomych",
+							null, wybraniZnajomi);
+					checkboxFrag.setItems(wszyscyZnajomi);
+					checkboxFrag.show(getSupportFragmentManager(),
+							"Checkbox list");
+				}
 			}
 		});
 
@@ -291,6 +307,26 @@ public class NoweWydarzenie extends FragmentActivity implements
 				}
 			}
 		});
+
+		czyOtwarte.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView,
+					boolean isChecked) {
+				if (isChecked)
+					zaprosZnajomych.setText("Zaproszeni: wszyscy");
+				else {
+					int licz = policzWybranych();
+					if (licz != 0)
+						zaprosZnajomych.setText("Zaproszonych: " + licz);
+					else
+						zaprosZnajomych.setText("Zaproœ znajomych");
+
+				}
+
+			}
+		});
+
 	}
 
 	private void wczytajMape() {
@@ -313,7 +349,18 @@ public class NoweWydarzenie extends FragmentActivity implements
 
 	@Override
 	public void onDialogPositiveClick(DialogFragment dialog) {
+
 		this.wybraniZnajomi = checkboxFrag.getCheckedItems();
+		zaprosZnajomych.setText("Zaproszonych: " + policzWybranych());
+
+	}
+
+	private int policzWybranych() {
+		int licznik = 0;
+		for (boolean b : wybraniZnajomi)
+			if (b)
+				licznik++;
+		return licznik;
 	}
 
 	@Override
@@ -323,7 +370,6 @@ public class NoweWydarzenie extends FragmentActivity implements
 	@Override
 	public void onTextDialogPositiveClick(DialogFragment dialog) {
 		String opisLokalizacji = textFrag.getOpis();
-		Toast.makeText(context, opisLokalizacji, Toast.LENGTH_SHORT).show();
 		if (opisLokalizacji != "")
 			lokalizacja.setOpis(opisLokalizacji);
 		lokalizacja.setPubliczna(true);
@@ -347,7 +393,8 @@ public class NoweWydarzenie extends FragmentActivity implements
 	}
 
 	public List<Uzytkownik> pobierzZnajomych() {
-		List<Uzytkownik> lista = uzytkownikDao.list();
+		int id = General.loggedUser(context);
+		List<Uzytkownik> lista = uzytkownikDao.pobierzZnajomych(id);
 		return lista;
 	}
 
@@ -379,36 +426,59 @@ public class NoweWydarzenie extends FragmentActivity implements
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
-	
-	private void wpiszDane()
-	{
+
+	private void wpiszDane() {
 		Wydarzenie w = wydarzenieDao.find(id_wydarzenia);
 		String w_nazwa = w.getNazwa();
 		String w_data = General.stringFromDate(w.getData());
 		String w_godzOd = w.getGodz_od();
-				String w_godzDo = w.getGodz_do();
+		String w_godzDo = w.getGodz_do();
 		String w_opis = w.getOpis();
 		boolean w_otwarte = w.isOtwarte();
-				
-				nazwa.setText(w_nazwa);
+
+		nazwa.setText(w_nazwa);
 		data.setText(w_data);
-		
-		if(!w_godzOd.equals(null))
-		godzinaRozpoczecia.setText(w_godzOd);
-		
-		if(!w_godzDo.equals(null))
+
+		if (w_godzOd != null)
+			godzinaRozpoczecia.setText(w_godzOd);
+
+		if (w_godzDo != null)
 			godzinaRozpoczecia.setText(w_godzDo);
-		
-		if(!w_opis.equals(null))
+
+		if (w_opis != null)
 			opis.setText(w_opis);
-			
+
 		czyOtwarte.setChecked(w_otwarte);
-		
-	/*	zaprosZnajomych = (Button) findViewById(R.id.zaprosZnajomych);
-		btnKategoria */
-		
-		
+
+		Lokalizacja lok = w.getLokalizacja();
+		if (lok != null) {
+			lokalizacja = lok;
+			btnKategoria.setText(lok.getKategoria());
+			btnMapa.setText(lok.getAdres());
+		}
+
+		List<Zaproszenie> list = w.getZaproszenia();
+		if (list != null) {
+			for (int i = 0; i < list.size(); i++) {
+				int id_zaproszonego = list.get(i).getUzytkownik().getId();
+				Log.d(DatabaseManager.DEBUG_TAG,
+						"A " + Integer.toString(id_zaproszonego));
+				Integer j = index(id_zaproszonego);
+				if (j != null)
+					wybraniZnajomi[j] = true;
+			}
+		}
+
 	}
 
+	private Integer index(int id) {
+		for (int i = 0; i < wszyscyZnajomi.size(); i++)
+			if (wszyscyZnajomi.get(i).getId() == id) {
+				Log.d(DatabaseManager.DEBUG_TAG,
+						"B " + Integer.toString(wszyscyZnajomi.get(i).getId()));
+				return i;
+			}
+		return null;
+
+	}
 }

@@ -9,6 +9,7 @@ import android.content.Context;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.support.ConnectionSource;
@@ -71,8 +72,8 @@ public class DatabaseManager extends OrmLiteSqliteOpenHelper {
 			TableUtils.createTable(connectionSource, Lokalizacja.class);
 
 			General.clearSharedPrefs(ctx);
-
-			new PompeczkaLokalizacje();
+			
+			new Pompeczka();
 
 			Log.d(DEBUG_TAG, "Database creating...");
 		} catch (SQLException e) {
@@ -105,6 +106,7 @@ public class DatabaseManager extends OrmLiteSqliteOpenHelper {
 		Log.d(DEBUG_TAG, "Database updating...");
 		Log.d(DEBUG_TAG, "All data is lost.");
 
+		Toast.makeText(ctx, "Usuniêto dane", Toast.LENGTH_SHORT).show();
 		onCreate(db, connectionSource);
 	}
 

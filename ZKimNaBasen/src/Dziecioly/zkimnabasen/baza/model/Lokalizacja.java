@@ -37,9 +37,8 @@ public class Lokalizacja {
 	
 	private boolean lokalizacjaUzytkownika = false;
 
-	public static final String[] kategorie = { "Bie¿nia", "Fitness",
-			"Kort tenisowy", "Koszykówka", "Lodowisko", "Pi³ka no¿na",
-			"Pi³ka rêczna", "P³ywalnia", "Siatkówka", "Skatepark",
+	public static final String[] kategorie = {"Bieganie", "Boisko", "Fitness",
+			"Kort tenisowy", "Lodowisko", "P³ywalnia", "Skatepark",
 			"Strzelnica", "Œcianka wspinaczkowa", "Inne" };
 
 	public Lokalizacja() {

@@ -1,7 +1,9 @@
 package Dziecioly.zkimnabasen.baza.dao;
 
 import java.sql.SQLException;
+import java.util.List;
 
+import Dziecioly.zkimnabasen.activity.General;
 import Dziecioly.zkimnabasen.baza.DatabaseManager;
 import Dziecioly.zkimnabasen.baza.model.Uzytkownik;
 import android.util.Log;
@@ -42,6 +44,18 @@ public class UzytkownikDao extends GenericDao<Uzytkownik, Integer> {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public List<Uzytkownik> pobierzZnajomych(int id) {
+		try {
+			return getDao().queryBuilder().orderBy("nazwa", true).where()
+					.ne("id", id).query();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+
 	}
 
 }

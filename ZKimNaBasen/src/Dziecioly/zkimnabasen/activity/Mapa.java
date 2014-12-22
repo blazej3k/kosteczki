@@ -129,7 +129,7 @@ public class Mapa extends FragmentActivity implements OnMapClickListener,
 						.snippet(lok.getOpis()).icon(colorSelectedMarker));
 				selectedMarker.showInfoWindow();
 				map.moveCamera(CameraUpdateFactory.newLatLngZoom(
-						selectedLanLon, zoom));
+						selectedLanLon, map.getCameraPosition().zoom));
 			}
 
 			else if (lok.isPubliczna())
@@ -151,7 +151,7 @@ public class Mapa extends FragmentActivity implements OnMapClickListener,
 					selectedLanLon).icon(colorSelectedMarker));
 			selectedMarker = userMarker;
 			map.moveCamera(CameraUpdateFactory.newLatLngZoom(selectedLanLon,
-					zoom));
+					map.getCameraPosition().zoom));
 
 			// pobierz adres punktu i wyœwietl go
 			String adres = obs³ugaMapy.pobierzAdres(selectedLanLon);
@@ -264,7 +264,7 @@ public class Mapa extends FragmentActivity implements OnMapClickListener,
 			userMarker.showInfoWindow();
 		}
 		
-		map.moveCamera(CameraUpdateFactory.newLatLngZoom(arg, zoom));
+		map.moveCamera(CameraUpdateFactory.newLatLngZoom(arg, map.getCameraPosition().zoom));
 	}
 
 	public void setLokalizacje(List<Lokalizacja> lokalizacje) {
@@ -286,7 +286,7 @@ public class Mapa extends FragmentActivity implements OnMapClickListener,
 						.show();
 			} else {
 				pyknijMapke(latlon);
-				map.moveCamera(CameraUpdateFactory.newLatLngZoom(latlon, zoom));
+				map.moveCamera(CameraUpdateFactory.newLatLngZoom(latlon, map.getCameraPosition().zoom));
 			}
 		}
 	}

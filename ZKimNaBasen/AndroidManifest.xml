@@ -5,7 +5,7 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="11"
+        android:minSdkVersion="10"
         android:targetSdkVersion="15" />
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -67,6 +67,7 @@
         </activity>
         <activity android:name=".activity.VeturilloMapa"></activity>
         <activity android:name=".activity.VeturilloMapaLokalizacja"></activity>
+        <activity android:name=".activity.SzczegolyWydarzeniaMapa"></activity>
        
     </application>
 

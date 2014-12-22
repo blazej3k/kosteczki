@@ -75,13 +75,7 @@ public class Rejestracja extends ActionBarActivity {
 			Toast.makeText(context, "U¿ytkownik istnieje", Toast.LENGTH_LONG)
 					.show();
 		else {
-			SharedPreferences pref = context.getSharedPreferences("MyPref", 0);
-			Editor editor = pref.edit();
-			editor.clear();
-			editor.putString("loggedIn", u_nick);
-			editor.commit();
-
-			Intent intent = new Intent(context, MojKalendarz.class);
+			Intent intent = new Intent(context, Logowanie.class);
 			startActivity(intent);
 		}
 

@@ -5,9 +5,11 @@ import java.sql.SQLException;
 import java.util.List;
 
 import Dziecioly.zkimnabasen.baza.DatabaseManager;
+import android.content.Entity;
 import android.util.Log;
 
 import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.dao.ForeignCollection;
 
 public class GenericDao<E, K> {
 
@@ -26,46 +28,41 @@ public class GenericDao<E, K> {
 			try {
 				dao = DatabaseManager.getInstance().getDao(daoType);
 			} catch (java.sql.SQLException e) {
-//				e.printStackTrace();
+				// e.printStackTrace();
 				Log.d(DatabaseManager.DEBUG_TAG, e.toString());
 			}
 		}
 		return dao;
 	}
 
-	
-	//insert
+	// insert
 	public E add(E entity) {
 		try {
-			return getDao().createIfNotExists(entity);	
+			return getDao().createIfNotExists(entity);
 		} catch (SQLException e) {
-//			e.printStackTrace();
+			// e.printStackTrace();
 			Log.d(DatabaseManager.DEBUG_TAG, e.toString());
 		}
 		return null;
 	}
 
-	//update
-	public void update(E entity) {
-		try {
-			getDao().update(entity);
-		} catch (SQLException e) {
-//			e.printStackTrace();
-			Log.d(DatabaseManager.DEBUG_TAG, e.toString());
-		}
+	// update
+	public E update(E entity) {
+		remove(entity);
+		return add(entity);
 	}
 
-	//delete
+	// delete
 	public void remove(E entity) {
 		try {
 			getDao().delete(entity);
 		} catch (SQLException e) {
-//			e.printStackTrace();
+			// e.printStackTrace();
 			Log.d(DatabaseManager.DEBUG_TAG, e.toString());
 		}
 	}
 
-	//select po id
+	// select po id
 	public E find(K key) {
 		try {
 			return getDao().queryForId(key);
@@ -74,23 +71,24 @@ public class GenericDao<E, K> {
 		}
 		return null;
 	}
-	
-		//select po jednej kolumnie
-		public List<E> findByColumnName(String columnName, Object value) {
-			try {
-				return getDao().queryBuilder().where().eq(columnName, value).query();
-			} catch (SQLException e) {
-				Log.d(DatabaseManager.DEBUG_TAG, e.toString());
-			}
-			return null;
-		}
 
-	//select wszystko
+	// select po jednej kolumnie
+	public List<E> findByColumnName(String columnName, Object value) {
+		try {
+			return getDao().queryBuilder().where().eq(columnName, value)
+					.query();
+		} catch (SQLException e) {
+			Log.d(DatabaseManager.DEBUG_TAG, e.toString());
+		}
+		return null;
+	}
+
+	// select wszystko
 	public List<E> list() {
 		try {
 			return getDao().queryForAll();
 		} catch (SQLException e) {
-//			e.printStackTrace();
+			// e.printStackTrace();
 			Log.d(DatabaseManager.DEBUG_TAG, e.toString());
 		}
 		return null;
