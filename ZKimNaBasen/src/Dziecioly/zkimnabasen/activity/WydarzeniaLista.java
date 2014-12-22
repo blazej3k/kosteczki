@@ -17,8 +17,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -27,6 +29,8 @@ public class WydarzeniaLista extends Activity {
 	static final String DEBUG_TAG = "LOG";
 
 	private ListView rozbudowana_lista;
+	private Button btn_nowe_wydarzenie;
+	private Button btn_wyswietlanie;
 	
 	private Context context;
 	
@@ -35,9 +39,17 @@ public class WydarzeniaLista extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_wydarzenia_lista);
 		context = getApplicationContext();
+		btn_nowe_wydarzenie = (Button) findViewById(R.id.btn_nowe_wydarzenie);
+		btn_wyswietlanie = (Button) findViewById(R.id.btn_wyswietlanie);
 
 		new PompeczkaWydarzenia();
 
+		zbudujListe();
+		initOnItemClickListener();
+		initOnBtnClickListeners();
+	}
+	
+	private void zbudujListe() {
 		WydarzenieDao wydDao = new WydarzenieDao();
 		List<Wydarzenie> wydarzeniaL = wydDao.pobierzWydarzenia();
 		RowBeanListaWyd[] WydarzeniaRB = null;
@@ -63,11 +75,8 @@ public class WydarzeniaLista extends Activity {
 			//String[] przykladowe_dane = {"Wlaz³ kotek", "na p³otek", "i mruga.", "piêkna to", "piosneczka nied³uga.", "Wlaz³ kurek", "na murek", "i pieje", "niech siê nikt", "z tych piosnek", "nie œmieje."};
 			rozbudowana_lista = (ListView) findViewById(R.id.lv_prostalista);
 			List_Custom_ListaWydarzen adapter_listy = new List_Custom_ListaWydarzen(this, R.layout.view_row_item_lista_wydarzen, WydarzeniaRB);
-
 			rozbudowana_lista.setAdapter(adapter_listy);
 		}
-
-		initOnItemClickListener();
 	}
 	
 	private void initOnItemClickListener() {
@@ -83,6 +92,23 @@ public class WydarzeniaLista extends Activity {
 				startActivity(startSzczegolowyWidok);
 			}
 			
+		});
+	}
+	
+	private void initOnBtnClickListeners() {
+		btn_nowe_wydarzenie.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(context, NoweWydarzenie.class);
+				startActivity(intent);
+			}
+		});
+
+		btn_wyswietlanie.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+	// TODO napisz listener ten co popup wyswietla z opcjami co wyswietlamy 
+			}
 		});
 	}
 	
