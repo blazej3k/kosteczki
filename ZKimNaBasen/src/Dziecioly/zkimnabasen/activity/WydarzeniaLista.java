@@ -116,6 +116,8 @@ ChecboxListFragment.NoticeDialogListener {
 			boolean otwarte = pref.getBoolean("3", true);
 
 			int zalogowany = General.loggedUser(context);
+			
+			Log.d(DatabaseManager.DEBUG_TAG, "USER " +Integer.toString(zalogowany));
 
 			List<Wydarzenie> subList = new ArrayList<Wydarzenie>();
 			for (Wydarzenie wydarzenie : list) {
@@ -154,7 +156,7 @@ ChecboxListFragment.NoticeDialogListener {
 
 				if (otwarte) {
 					Log.d(DatabaseManager.DEBUG_TAG, "otwarte");
-					if (czyOtwarte) {
+					if (czyOtwarte && uzytkownik.getId() != zalogowany) {
 						boolean istniejeZaproszenie = false;
 						for (Zaproszenie zaproszenie : zaproszenia) {
 							if (zaproszenie.getUzytkownik().getId() == zalogowany
@@ -183,6 +185,7 @@ ChecboxListFragment.NoticeDialogListener {
 
 					Intent startSzczegolowyWidok = new Intent(WydarzeniaLista.this, SzczegolyWydarzenia.class);
 					startSzczegolowyWidok.putExtra("id_wydarzenia",  wydarzeniaL.get(position).getId());
+					startSzczegolowyWidok.putExtra("tryb", wydarzeniaL.get(position).getTryb());
 					Log.d(DEBUG_TAG, "PutExtra");
 					startActivity(startSzczegolowyWidok);
 				}

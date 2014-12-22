@@ -40,7 +40,6 @@ public class SzczegolyWydarzenia extends FragmentActivity {
 	private ListView rozbudowana_lista;
 	private Button btnEdytuj;
 	private Button btnUsun;
-	private Button btnDolacz;
 	private Context context;
 
 	WydarzenieDao wydDao = new WydarzenieDao();
@@ -60,7 +59,7 @@ public class SzczegolyWydarzenia extends FragmentActivity {
 
 		Intent intent = getIntent();
 		id = intent.getIntExtra("id_wydarzenia", -1);
-		tryb = intent.getIntExtra("tryb", 1);
+		tryb = intent.getIntExtra("tryb", 4);
 
 		zalogowany = General.loggedUser(context);
 
@@ -75,9 +74,6 @@ public class SzczegolyWydarzenia extends FragmentActivity {
 		btnEdytuj = (Button) findViewById(R.id.btn_edytuj);
 		btnUsun = (Button) findViewById(R.id.btn_usun);
 
-		// TODO zmienic na btn_dolacz!!
-		btnDolacz = (Button) findViewById(R.id.btn_edytuj);
-
 		pokazButtony(tryb);
 		initOnBtnClickListeners();
 
@@ -88,30 +84,19 @@ public class SzczegolyWydarzenia extends FragmentActivity {
 	private void pokazButtony(int tryb) {
 		// moje wydarzenie (pokaz edytuj i usun)
 		if (tryb == 0) {
-			btnDolacz.setEnabled(false);
-			btnDolacz.setVisibility(View.INVISIBLE);
-
-			btnEdytuj.setEnabled(true);
-			btnEdytuj.setVisibility(View.VISIBLE);
-
 			btnUsun.setEnabled(true);
 			btnUsun.setVisibility(View.VISIBLE);
 
+			btnEdytuj.setText("Edytuj");
 		}
 		// pokaz dolacz/rezygnuj
 		else {
-
-			btnEdytuj.setEnabled(false);
-			btnEdytuj.setVisibility(View.INVISIBLE);
-
 			btnUsun.setEnabled(false);
 			btnUsun.setVisibility(View.INVISIBLE);
 
-			btnDolacz.setEnabled(true);
-			btnDolacz.setVisibility(View.VISIBLE);
-
+			btnEdytuj.setText("Do³¹cz");
 			if (tryb == 1)
-				btnDolacz.setText("Rezygnuj");
+				btnEdytuj.setText("Do³¹cz");
 		}
 
 	}
@@ -167,25 +152,11 @@ public class SzczegolyWydarzenia extends FragmentActivity {
 		btnEdytuj.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(context, NoweWydarzenie.class);
-				intent.putExtra("id", id);
-				startActivity(intent);
-			}
-		});
-
-		btnUsun.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				YesNoFragment frag = new YesNoFragment(id);
-				frag.show(getSupportFragmentManager(), "YesNo");
-
-			}
-		});
-
-		btnDolacz.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
 				switch (tryb) {
+				case 0:
+					Intent intent = new Intent(context, NoweWydarzenie.class);
+					intent.putExtra("id", id);
+					startActivity(intent);
 				case 1:
 					rezygnuj();
 					break;
@@ -198,9 +169,18 @@ public class SzczegolyWydarzenia extends FragmentActivity {
 				default:
 					break;
 				}
+			}
+		});
+
+		btnUsun.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				YesNoFragment frag = new YesNoFragment(id);
+				frag.show(getSupportFragmentManager(), "YesNo");
 
 			}
 		});
+
 	}
 
 	private void rezygnuj() {
@@ -230,7 +210,8 @@ public class SzczegolyWydarzenia extends FragmentActivity {
 		Zaproszenie zaproszenie = new Zaproszenie(true);
 		zaproszenie.setWydarzenie(wydarzenie);
 		String login = General.loggedUserLogin(context);
-		Uzytkownik uzytkownik = uzytkownikDao.pobierzZalogowanegoUzytkownika(login);
+		Uzytkownik uzytkownik = uzytkownikDao
+				.pobierzZalogowanegoUzytkownika(login);
 		zaproszenie.setUzytkownik(uzytkownik);
 		zaproszenieDao.add(zaproszenie);
 	}

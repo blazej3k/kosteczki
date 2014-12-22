@@ -138,5 +138,6 @@ public class Pompeczka {
 		zaproszenie6.setUzytkownik(uzytkownik2);
 		zaproszenie6.setWydarzenie(wydarzenie5);
 		zaproszenieDao.add(zaproszenie6);
+		
 	}
 }
