@@ -141,8 +141,7 @@ public class NoweWydarzenie extends FragmentActivity implements
 				General.dateFromString(w_data), w_godzinaRozpoczecia,
 				w_godzinaZakonczenia, w_opis, w_czyOtwarte);
 
-		SharedPreferences pref = context.getSharedPreferences("MyPref", 0);
-		String login = pref.getString("loggedIn", "null");
+		String login = General.loggedUser(context);
 		Uzytkownik uzytkownik = uzytkownikDao
 				.pobierzZalogowanegoUzytkownika(login);
 		wydarzenie.setUzytkownik(uzytkownik);
@@ -253,10 +252,16 @@ public class NoweWydarzenie extends FragmentActivity implements
 		zaprosZnajomych.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				checkboxFrag = new ChecboxListFragment("Wybierz znajomych",
-						null, wybraniZnajomi);
-				checkboxFrag.setItems(wszyscyZnajomi);
-				checkboxFrag.show(getSupportFragmentManager(), "Checkbox list");
+				if (czyOtwarte.isChecked())
+					Toast.makeText(context, "Zaznaczono wydarzenie otwarte",
+							Toast.LENGTH_SHORT);
+				else {
+					checkboxFrag = new ChecboxListFragment("Wybierz znajomych",
+							null, wybraniZnajomi);
+					checkboxFrag.setItems(wszyscyZnajomi);
+					checkboxFrag.show(getSupportFragmentManager(),
+							"Checkbox list");
+				}
 			}
 		});
 
@@ -288,6 +293,7 @@ public class NoweWydarzenie extends FragmentActivity implements
 				}
 			}
 		});
+
 	}
 
 	private void wczytajMape() {
@@ -320,7 +326,6 @@ public class NoweWydarzenie extends FragmentActivity implements
 	@Override
 	public void onTextDialogPositiveClick(DialogFragment dialog) {
 		String opisLokalizacji = textFrag.getOpis();
-		Toast.makeText(context, opisLokalizacji, Toast.LENGTH_SHORT).show();
 		if (opisLokalizacji != "")
 			lokalizacja.setOpis(opisLokalizacji);
 		lokalizacja.setPubliczna(true);
@@ -344,7 +349,8 @@ public class NoweWydarzenie extends FragmentActivity implements
 	}
 
 	public List<Uzytkownik> pobierzZnajomych() {
-		List<Uzytkownik> lista = uzytkownikDao.list();
+		String login = General.loggedUser(context);
+		List<Uzytkownik> lista = uzytkownikDao.pobierzZnajomych(login);
 		return lista;
 	}
 

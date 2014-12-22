@@ -49,5 +49,12 @@ public class General {
 		SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
 		return formatter.format(date);
 	}
+	
+	public static String loggedUser(Context context)
+	{
+		SharedPreferences pref = context.getSharedPreferences("MyPref", 0);
+		String login = pref.getString("loggedIn", "null");
+		return login;
+	}
 
 }
