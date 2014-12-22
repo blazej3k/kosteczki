@@ -10,8 +10,8 @@ public class ZaproszenieDao extends GenericDao<Zaproszenie, Integer> {
 			int id_wydarzenia) {
 		try {
 			return getDao().queryBuilder().where()
-					.eq("id_uzytkownik", id_uzytkownika).and()
-					.eq("id_wydarzenie", id_wydarzenia).queryForFirst();
+					.eq("uzytkownik_id", id_uzytkownika).and()
+					.eq("wydarzenie_id", id_wydarzenia).queryForFirst();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

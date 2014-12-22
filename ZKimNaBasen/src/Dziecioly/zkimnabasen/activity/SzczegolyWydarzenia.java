@@ -42,6 +42,8 @@ public class SzczegolyWydarzenia extends FragmentActivity {
 	private Button btnEdytuj;
 	private Button btnUsun;
 	private Context context;
+	private Button btn_mapa;
+	private Button btn_veturilo;
 
 	WydarzenieDao wydDao = new WydarzenieDao();
 	ZaproszenieDao zaproszenieDao = new ZaproszenieDao();
@@ -72,6 +74,8 @@ public class SzczegolyWydarzenia extends FragmentActivity {
 		tv_opis = (TextView) findViewById(R.id.tv_opis);
 		tv_lokalizacja = (TextView) findViewById(R.id.tv_lokalizacja);
 		rozbudowana_lista = (ListView) findViewById(R.id.lv_prostalista);
+		btn_mapa = (Button) findViewById(R.id.btn_mapa);
+		btn_veturilo = (Button) findViewById(R.id.btn_veturilo);
 
 		btnEdytuj = (Button) findViewById(R.id.btn_edytuj);
 		btnUsun = (Button) findViewById(R.id.btn_usun);
@@ -98,7 +102,7 @@ public class SzczegolyWydarzenia extends FragmentActivity {
 
 			btnEdytuj.setText("Do³¹cz");
 			if (tryb == 1)
-				btnEdytuj.setText("Do³¹cz");
+				btnEdytuj.setText("Rezygnuj");
 		}
 
 	}
@@ -160,6 +164,7 @@ public class SzczegolyWydarzenia extends FragmentActivity {
 					Intent intent = new Intent(context, NoweWydarzenie.class);
 					intent.putExtra("id", id);
 					startActivity(intent);
+					break;
 				case 1:
 					rezygnuj();
 					break;
@@ -184,6 +189,28 @@ public class SzczegolyWydarzenia extends FragmentActivity {
 			}
 		});
 
+		btn_mapa.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(context,
+						SzczegolyWydarzeniaMapa.class);
+				intent.putExtra("lat", wydarzenie.getLokalizacja().getLat());
+				intent.putExtra("lon", wydarzenie.getLokalizacja().getLon());
+				startActivity(intent);
+			}
+		});
+
+		btn_veturilo.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(context, Veturillo.class);
+				intent.putExtra("lat", wydarzenie.getLokalizacja().getLat());
+				intent.putExtra("lon", wydarzenie.getLokalizacja().getLon());
+				intent.putExtra("adres", wydarzenie.getLokalizacja().getAdres());
+				startActivity(intent);
+			}
+		});
+
 	}
 
 	private void rezygnuj() {
@@ -200,6 +227,9 @@ public class SzczegolyWydarzenia extends FragmentActivity {
 			zaproszenieDao.update(zaproszenie);
 		}
 
+		Intent intent = new Intent(context, WydarzeniaLista.class);
+		startActivity(intent);
+
 	}
 
 	private void akceptujZaproszenie() {
@@ -207,6 +237,9 @@ public class SzczegolyWydarzenia extends FragmentActivity {
 				.pobierzZaproszenieUseraNawydarzenie(zalogowany, id);
 		zaproszenie.setWezmie_udzial(true);
 		zaproszenieDao.update(zaproszenie);
+
+		Intent intent = new Intent(context, WydarzeniaLista.class);
+		startActivity(intent);
 	}
 
 	private void dolaczDoWydarzeniaOtwartego() {
@@ -217,6 +250,8 @@ public class SzczegolyWydarzenia extends FragmentActivity {
 				.pobierzZalogowanegoUzytkownika(login);
 		zaproszenie.setUzytkownik(uzytkownik);
 		zaproszenieDao.add(zaproszenie);
+		Intent intent = new Intent(context, WydarzeniaLista.class);
+		startActivity(intent);
 	}
 
 	@Override

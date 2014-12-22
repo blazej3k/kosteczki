@@ -169,6 +169,7 @@ public class NoweWydarzenie extends FragmentActivity implements
 		wydarzenie.setZaproszenia(zaproszenia);
 
 		int id_w;
+		Log.d(DatabaseManager.DEBUG_TAG, "ID WYD "  + Integer.toString(id_wydarzenia));
 		if (id_wydarzenia == 0)
 			id_w = wydarzenieDao.add(wydarzenie).getId();
 		else {
@@ -468,6 +469,13 @@ public class NoweWydarzenie extends FragmentActivity implements
 					wybraniZnajomi[j] = true;
 			}
 		}
+
+		if (w_otwarte)
+			zaprosZnajomych.setText("Zaproszeni: wszyscy");
+		else if (list == null || list.size() == 0)
+			zaprosZnajomych.setText("Zaproœ znajomych");
+		else
+			zaprosZnajomych.setText("Zaproszonych: " + list.size());
 
 	}
 
