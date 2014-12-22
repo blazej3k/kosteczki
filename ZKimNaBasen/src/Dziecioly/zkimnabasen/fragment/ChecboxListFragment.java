@@ -14,11 +14,11 @@ import android.support.v4.app.DialogFragment;
 public class ChecboxListFragment extends DialogFragment {
 
 	private NoticeDialogListener mListener;
-	
+
 	private String title;
 	private CharSequence[] items;
 	private boolean[] checkedItems;
-	
+
 	public ChecboxListFragment(String title, CharSequence[] items, boolean[] checkedItems) {
 		this.title = title;
 		this.items = items;
@@ -29,35 +29,33 @@ public class ChecboxListFragment extends DialogFragment {
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		builder.setTitle(title);
-		
-		
+
+
 		builder.setMultiChoiceItems(items, checkedItems,
 				new DialogInterface.OnMultiChoiceClickListener() {
-			
-					@Override
-					public void onClick(DialogInterface dialog, int which,
-							boolean isChecked) {
-						if (isChecked) {
-							checkedItems[which] = true;
-						}
-					}
-				});
 
-		builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which,
+					boolean isChecked) {
+				if (isChecked) {
+					checkedItems[which] = true;
+				}
+			}
+		});
+
+		builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
 				mListener.onDialogPositiveClick(ChecboxListFragment.this);
 			}
 		});
 
-		builder.setNegativeButton("Analuj",
-				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int id) {
-						dialog.cancel();
-						mListener
-								.onDialogNegativeClick(ChecboxListFragment.this);
+		builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+				dialog.cancel();
+				mListener.onDialogNegativeClick(ChecboxListFragment.this);
 
-					}
-				});
+			}
+		});
 
 		return builder.create();
 	}
@@ -78,7 +76,7 @@ public class ChecboxListFragment extends DialogFragment {
 					+ " must implement NoticeDialogListener");
 		}
 	}
-	
+
 	public CharSequence[] getItems() {
 		return items;
 	}

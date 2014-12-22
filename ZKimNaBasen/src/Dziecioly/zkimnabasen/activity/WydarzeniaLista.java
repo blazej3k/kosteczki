@@ -203,7 +203,7 @@ ChecboxListFragment.NoticeDialogListener {
 
 				frag = new ChecboxListFragment("Co chcesz wyœwietlaæ?", items, checkedItems);
 				frag.show(getSupportFragmentManager(), "tryb");
-
+				
 			}
 		});
 	}

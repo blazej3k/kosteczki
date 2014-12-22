@@ -32,19 +32,23 @@
 
         <activity
             android:name=".activity.NoweWydarzenie"
-            android:label="@string/title_activity_nowe_wydarzenie" >
+            android:label="@string/title_activity_nowe_wydarzenie"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".activity.EdycjaWydarzenia"
-            android:label="@string/title_activity_edycja_wydarzenia" >
+            android:label="@string/title_activity_edycja_wydarzenia"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".activity.SzczegolyWydarzenia"
-            android:label="@string/title_activity_szczegoly_wydarzenia" >
+            android:label="@string/title_activity_szczegoly_wydarzenia"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".activity.MojKalendarz"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -53,22 +57,41 @@
         </activity>
         <activity
             android:name=".activity.WydarzeniaLista"
-            android:label="@string/title_activity_wydarzenia_lista" >
+            android:label="@string/title_activity_wydarzenia_lista"
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name=".activity.View_List_ListaWydarzen" >
+        <activity
+            android:name=".activity.View_List_ListaWydarzen"
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name=".activity.Logowanie" >
+        <activity
+            android:name=".activity.Logowanie"
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name=".activity.Rejestracja" >
+        <activity
+            android:name=".activity.Rejestracja"
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name=".activity.Mapa" >
+        <activity
+            android:name=".activity.Mapa"
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name=".activity.Veturillo" >
+        <activity
+            android:name=".activity.Veturillo"
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name=".activity.VeturilloMapa"></activity>
-        <activity android:name=".activity.VeturilloMapaLokalizacja"></activity>
-        <activity android:name=".activity.SzczegolyWydarzeniaMapa"></activity>
-       
+        <activity
+            android:name=".activity.VeturilloMapa"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".activity.VeturilloMapaLokalizacja"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".activity.SzczegolyWydarzeniaMapa"
+            android:screenOrientation="portrait" >
+        </activity>
     </application>
 
 </manifest>
