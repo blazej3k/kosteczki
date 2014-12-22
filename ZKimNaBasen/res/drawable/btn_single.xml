@@ -9,10 +9,10 @@
                 android:startColor="@color/malo_szary"
                 android:angle="270" />
             <stroke
-                android:width="3dp"
+                android:width="1dp"
                 android:color="@color/czarny" />
             <corners
-                android:radius="90dp" />
+                android:radius="5dp" />
             <padding
                 android:left="10dp"
                 android:top="10dp"
@@ -28,10 +28,10 @@
                 android:startColor="@color/malo_szary"
                 android:angle="270" />
             <stroke
-                android:width="3dp"
+                android:width="1dp"
                 android:color="@color/czarny" />
             <corners
-                android:radius="90dp" />
+                android:radius="5dp" />
             <padding
                 android:left="10dp"
                 android:top="10dp"
