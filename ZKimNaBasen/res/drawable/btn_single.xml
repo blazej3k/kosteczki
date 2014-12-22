@@ -5,7 +5,7 @@
     <item android:state_pressed="true" >
         <shape>
             <gradient
-                android:endColor="@color/bialy"
+                android:endColor="@color/bardzo_szary"
                 android:startColor="@color/malo_szary"
                 android:angle="270" />
             <stroke
