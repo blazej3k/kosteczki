@@ -12,6 +12,7 @@ import Dziecioly.zkimnabasen.baza.model.Uzytkownik;
 import Dziecioly.zkimnabasen.baza.model.Wydarzenie;
 import Dziecioly.zkimnabasen.baza.model.Zaproszenie;
 import Dziecioly.zkimnabasen.fragment.ChecboxListFragment;
+import android.R.integer;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -42,7 +43,7 @@ ChecboxListFragment.NoticeDialogListener {
 
 	private Context context;
 
-	List<Wydarzenie> wydarzeniaL;
+	List<Wydarzenie> wydarzeniaL = new ArrayList<Wydarzenie>();
 	private WydarzenieDao wydarzenieDao = new WydarzenieDao();
 	private ChecboxListFragment frag;
 	private CharSequence[] items = { "Moje", "Wezmê udzia³",
@@ -63,8 +64,8 @@ ChecboxListFragment.NoticeDialogListener {
 			startActivity(intent);
 		} 
 		else {
-
-			wydarzeniaL = wydarzenieDao.pobierzWydarzenia();
+			List<Wydarzenie> list = wydarzenieDao.pobierzWydarzenia();
+			wydarzeniaL = wybierzWydarzenia(list);
 
 			setContentView(R.layout.activity_wydarzenia_lista);
 			btn_nowe_wydarzenie = (Button) findViewById(R.id.btn_nowe_wydarzenie);
@@ -80,7 +81,8 @@ ChecboxListFragment.NoticeDialogListener {
 				zbudujListe(wydarzeniaL);
 		}
 	}
-
+	
+	
 		private void zbudujListe(List<Wydarzenie> wydarzeniaL) {
 			Log.d(DatabaseManager.DEBUG_TAG,
 					"SIZE " + Integer.toString(wydarzeniaL.size()));
@@ -100,13 +102,13 @@ ChecboxListFragment.NoticeDialogListener {
 					WydarzeniaRB[i].setIcon(R.drawable.zielony);
 					break;
 				case 2: 
-					WydarzeniaRB[i].setIcon(R.drawable.zolty);
+					WydarzeniaRB[i].setIcon(R.drawable.czerwony);
 					break;
 				case 3: 
-					WydarzeniaRB[i].setIcon(R.drawable.czerwony);
+					WydarzeniaRB[i].setIcon(R.drawable.zolty);
 					break;
 				default:
-					WydarzeniaRB[i].setIcon(R.drawable.czerwony);
+					WydarzeniaRB[i].setIcon(R.drawable.zolty);
 					break;
 				}
 				
@@ -128,6 +130,7 @@ ChecboxListFragment.NoticeDialogListener {
 		}
 
 		private List<Wydarzenie> wybierzWydarzenia(List<Wydarzenie> list) {
+			
 			SharedPreferences pref = context.getSharedPreferences("MyPref", 0);
 			boolean moje = pref.getBoolean("0", true);
 			boolean wezmeUdzial = pref.getBoolean("1", true);
@@ -156,7 +159,7 @@ ChecboxListFragment.NoticeDialogListener {
 					for (Zaproszenie zaproszenie : zaproszenia) {
 						if (zaproszenie.getUzytkownik().getId() == zalogowany
 								&& zaproszenie.isWezmie_udzial()) {
-							wydarzenie.setTryb(2);
+							wydarzenie.setTryb(1);
 							subList.add(wydarzenie);
 						}
 					}
@@ -167,7 +170,7 @@ ChecboxListFragment.NoticeDialogListener {
 					for (Zaproszenie zaproszenie : zaproszenia) {
 						if (zaproszenie.getUzytkownik().getId() == zalogowany
 								&& !zaproszenie.isWezmie_udzial()) {
-							wydarzenie.setTryb(3);
+							wydarzenie.setTryb(2);
 							subList.add(wydarzenie);
 						}
 					}
@@ -229,6 +232,7 @@ ChecboxListFragment.NoticeDialogListener {
 					checkedItems[1] = pref.getBoolean("1", true);
 					checkedItems[2] = pref.getBoolean("2", true);
 					checkedItems[3] = pref.getBoolean("3", true);
+					
 
 					frag = new ChecboxListFragment("Co chcesz wyœwietlaæ?", items, checkedItems);
 					frag.show(getSupportFragmentManager(), "tryb");
@@ -261,6 +265,7 @@ ChecboxListFragment.NoticeDialogListener {
 			wydarzeniaL = subList;
 			zbudujListe(subList);
 		}
+		
 
 		@Override
 		public void onDialogNegativeClick(DialogFragment dialog) {	}
