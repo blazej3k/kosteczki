@@ -5,7 +5,6 @@ import java.util.List;
 
 import Dziecioly.zkimnabasen.R;
 import Dziecioly.zkimnabasen.baza.DatabaseManager;
-import Dziecioly.zkimnabasen.baza.dao.UzytkownikDao;
 import Dziecioly.zkimnabasen.baza.dao.WydarzenieDao;
 import Dziecioly.zkimnabasen.baza.model.List_Custom_ListaWydarzen;
 import Dziecioly.zkimnabasen.baza.model.RowBeanListaWyd;
@@ -13,12 +12,14 @@ import Dziecioly.zkimnabasen.baza.model.Uzytkownik;
 import Dziecioly.zkimnabasen.baza.model.Wydarzenie;
 import Dziecioly.zkimnabasen.baza.model.Zaproszenie;
 import Dziecioly.zkimnabasen.fragment.ChecboxListFragment;
-import android.R.integer;
-import android.app.Activity;
+import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
@@ -44,41 +45,49 @@ public class WydarzeniaLista extends FragmentActivity implements
 	private Context context;
 
 	private WydarzenieDao wydarzenieDao = new WydarzenieDao();
-	private UzytkownikDao uzytkownikDao = new UzytkownikDao();
 
 	private ChecboxListFragment frag;
 	private CharSequence[] items = { "Moje", "Wezmê udzia³",
-			"Jestem zaproszona, ale nie biorê udzia³u",
+			"Jestem zaproszony, ale nie biorê udzia³u",
 			"Otwarte, w których nie biorê udzia³u" };
 
+	@SuppressLint("NewApi")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		context = getApplicationContext();
+		DatabaseManager.init(this);
 
-		List<Wydarzenie> wydarzeniaL = wydarzenieDao.pobierzWydarzenia();
-		
-		setContentView(R.layout.activity_wydarzenia_lista);
-		btnNoweWydarzenie = (Button) findViewById(R.id.btn_nowe_wydarzenie);
-		btnWyswietlanie = (Button) findViewById(R.id.btn_wyswietlanie);
-		initBtnOnClickListeners();
+		SharedPreferences pref = context.getSharedPreferences("MyPref", 0);
 
-		if (wydarzeniaL.size() == 0) {
-			
-			Log.d(DatabaseManager.DEBUG_TAG, "PUSTA LISTA");
+		if (!pref.contains("loggedIn")) {
+			Intent intent = new Intent(context, Logowanie.class);
+			startActivity(intent);
+		} else {
 
-			Toast.makeText(this, "Lista wydarzeñ jest pusta w ciul!",
-					Toast.LENGTH_LONG).show();
+			List<Wydarzenie> wydarzeniaL = wydarzenieDao.pobierzWydarzenia();
+
+			setContentView(R.layout.activity_wydarzenia_lista);
+			btnNoweWydarzenie = (Button) findViewById(R.id.btn_nowe_wydarzenie);
+			btnWyswietlanie = (Button) findViewById(R.id.btn_wyswietlanie);
+			initBtnOnClickListeners();
+
+			if (wydarzeniaL.size() == 0) {
+				Log.d(DatabaseManager.DEBUG_TAG, "PUSTA LISTA");
+				Toast.makeText(this, "Lista wydarzeñ jest pusta",
+						Toast.LENGTH_LONG).show();
+			}
+
+			else
+				wyswietlWydarzenia(wydarzeniaL);
 		}
-
-		else
-			wyswietlWydarzenia(wydarzeniaL);
 
 	}
 
 	private void wyswietlWydarzenia(List<Wydarzenie> wydarzeniaL) {
-		Log.d(DatabaseManager.DEBUG_TAG, "SIZE " + Integer.toString(wydarzeniaL.size()));
-	
+		Log.d(DatabaseManager.DEBUG_TAG,
+				"SIZE " + Integer.toString(wydarzeniaL.size()));
+
 		RowBeanListaWyd[] WydarzeniaRB = null;
 		WydarzeniaRB = new RowBeanListaWyd[wydarzeniaL.size()];
 
@@ -88,8 +97,10 @@ public class WydarzeniaLista extends FragmentActivity implements
 			WydarzeniaRB[i].setIcon(R.drawable.niebieski);
 		}
 
-		/*for (Wydarzenie x : wydarzeniaL)
-			Log.d(DatabaseManager.DEBUG_TAG, "ID: " + x.getId());*/
+		/*
+		 * for (Wydarzenie x : wydarzeniaL) Log.d(DatabaseManager.DEBUG_TAG,
+		 * "ID: " + x.getId());
+		 */
 
 		rozbudowana_lista = (ListView) findViewById(R.id.lv_prostalista);
 		List_Custom_ListaWydarzen adapter_listy = new List_Custom_ListaWydarzen(
@@ -178,7 +189,7 @@ public class WydarzeniaLista extends FragmentActivity implements
 		List<Wydarzenie> list = wydarzenieDao.pobierzWydarzenia();
 		List<Wydarzenie> subList = wybierzWydarzenia(list);
 		wyswietlWydarzenia(subList);
-		
+
 	}
 
 	private List<Wydarzenie> wybierzWydarzenia(List<Wydarzenie> list) {
