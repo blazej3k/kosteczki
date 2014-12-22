@@ -18,7 +18,9 @@
         android:id="@+id/numerTel"
         style="@style/edit_text"
         android:layout_marginTop="30dp"
-        android:hint="@string/numerTelefonu" />
+        android:hint="@string/numerTelefonu" 
+        <requestFocus />
+	</EditText>
 
     <EditText
         android:id="@+id/nick"
@@ -35,10 +37,7 @@
         android:id="@+id/powtorzHaslo"
 		style="@style/edit_text"
         android:hint="@string/powtorzHaslo"
-        android:inputType="textPassword" >
-
-        <requestFocus />
-    </EditText>
+        android:inputType="textPassword" />
 
     <Button
         android:id="@+id/zarejestruj"
