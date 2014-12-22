@@ -5,12 +5,10 @@ import java.util.List;
 import Dziecioly.zkimnabasen.R;
 import Dziecioly.zkimnabasen.api.Obs³ugaMapy;
 import Dziecioly.zkimnabasen.api.VeturilloAsynTask;
-import Dziecioly.zkimnabasen.baza.DatabaseManager;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -79,7 +77,6 @@ public class VeturilloMapa extends FragmentActivity implements
 	@Override
 	public void onMapReady(GoogleMap mapp) {
 		this.map = mapp;
-		map.moveCamera(CameraUpdateFactory.newLatLngZoom(origin, 15.0f));
 		map.addMarker(new MarkerOptions().position(origin).icon(
 				colorOriginMarker));
 		map.addMarker(new MarkerOptions().position(destination).icon(
@@ -94,18 +91,21 @@ public class VeturilloMapa extends FragmentActivity implements
 	private void narysujTrase(List<LatLng> lines) {
 		LatLng vetOrigin = asyncTask.getVetOrigin();
 		LatLng vetDest = asyncTask.getVetDest();
-		map.addMarker(new MarkerOptions().position(vetOrigin).icon(colorVeturiloMarker));
-		map.addMarker(new MarkerOptions().position(vetDest).icon(colorVeturiloMarker));
+		map.addMarker(new MarkerOptions().position(vetOrigin).icon(
+				colorVeturiloMarker));
+		map.addMarker(new MarkerOptions().position(vetDest).icon(
+				colorVeturiloMarker));
+
 		
 		map.moveCamera(CameraUpdateFactory.newLatLngZoom(vetOrigin, 15.0f));
-		
+
 		map.addPolyline(new PolylineOptions().addAll(lines).width(5)
 				.color(Color.BLUE));
-		
+
 		String distance = asyncTask.getDistance();
 		String time = asyncTask.getTime();
-		
-		Toast.makeText(context, distance + ",   " + time, Toast.LENGTH_LONG).show();
+
+		Toast.makeText(context, distance + ",   " + time, Toast.LENGTH_LONG).setDuration(5000);
 	}
 
 	public void setLines(List<LatLng> lines) {
