@@ -24,13 +24,13 @@
     <string name="title_activity_wydarzenia">Wydarzenia</string>
     <string name="title_activity_wydarzenia_lista">WydarzeniaLista</string>
     <string name="penis_str">penis</string>
-    <string name="nickLubNumer">Nick lub numer telefonu</string>
+    <string name="nickLubNumer">nick lub numer telefonu</string>
     <string name="haslo">hasło</string>
     <string name="zaloguj">Zaloguj</string>
     <string name="utworzKonto">Utwórz konto</string>
-    <string name="nick">Nick</string>
-    <string name="numerTelefonu">Numer telefonu</string>
-    <string name="powtorzHaslo">Powtórz hasło</string>
+    <string name="nick">nick</string>
+    <string name="numerTelefonu">numer telefonu</string>
+    <string name="powtorzHaslo">powtórz hasło</string>
     <string name="zarejestruj">Zarejestruj</string>
     <string name="logowanie">Logowanie</string>
     <string name="title_activity_mapa">Mapa</string>
@@ -67,5 +67,7 @@
     <string name="label_lokalizacja">Lokalizacja:</string>
     <string name="btn_mapa">Mapa</string>
     <string name="btn_veturilo">Veturilo</string>
+    <string name="label_zaloguj">Zaloguj się</string>
+    <string name="label_zarejestruj_sie">Zarejestruj się</string>
 
 </resources>
