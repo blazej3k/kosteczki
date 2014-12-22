@@ -1,127 +1,82 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scroll_nowe"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
 
-    <RelativeLayout
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:id="@+id/LinearLayoutNowe"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="#ABCDEF"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin"
-        android:windowSoftInputMode="stateHidden"
-        tools:context="Dziecioly.zkimnabasen.activity.NoweWydarzenie" >
+        android:gravity="center"
+        android:orientation="vertical"
+        tools:context="${relativePackage}.${activityClass}" >
 
         <EditText
             android:id="@+id/nazwa"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginLeft="24dp"
-            android:layout_marginTop="14dp"
-            android:background="#FFFFFF"
-            android:ems="10"
+            style="@style/edit_text"
+            android:layout_width="match_parent"
+            android:layout_marginBottom="10dp"
             android:hint="@string/nazwa" />
 
         <Button
-            android:id="@+id/zapisz"
+            android:id="@+id/kategoria"
+            style="@style/button_single"
+            android:text="@string/kategoria" />
+
+        <Button
+            android:id="@+id/mapa"
+            style="@style/button_single"
+            android:text="@string/lokalizacja" />
+
+        <Button
+            android:id="@+id/btnVeturillo"
+            style="@style/button"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/zaprosZnajomych"
-            android:layout_alignRight="@+id/godzinaZakonczenia"
-            android:layout_below="@+id/zaprosZnajomych"
-            android:layout_marginTop="15dp"
-            android:text="@string/zapisz" />
+            android:layout_weight="0"
+            android:text="@string/veturillo" />
+
+        <Button
+            android:id="@+id/data"
+            style="@style/button_single"
+            android:text="@string/data" />
+
+        <Button
+            android:id="@+id/godzinaRozpoczecia"
+            style="@style/button_single"
+            android:text="@string/godzinaRozpoczecia" />
+
+        <Button
+            android:id="@+id/godzinaZakonczenia"
+            style="@style/button_single"
+            android:text="@string/godzinaZakonczenia" />
+
+        <EditText
+            android:id="@+id/opis"
+            style="@style/edit_text"
+            android:layout_width="match_parent"
+            android:hint="@string/opiss" >
+
+            <requestFocus />
+        </EditText>
 
         <CheckBox
             android:id="@+id/czyOtwarte"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/opis"
-            android:layout_below="@+id/opis"
-            android:layout_marginTop="16dp"
             android:text="@string/otwarte" />
 
         <Button
             android:id="@+id/zaprosZnajomych"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/czyOtwarte"
-            android:layout_alignRight="@+id/godzinaRozpoczecia"
-            android:layout_below="@+id/czyOtwarte"
+            style="@style/button_single"
             android:text="@string/zaprosZnajomych" />
 
         <Button
-            android:id="@+id/godzinaRozpoczecia"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/nazwa"
-            android:layout_alignRight="@+id/data"
-            android:layout_below="@+id/data"
-            android:layout_marginTop="19dp"
-            android:text="@string/godzinaRozpoczecia" />
-
-        <Button
-            android:id="@+id/godzinaZakonczenia"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/godzinaRozpoczecia"
-            android:layout_alignRight="@+id/godzinaRozpoczecia"
-            android:layout_below="@+id/godzinaRozpoczecia"
-            android:layout_marginTop="22dp"
-            android:text="@string/godzinaZakonczenia" />
-
-        <Button
-            android:id="@+id/kategoria"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/nazwa"
-            android:layout_alignRight="@+id/nazwa"
-            android:layout_below="@+id/nazwa"
-            android:layout_marginTop="20dp"
-            android:text="@string/kategoria" />
-
-        <Button
-            android:id="@+id/btnVeturillo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/data"
-            android:layout_alignRight="@+id/mapa"
-            android:layout_below="@+id/mapa"
-            android:text="@string/veturillo" />
-
-        <Button
-            android:id="@+id/mapa"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/kategoria"
-            android:layout_alignRight="@+id/kategoria"
-            android:layout_below="@+id/kategoria"
-            android:layout_marginTop="14dp"
-            android:text="@string/lokalizacja" />
-
-        <Button
-            android:id="@+id/data"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/mapa"
-            android:layout_alignRight="@+id/mapa"
-            android:layout_below="@+id/btnVeturillo"
-            android:layout_marginTop="44dp"
-            android:text="@string/data" />
-
-        <EditText
-            android:id="@+id/opis"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/godzinaZakonczenia"
-            android:layout_below="@+id/godzinaZakonczenia"
-            android:background="#FFFFFF"
-            android:ems="10"
-            android:hint="@string/opiss" />
-    </RelativeLayout>
+            android:id="@+id/zapisz"
+            style="@style/button"
+            android:layout_width="match_parent"
+            android:layout_weight="0"
+            android:text="@string/zapisz" />
+    </LinearLayout>
 
 </ScrollView>

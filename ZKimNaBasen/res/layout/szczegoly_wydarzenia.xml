@@ -1,6 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/LinearLayout1"
+    android:id="@+id/LinearLayoutNowe"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:gravity="top|fill_vertical|center"
@@ -114,15 +114,14 @@
     <TextView
         android:id="@+id/tv_opis"
         style="@style/tv_text"
-        android:singleLine="true" />
+        android:singleLine="false" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/tv_zaproszeni"
         style="@style/tv_lbl"
         android:layout_gravity="left"
         android:layout_marginTop="5dp"
-        android:text="@string/label_zaproszeni"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+        android:text="@string/label_zaproszeni" />
 
     <ListView
         android:id="@+id/lv_prostalista"
