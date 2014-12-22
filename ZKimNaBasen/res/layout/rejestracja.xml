@@ -7,38 +7,38 @@
     android:orientation="vertical"
     tools:context="${relativePackage}.${activityClass}" >
 
-	<TextView
-	    android:id="@+id/lbl_rejestracja"
-	    style="@style/tv_lbl"
-	    android:layout_marginTop="25dp"
-	    android:text="@string/label_zarejestruj_sie"
-	    android:textSize="25sp" />
-    
+    <TextView
+        android:id="@+id/lbl_rejestracja"
+        style="@style/tv_lbl"
+        android:layout_marginTop="25dp"
+        android:text="@string/label_zarejestruj_sie"
+        android:textSize="25sp" />
+
     <EditText
         android:id="@+id/numerTel"
         style="@style/edit_text"
         android:layout_marginTop="30dp"
-        android:hint="@string/numerTelefonu" />
+        android:hint="@string/numerTelefonu" >
+
+        <requestFocus />
+    </EditText>
 
     <EditText
         android:id="@+id/nick"
-		style="@style/edit_text"
+        style="@style/edit_text"
         android:hint="@string/nick" />
-	
-	<EditText
+
+    <EditText
         android:id="@+id/podajHaslo"
         style="@style/edit_text"
         android:hint="@string/haslo"
         android:inputType="textPassword" />
-    
+
     <EditText
         android:id="@+id/powtorzHaslo"
-		style="@style/edit_text"
+        style="@style/edit_text"
         android:hint="@string/powtorzHaslo"
-        android:inputType="textPassword" >
-
-        <requestFocus />
-    </EditText>
+        android:inputType="textPassword" />
 
     <Button
         android:id="@+id/zarejestruj"
