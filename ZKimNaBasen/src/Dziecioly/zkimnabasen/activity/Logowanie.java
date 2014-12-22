@@ -2,21 +2,19 @@ package Dziecioly.zkimnabasen.activity;
 
 import Dziecioly.zkimnabasen.R;
 import Dziecioly.zkimnabasen.baza.dao.UzytkownikDao;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class Logowanie extends ActionBarActivity {
+public class Logowanie extends Activity {
 
 	private Context context;
 	private EditText login;
@@ -63,7 +61,7 @@ public class Logowanie extends ActionBarActivity {
 			Toast.makeText(context, "B³êdny login lub has³o", Toast.LENGTH_LONG)
 					.show();
 		else {
-			Intent intent = new Intent(context, MojKalendarz.class);
+			Intent intent = new Intent(context, WydarzeniaLista.class);
 			startActivity(intent);
 
 			int id = uzytkownikDao.pobierzZalogowanegoUzytkownika(u_login)

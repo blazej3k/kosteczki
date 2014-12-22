@@ -2,8 +2,6 @@ package Dziecioly.zkimnabasen.activity;
 
 import java.util.List;
 
-import javax.security.auth.PrivateCredentialPermission;
-
 import Dziecioly.zkimnabasen.R;
 import Dziecioly.zkimnabasen.baza.DatabaseManager;
 import Dziecioly.zkimnabasen.baza.dao.UzytkownikDao;
@@ -15,8 +13,6 @@ import Dziecioly.zkimnabasen.baza.model.Uzytkownik;
 import Dziecioly.zkimnabasen.baza.model.Wydarzenie;
 import Dziecioly.zkimnabasen.baza.model.Zaproszenie;
 import Dziecioly.zkimnabasen.fragment.YesNoFragment;
-import android.R.integer;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;

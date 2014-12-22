@@ -46,19 +46,14 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".activity.MojKalendarz"
-            android:label="@string/app_name"
+            android:name=".activity.WydarzeniaLista"
+            android:label="@string/title_activity_wydarzenia_lista"
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name=".activity.WydarzeniaLista"
-            android:label="@string/title_activity_wydarzenia_lista"
-            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".activity.View_List_ListaWydarzen"

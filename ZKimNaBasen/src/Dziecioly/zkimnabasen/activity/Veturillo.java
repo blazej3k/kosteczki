@@ -1,15 +1,12 @@
 package Dziecioly.zkimnabasen.activity;
 
-import com.google.android.gms.maps.model.LatLng;
-
 import Dziecioly.zkimnabasen.R;
 import Dziecioly.zkimnabasen.baza.DatabaseManager;
 import Dziecioly.zkimnabasen.baza.model.Lokalizacja;
-import android.R.integer;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,7 +17,7 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class Veturillo extends Activity {
+public class Veturillo extends ActionBarActivity {
 
 	private Context context;
 	private TextView textDestination;
