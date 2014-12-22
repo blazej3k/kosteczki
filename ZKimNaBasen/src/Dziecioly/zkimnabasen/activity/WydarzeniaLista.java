@@ -93,6 +93,7 @@ ChecboxListFragment.NoticeDialogListener {
 			for (int i = 0; i < wydarzeniaL.size(); i++) {
 				WydarzeniaRB[i] = new RowBeanListaWyd();
 				WydarzeniaRB[i].setTekst(wydarzeniaL.get(i).getNazwa());
+				WydarzeniaRB[i].setData(General.stringFromDate(wydarzeniaL.get(i).getData())+", "+wydarzeniaL.get(i).getGodz_od());
 				
 				switch(wydarzeniaL.get(i).getTryb()) {
 				case 0: 

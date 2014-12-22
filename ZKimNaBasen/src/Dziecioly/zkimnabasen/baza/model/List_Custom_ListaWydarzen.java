@@ -37,6 +37,7 @@ public class List_Custom_ListaWydarzen extends ArrayAdapter<RowBeanListaWyd> {
 			view_holder = new ViewHolderPattern();
 			view_holder.tekst_w_layoucie = (TextView) convertView.findViewById(R.id.txtTitle);
 			view_holder.imgIcon = (ImageView) convertView.findViewById(R.id.imgIcon);
+			view_holder.data = (TextView) convertView.findViewById(R.id.txtData);
 			
 			convertView.setTag(view_holder);
 		}
@@ -47,12 +48,14 @@ public class List_Custom_ListaWydarzen extends ArrayAdapter<RowBeanListaWyd> {
 		RowBeanListaWyd object = data[position];
 		view_holder.tekst_w_layoucie.setText(object.getTekst());
 		view_holder.imgIcon.setImageResource(object.getIcon());
+		view_holder.data.setText(object.getData());
 
 		return convertView;
 	}
 	
 	private class ViewHolderPattern {
 		TextView tekst_w_layoucie;
+		TextView data;
 		ImageView imgIcon;
 	}
 	
