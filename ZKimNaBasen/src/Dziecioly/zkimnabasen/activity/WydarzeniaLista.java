@@ -13,6 +13,7 @@ import Dziecioly.zkimnabasen.baza.model.Uzytkownik;
 import Dziecioly.zkimnabasen.baza.model.Wydarzenie;
 import Dziecioly.zkimnabasen.baza.model.Zaproszenie;
 import Dziecioly.zkimnabasen.fragment.ChecboxListFragment;
+import android.R.integer;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -187,9 +188,7 @@ public class WydarzeniaLista extends FragmentActivity implements
 		boolean jestemZaproszona = pref.getBoolean("2", true);
 		boolean otwarte = pref.getBoolean("3", true);
 
-		String login = General.loggedUser(context);
-		int zalogowany = uzytkownikDao.pobierzZalogowanegoUzytkownika(login)
-				.getId();
+		int zalogowany = General.loggedUser(context);
 
 		List<Wydarzenie> subList = new ArrayList<Wydarzenie>();
 		for (Wydarzenie wydarzenie : list) {

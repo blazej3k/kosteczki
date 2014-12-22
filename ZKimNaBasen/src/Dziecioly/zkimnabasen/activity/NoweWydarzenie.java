@@ -145,9 +145,8 @@ public class NoweWydarzenie extends FragmentActivity implements
 				General.dateFromString(w_data), w_godzinaRozpoczecia,
 				w_godzinaZakonczenia, w_opis, w_czyOtwarte);
 
-		String login = General.loggedUser(context);
-		Uzytkownik uzytkownik = uzytkownikDao
-				.pobierzZalogowanegoUzytkownika(login);
+		int id = General.loggedUser(context);
+		Uzytkownik uzytkownik = uzytkownikDao.find(id);
 		wydarzenie.setUzytkownik(uzytkownik);
 
 		if (lokalizacja != null) {
@@ -394,8 +393,8 @@ public class NoweWydarzenie extends FragmentActivity implements
 	}
 
 	public List<Uzytkownik> pobierzZnajomych() {
-		String login = General.loggedUser(context);
-		List<Uzytkownik> lista = uzytkownikDao.pobierzZnajomych(login);
+		int id = General.loggedUser(context);
+		List<Uzytkownik> lista = uzytkownikDao.pobierzZnajomych(id);
 		return lista;
 	}
 

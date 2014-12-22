@@ -4,15 +4,16 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import Dziecioly.zkimnabasen.R;
 import Dziecioly.zkimnabasen.baza.DatabaseManager;
+import Dziecioly.zkimnabasen.baza.dao.UzytkownikDao;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.view.MenuItem;
 
 public class General {
+	
+	UzytkownikDao uzytkownikDao = new UzytkownikDao();
 
 	public static void clearSharedPrefs(Context context) {
 		SharedPreferences pref = context.getSharedPreferences("MyPref", 0);
@@ -50,7 +51,15 @@ public class General {
 		return formatter.format(date);
 	}
 	
-	public static String loggedUser(Context context)
+	
+	public static int loggedUser(Context context)
+	{
+		SharedPreferences pref = context.getSharedPreferences("MyPref", 0);
+		int id = pref.getInt("id", 0);
+		return id;
+	}
+	
+	public static String loggedUserLogin(Context context)
 	{
 		SharedPreferences pref = context.getSharedPreferences("MyPref", 0);
 		String login = pref.getString("loggedIn", "null");

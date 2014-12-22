@@ -46,10 +46,10 @@ public class UzytkownikDao extends GenericDao<Uzytkownik, Integer> {
 		return null;
 	}
 
-	public List<Uzytkownik> pobierzZnajomych(String login) {
+	public List<Uzytkownik> pobierzZnajomych(int id) {
 		try {
 			return getDao().queryBuilder().orderBy("nazwa", true).where()
-					.ne("nazwa", login).query();
+					.ne("id", id).query();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

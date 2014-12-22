@@ -65,14 +65,16 @@ public class Logowanie extends ActionBarActivity {
 		else {
 			Intent intent = new Intent(context, MojKalendarz.class);
 			startActivity(intent);
-			
-			 SharedPreferences pref = context.getSharedPreferences("MyPref", 0); 
-			 Editor editor = pref.edit();
-			 editor.clear();
-			 editor.putString("loggedIn", u_login);
-			 editor.commit();
-			 
-			 
+
+			int id = uzytkownikDao.pobierzZalogowanegoUzytkownika(u_login)
+					.getId();
+			SharedPreferences pref = context.getSharedPreferences("MyPref", 0);
+			Editor editor = pref.edit();
+			editor.clear();
+			editor.putString("loggedIn", u_login);
+			editor.putInt("id", id);
+			editor.commit();
+
 		}
 	}
 

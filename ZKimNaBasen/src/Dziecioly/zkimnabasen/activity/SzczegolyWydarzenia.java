@@ -2,14 +2,20 @@ package Dziecioly.zkimnabasen.activity;
 
 import java.util.List;
 
+import javax.security.auth.PrivateCredentialPermission;
+
 import Dziecioly.zkimnabasen.R;
 import Dziecioly.zkimnabasen.baza.DatabaseManager;
+import Dziecioly.zkimnabasen.baza.dao.UzytkownikDao;
 import Dziecioly.zkimnabasen.baza.dao.WydarzenieDao;
+import Dziecioly.zkimnabasen.baza.dao.ZaproszenieDao;
 import Dziecioly.zkimnabasen.baza.model.List_Custom_ListaWydarzen;
 import Dziecioly.zkimnabasen.baza.model.RowBeanListaWyd;
+import Dziecioly.zkimnabasen.baza.model.Uzytkownik;
 import Dziecioly.zkimnabasen.baza.model.Wydarzenie;
 import Dziecioly.zkimnabasen.baza.model.Zaproszenie;
 import Dziecioly.zkimnabasen.fragment.YesNoFragment;
+import android.R.integer;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -38,11 +44,17 @@ public class SzczegolyWydarzenia extends FragmentActivity {
 	private ListView rozbudowana_lista;
 	private Button btnEdytuj;
 	private Button btnUsun;
+	private Button btnDolacz;
 	private Context context;
 
 	WydarzenieDao wydDao = new WydarzenieDao();
+	ZaproszenieDao zaproszenieDao = new ZaproszenieDao();
+	UzytkownikDao uzytkownikDao = new UzytkownikDao();
 
+	private int tryb;
 	private int id;
+	private int zalogowany;
+	private Wydarzenie wydarzenie;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +64,9 @@ public class SzczegolyWydarzenia extends FragmentActivity {
 
 		Intent intent = getIntent();
 		id = intent.getIntExtra("id_wydarzenia", -1);
+		tryb = intent.getIntExtra("tryb", 1);
+
+		zalogowany = General.loggedUser(context);
 
 		tv_tworca = (TextView) findViewById(R.id.tv_tworca);
 		tv_nazwa = (TextView) findViewById(R.id.tv_nazwa_wydarzenia);
@@ -64,15 +79,48 @@ public class SzczegolyWydarzenia extends FragmentActivity {
 		btnEdytuj = (Button) findViewById(R.id.btn_edytuj);
 		btnUsun = (Button) findViewById(R.id.btn_usun);
 
+		// TODO zmienic na btn_dolacz!!
+		btnDolacz = (Button) findViewById(R.id.btn_edytuj);
+
+		pokazButtony(tryb);
 		initOnBtnClickListeners();
 
-		czytajWydarzenie(id);
+		wydarzenie = wydDao.find(id);
+		czytajWydarzenie(wydarzenie);
 	}
 
-	private void czytajWydarzenie(int id) {
+	private void pokazButtony(int tryb) {
+		// moje wydarzenie (pokaz edytuj i usun)
+		if (tryb == 0) {
+			btnDolacz.setEnabled(false);
+			btnDolacz.setVisibility(View.INVISIBLE);
 
-		Wydarzenie wydarzenie = wydDao.find(id); // pobierz wydarzenie, select
-													// do bazy
+			btnEdytuj.setEnabled(true);
+			btnEdytuj.setVisibility(View.VISIBLE);
+
+			btnUsun.setEnabled(true);
+			btnUsun.setVisibility(View.VISIBLE);
+
+		}
+		// pokaz dolacz/rezygnuj
+		else {
+
+			btnEdytuj.setEnabled(false);
+			btnEdytuj.setVisibility(View.INVISIBLE);
+
+			btnUsun.setEnabled(false);
+			btnUsun.setVisibility(View.INVISIBLE);
+
+			btnDolacz.setEnabled(true);
+			btnDolacz.setVisibility(View.VISIBLE);
+
+			if (tryb == 1)
+				btnDolacz.setText("Rezygnuj");
+		}
+
+	}
+
+	private void czytajWydarzenie(Wydarzenie wydarzenie) {
 
 		Log.d(DEBUG_TAG, "czytajWydarzenie2 id=" + id);
 
@@ -137,6 +185,58 @@ public class SzczegolyWydarzenia extends FragmentActivity {
 
 			}
 		});
+
+		btnDolacz.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				switch (tryb) {
+				case 1:
+					rezygnuj();
+					break;
+				case 2:
+					akceptujZaproszenie();
+					break;
+				case 3:
+					dolaczDoWydarzeniaOtwartego();
+					break;
+				default:
+					break;
+				}
+
+			}
+		});
+	}
+
+	private void rezygnuj() {
+
+		Zaproszenie zaproszenie = zaproszenieDao
+				.pobierzZaproszenieUseraNawydarzenie(zalogowany, id);
+
+		if (wydarzenie.isOtwarte()) {
+			zaproszenieDao.remove(zaproszenie);
+		}
+
+		else {
+			zaproszenie.setWezmie_udzial(false);
+			zaproszenieDao.update(zaproszenie);
+		}
+
+	}
+
+	private void akceptujZaproszenie() {
+		Zaproszenie zaproszenie = zaproszenieDao
+				.pobierzZaproszenieUseraNawydarzenie(zalogowany, id);
+		zaproszenie.setWezmie_udzial(true);
+		zaproszenieDao.update(zaproszenie);
+	}
+
+	private void dolaczDoWydarzeniaOtwartego() {
+		Zaproszenie zaproszenie = new Zaproszenie(true);
+		zaproszenie.setWydarzenie(wydarzenie);
+		String login = General.loggedUserLogin(context);
+		Uzytkownik uzytkownik = uzytkownikDao.pobierzZalogowanegoUzytkownika(login);
+		zaproszenie.setUzytkownik(uzytkownik);
+		zaproszenieDao.add(zaproszenie);
 	}
 
 	@Override
