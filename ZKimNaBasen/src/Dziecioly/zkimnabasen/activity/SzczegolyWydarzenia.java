@@ -37,6 +37,7 @@ public class SzczegolyWydarzenia extends FragmentActivity {
 	private TextView tv_od;
 	private TextView tv_do;
 	private TextView tv_opis;
+	private TextView tv_lokalizacja;
 	private ListView rozbudowana_lista;
 	private Button btnEdytuj;
 	private Button btnUsun;
@@ -70,6 +71,7 @@ public class SzczegolyWydarzenia extends FragmentActivity {
 		tv_od = (TextView) findViewById(R.id.tv_od);
 		tv_do = (TextView) findViewById(R.id.tv_do);
 		tv_opis = (TextView) findViewById(R.id.tv_opis);
+		tv_lokalizacja = (TextView) findViewById(R.id.tv_lokalizacja);
 		rozbudowana_lista = (ListView) findViewById(R.id.lv_prostalista);
 
 		btnEdytuj = (Button) findViewById(R.id.btn_edytuj);
@@ -135,6 +137,7 @@ public class SzczegolyWydarzenia extends FragmentActivity {
 			tv_od.setText(wydarzenie.getGodz_od());
 			tv_do.setText(wydarzenie.getGodz_do());
 			tv_opis.setText(wydarzenie.getOpis());
+			tv_lokalizacja.setText(wydarzenie.getLokalizacja().getAdres());
 
 			List<Zaproszenie> zaproszeniaL = wydarzenie.getZaproszenia();
 			Log.d(DEBUG_TAG, "Iloœc zaproszeñ: " + zaproszeniaL.size());
