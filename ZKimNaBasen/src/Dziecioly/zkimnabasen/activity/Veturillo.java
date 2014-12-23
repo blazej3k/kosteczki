@@ -79,14 +79,12 @@ public class Veturillo extends ActionBarActivity {
 		double originLat = lokalizacja.getLat();
 		double originLon = lokalizacja.getLon();
 
-		boolean wolneRowery = checkBoxRowery.isChecked();
 		Intent intent = new Intent(context, VeturilloMapa.class);
 
 		intent.putExtra("originLat", originLat);
 		intent.putExtra("originLon", originLon);
 		intent.putExtra("destLat", destLat);
 		intent.putExtra("destLon", destLon);
-		intent.putExtra("wolneRowery", wolneRowery);
 
 		startActivity(intent);
 
