@@ -48,7 +48,7 @@ public class TextFragment extends DialogFragment {
 			}
 		});
 
-		builder.setNegativeButton("Analuj",
+		builder.setNegativeButton(android.R.string.cancel,
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
 						dialog.cancel();
