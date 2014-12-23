@@ -55,7 +55,7 @@
     <string name="pobierzLokalizacje">Pobierz moją lokalizację</string>
     <string name="btn_nowe_wydarzenie">Nowe wydarzenie</string>
     <string name="btn_wyswietlanie">Wyświetlanie</string>
-    <string name="lbl_moje_wydarzenia">Moje wydarzenia</string>
+    <string name="lbl_moje_wydarzenia">Lista wydarzeń</string>
 	<string name="opiss">Opis</string>
     <string name="wyczyscDane">Wyczyść dane</string>
     <string name="wyloguj">Wyloguj</string>
