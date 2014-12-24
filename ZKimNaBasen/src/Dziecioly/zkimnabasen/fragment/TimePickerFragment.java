@@ -9,13 +9,24 @@ import android.text.format.DateFormat;
 
 public class TimePickerFragment extends DialogFragment {
 
+	int hour = 0;
+	int minute = 0;
+
+	public TimePickerFragment(String time) {
+		if (time.equals("Godzina rozpoczêcia")
+				|| time.equals("Godzina zakoñczenia")) {
+			hour = 12;
+			minute = 0;
+		}
+		else {
+			String[] i = time.split(":");
+			hour = Integer.parseInt(i[0]);
+			minute = Integer.parseInt(i[1]);
+		}
+	}
+
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
-		// use the current time as the default values for the picker
-		// final Calendar c = Calendar.getInstance();
-		int hour = 0;
-		int minute = 0;
-
 		// create a new instance of TimePickerDialog and return it
 		return new TimePickerDialog(getActivity(),
 				(OnTimeSetListener) getActivity(), hour, minute,

@@ -18,7 +18,8 @@
         android:id="@+id/numerTel"
         style="@style/edit_text"
         android:layout_marginTop="30dp"
-        android:hint="@string/numerTelefonu" >
+        android:hint="@string/numerTelefonu"
+        android:inputType="number" >
 
         <requestFocus />
     </EditText>

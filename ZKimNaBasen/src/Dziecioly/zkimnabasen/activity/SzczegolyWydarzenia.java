@@ -18,6 +18,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -135,14 +136,14 @@ public class SzczegolyWydarzenia extends FragmentActivity {
 			Log.d(DEBUG_TAG, "Iloœc zaproszeñ: " + zaproszeniaL.size());
 
 			if (zaproszeniaL.isEmpty()) {
-				Toast.makeText(this, "Brak osób bior¹cych udzia³ w wydarzeniu.", Toast.LENGTH_LONG).show();
-				tv_zaproszeni.setVisibility(View.INVISIBLE);
+				if (wydarzenie.isOtwarte())
+					tv_zaproszeni.setText("Nikt jeszcze nie do³¹czy³ do tego wydarzenia");
+				else 
+					tv_zaproszeni.setText("Lista zaproszonych osób jest pusta");
 			}
 
 			else {
 				RowBeanListaWyd[] ZaproszeniaRB = new RowBeanListaWyd[zaproszeniaL.size()];
-				
-				tv_zaproszeni.setVisibility(View.VISIBLE);
 				
 				if (wydarzenie.isOtwarte())
 					tv_zaproszeni.setText("Osoby bior¹ce udzia³ w wydarzeniu:");
@@ -209,6 +210,7 @@ public class SzczegolyWydarzenia extends FragmentActivity {
 							SzczegolyWydarzeniaMapa.class);
 					intent.putExtra("lat", wydarzenie.getLokalizacja().getLat());
 					intent.putExtra("lon", wydarzenie.getLokalizacja().getLon());
+					intent.putExtra("adres", wydarzenie.getLokalizacja().getAdres());
 					startActivity(intent);
 				}
 			}
@@ -293,5 +295,16 @@ public class SzczegolyWydarzenia extends FragmentActivity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+	    if (keyCode == KeyEvent.KEYCODE_BACK) {
+	        Intent intent = new Intent(context, WydarzeniaLista.class);
+	        startActivity(intent);
+	        return true;
+	    }
+
+	    return super.onKeyDown(keyCode, event);
 	}
 }

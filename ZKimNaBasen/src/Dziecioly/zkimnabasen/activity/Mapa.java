@@ -53,6 +53,7 @@ public class Mapa extends FragmentActivity implements OnMapClickListener,
 	private BitmapDescriptor colorSelectedMarker;
 
 	private String kategoria;
+	private String adres;
 
 	// z Api -> jeœli publiczne = false, z DB-> jeœli publiczne = true
 	private List<Lokalizacja> lokalizacje = new ArrayList<Lokalizacja>();
@@ -77,13 +78,18 @@ public class Mapa extends FragmentActivity implements OnMapClickListener,
 		if (bundle.getBoolean("lok")) {
 			selectedLanLon = new LatLng(bundle.getDouble("lat"),
 					bundle.getDouble("lon"));
-			Log.d(DatabaseManager.DEBUG_TAG, "selectedLanLon");
+			adres = bundle.getString("adres");
+			Log.d(DatabaseManager.DEBUG_TAG, "selectedLanLon" + "  " + adres);
 		}
 
 		// pobranie lokalizacji z API i bazy
 		kategoria = bundle.getString("kategoria");
 		asyncTask = new ApiAsyncTask(this, kategoria);
 		asyncTask.execute();
+
+		if (kategoria.equals("P³ywalnia") || kategoria.equals("Boisko"))
+			Toast.makeText(context, "Pobieranie API..", Toast.LENGTH_LONG)
+					.show();
 
 		// wczytanie mapy
 		SupportMapFragment myMapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -105,6 +111,7 @@ public class Mapa extends FragmentActivity implements OnMapClickListener,
 	@Override
 	public void onMapReady(GoogleMap mapp) {
 		this.map = mapp;
+
 		map.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLatLng, zoom));
 		map.setOnMapClickListener(this);
 		map.setOnMarkerClickListener(this);
@@ -116,6 +123,7 @@ public class Mapa extends FragmentActivity implements OnMapClickListener,
 
 	private void addMarkers(List<Lokalizacja> lokalizacjeApi) {
 		Log.d(DatabaseManager.DEBUG_TAG, "Rysujê markery..");
+		boolean apiNiePobrane = true;
 		if (lokalizacjeApi == null)
 			return;
 		for (Lokalizacja lok : lokalizacjeApi) {
@@ -137,10 +145,12 @@ public class Mapa extends FragmentActivity implements OnMapClickListener,
 						.title(lok.getAdres()).snippet(lok.getOpis())
 						.icon(colorDbMarker));
 
-			else
+			else {
 				map.addMarker(new MarkerOptions().position(latLng)
 						.title(lok.getAdres()).snippet(lok.getOpis())
 						.icon(colorApiMarker));
+				apiNiePobrane = false;
+			}
 		}
 		// jesli wziêty z intentu latlon nie by³ z api ani bazy -> narysuj
 		// marker usera
@@ -148,23 +158,19 @@ public class Mapa extends FragmentActivity implements OnMapClickListener,
 			Log.d(DatabaseManager.DEBUG_TAG,
 					"rysuje wczeœniej wybrany marker - usera");
 			userMarker = map.addMarker(new MarkerOptions().position(
-					selectedLanLon).icon(colorSelectedMarker));
+					selectedLanLon).icon(colorSelectedMarker).title(adres));
+			userMarker.showInfoWindow();
 			selectedMarker = userMarker;
 			map.moveCamera(CameraUpdateFactory.newLatLngZoom(selectedLanLon,
 					map.getCameraPosition().zoom));
-
-			// pobierz adres punktu i wyœwietl go
-			String adres = obs³ugaMapy.pobierzAdres(selectedLanLon);
-			if (adres == null) {
-				Log.d(DatabaseManager.DEBUG_TAG, "Nie mo¿na ogkreœliæ adresu");
-				Toast.makeText(context, "Nie mo¿na ogkreœliæ adresu",
-						Toast.LENGTH_SHORT).show();
-			} else {
-				userMarker.setTitle(adres);
-				userMarker.showInfoWindow();
-			}
+			
 
 		}
+
+		if (kategoria.equals("P³ywalnia") || kategoria.equals("Pi³ka no¿na")
+				&& apiNiePobrane)
+			Toast.makeText(context, "B³¹d pobierania API", Toast.LENGTH_LONG)
+					.show();
 
 	}
 
@@ -263,8 +269,9 @@ public class Mapa extends FragmentActivity implements OnMapClickListener,
 			userMarker.setTitle(adres);
 			userMarker.showInfoWindow();
 		}
-		
-		map.moveCamera(CameraUpdateFactory.newLatLngZoom(arg, map.getCameraPosition().zoom));
+
+		map.moveCamera(CameraUpdateFactory.newLatLngZoom(arg,
+				map.getCameraPosition().zoom));
 	}
 
 	public void setLokalizacje(List<Lokalizacja> lokalizacje) {
@@ -273,8 +280,6 @@ public class Mapa extends FragmentActivity implements OnMapClickListener,
 			addMarkers(lokalizacje);
 
 	}
-
-	
 
 	private void zaznaczWpisanyAdresNaMapie(String wpisanyAdres) {
 		if (wpisanyAdres != null && !wpisanyAdres.equals("")) {
@@ -286,7 +291,8 @@ public class Mapa extends FragmentActivity implements OnMapClickListener,
 						.show();
 			} else {
 				pyknijMapke(latlon);
-				map.moveCamera(CameraUpdateFactory.newLatLngZoom(latlon, map.getCameraPosition().zoom));
+				map.moveCamera(CameraUpdateFactory.newLatLngZoom(latlon,
+						map.getCameraPosition().zoom));
 			}
 		}
 	}
@@ -314,11 +320,11 @@ public class Mapa extends FragmentActivity implements OnMapClickListener,
 		}
 		return super.onKeyDown(keyCode, event);
 	}
-
+	
 	public Lokalizacja getSelectedMarker() {
 		if (selectedMarker == null)
 			return null;
-		//lokalizacja usera
+		// lokalizacja usera
 		else if (userMarker != null
 				&& selectedMarker.getPosition()
 						.equals(userMarker.getPosition())) {
@@ -328,7 +334,7 @@ public class Mapa extends FragmentActivity implements OnMapClickListener,
 					selectedMarker.getTitle(), null, false, kategoria);
 			l.setLokalizacjaUzytkownika(true);
 			return l;
-		//lokalizacja z bazy lub api
+			// lokalizacja z bazy lub api
 		} else {
 			for (Lokalizacja l : lokalizacje) {
 				LatLng p = new LatLng(l.getLat(), l.getLon());

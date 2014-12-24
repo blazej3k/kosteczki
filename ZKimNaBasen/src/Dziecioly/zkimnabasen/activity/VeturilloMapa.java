@@ -34,6 +34,9 @@ public class VeturilloMapa extends FragmentActivity implements
 	private Context context;
 	private boolean mapIsReady;
 	private Obs³ugaMapy obs³ugaMapy;
+	
+	private Marker markerOrigin;
+	private Marker markerDest;
 
 	private VeturilloAsynTask asyncTask;
 	private List<LatLng> lines;
@@ -43,6 +46,8 @@ public class VeturilloMapa extends FragmentActivity implements
 	private BitmapDescriptor colorOriginMarker;
 	private BitmapDescriptor colorDestMarker;
 	private BitmapDescriptor colorVeturiloMarker;
+	private String addrOrigin;
+	private String addrDest;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +62,8 @@ public class VeturilloMapa extends FragmentActivity implements
 				bundle.getDouble("originLon"));
 		destination = new LatLng(bundle.getDouble("destLat"),
 				bundle.getDouble("destLon"));
+		addrOrigin = bundle.getString("addrOrigin");
+		addrDest = bundle.getString("addrDest");
 		
 		// znajdz najblizsze stacje i wyznacz trase
 		asyncTask = new VeturilloAsynTask(this, origin, destination,
@@ -81,13 +88,13 @@ public class VeturilloMapa extends FragmentActivity implements
 	@Override
 	public void onMapReady(GoogleMap mapp) {
 		this.map = mapp;
-		map.addMarker(new MarkerOptions().position(origin).icon(
+	
+		markerOrigin = map.addMarker(new MarkerOptions().position(origin).icon(
 				colorOriginMarker));
-		map.addMarker(new MarkerOptions().position(destination).icon(
+		markerDest = map.addMarker(new MarkerOptions().position(destination).icon(
 				colorDestMarker));
-
 		map.moveCamera(CameraUpdateFactory.newLatLngZoom(origin, zoom));
-
+		
 		mapIsReady = true;
 		if (asyncTask.isVeturilloIsReady())
 			narysujTrase(lines);
@@ -106,6 +113,12 @@ public class VeturilloMapa extends FragmentActivity implements
 				.color(Color.BLUE));
 
 		map.moveCamera(CameraUpdateFactory.newLatLngZoom(vetOrigin, zoom));
+		
+		markerOrigin.setTitle("AAA");
+		markerOrigin.showInfoWindow();
+		
+		markerDest.setTitle(addrDest);
+		markerDest.showInfoWindow();
 
 		String distance = asyncTask.getDistance();
 		String time = asyncTask.getTime();

@@ -7,19 +7,17 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.os.AsyncTask;
-import android.util.Log;
-import android.widget.Toast;
-
 import Dziecioly.zkimnabasen.activity.Mapa;
 import Dziecioly.zkimnabasen.baza.DatabaseManager;
 import Dziecioly.zkimnabasen.baza.dao.LokalizacjaDao;
 import Dziecioly.zkimnabasen.baza.model.Lokalizacja;
+import android.os.AsyncTask;
+import android.util.Log;
 
 public class ApiAsyncTask extends AsyncTask<Void, String, List<Lokalizacja>> {
 
 	private final String swimmingPoolsUrl = "https://api.bihapi.pl/wfs/warszawa/swimmingPools";
-	private final String sportFieldsUrl = "https://api.bihapi.pl/wfs/warszawa/sportFields?maxFeatures";
+	private final String sportFieldsUrl = "https://api.bihapi.pl/wfs/warszawa/sportFields?";
 
 	private boolean listIsReady;
 
@@ -44,13 +42,12 @@ public class ApiAsyncTask extends AsyncTask<Void, String, List<Lokalizacja>> {
 			lokalizacje = pobierzLokalizacjeApi(swimmingPoolsUrl);
 		else if (kategoria.equals("Boisko"))
 			lokalizacje = pobierzLokalizacjeApi(sportFieldsUrl);
-
 		if (lokalizacje == null) {
-			Log.d(DatabaseManager.DEBUG_TAG, "B³¹d pobierania API");
 			lokalizacje = new ArrayList<Lokalizacja>();
 		}
 
 		List<Lokalizacja> lokalizacjeDb = pobierzLokalizacjeDb(kategoria);
+		Log.d(DatabaseManager.DEBUG_TAG, " z db " + Integer.toString(lokalizacjeDb.size()));
 		lokalizacje.addAll(lokalizacjeDb);
 
 		return lokalizacje;
@@ -87,9 +84,6 @@ public class ApiAsyncTask extends AsyncTask<Void, String, List<Lokalizacja>> {
 	private List<Lokalizacja> parseResponse(String responseString) {
 		try {
 			JSONObject json = new JSONObject(responseString);
-			if (json == null)
-				return null;
-
 			JSONArray data = json.getJSONArray("data");
 			List<Lokalizacja> lokalizacje = new ArrayList<Lokalizacja>();
 
@@ -116,6 +110,8 @@ public class ApiAsyncTask extends AsyncTask<Void, String, List<Lokalizacja>> {
 			return lokalizacje;
 
 		} catch (JSONException e) {
+			e.printStackTrace();
+		} catch (NullPointerException e) {
 			e.printStackTrace();
 		}
 		return null;

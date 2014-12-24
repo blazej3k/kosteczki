@@ -8,5 +8,5 @@
     <color name="bialy">#FFFFFF</color>
     <color name="czarny">#000000</color>
     <color name="malo_szary">#BFBFBF</color>
-    <color name="bardzo_szary">#8F8F8F</color>
+    <color name="bardzo_szary">8f8f8f</color>
 </resources>

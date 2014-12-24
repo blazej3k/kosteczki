@@ -19,7 +19,6 @@ import Dziecioly.zkimnabasen.fragment.DatePickerFragment;
 import Dziecioly.zkimnabasen.fragment.ListFragment;
 import Dziecioly.zkimnabasen.fragment.TextFragment;
 import Dziecioly.zkimnabasen.fragment.TimePickerFragment;
-import android.R.integer;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.Context;
@@ -253,7 +252,7 @@ public class NoweWydarzenie extends FragmentActivity implements
 		data.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				DatePickerFragment date = new DatePickerFragment();
+				DatePickerFragment date = new DatePickerFragment(data.getText().toString());
 				date.show(getSupportFragmentManager(), "Date Picker");
 			}
 		});
@@ -262,7 +261,7 @@ public class NoweWydarzenie extends FragmentActivity implements
 			@Override
 			public void onClick(View v) {
 				flag = 0;
-				TimePickerFragment time = new TimePickerFragment();
+				TimePickerFragment time = new TimePickerFragment(godzinaRozpoczecia.getText().toString());
 				time.show(getSupportFragmentManager(), "Time Picker");
 			}
 		});
@@ -271,7 +270,7 @@ public class NoweWydarzenie extends FragmentActivity implements
 			@Override
 			public void onClick(View v) {
 				flag = 1;
-				TimePickerFragment time = new TimePickerFragment();
+				TimePickerFragment time = new TimePickerFragment(godzinaZakonczenia.getText().toString());
 				time.show(getSupportFragmentManager(), "Time Picker");
 			}
 		});
@@ -302,7 +301,7 @@ public class NoweWydarzenie extends FragmentActivity implements
 
 		btnMapa.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				if (wybranaKategoria.equals("Kategoria"))
+				if (btnKategoria.getText().toString().equals("Kategoria"))
 					Toast.makeText(context, "Wybierz kategoriê",
 							Toast.LENGTH_SHORT).show();
 				else
@@ -353,10 +352,11 @@ public class NoweWydarzenie extends FragmentActivity implements
 		String wpisanyAdres = btnMapa.getText().toString();
 
 		if (wpisanyAdres != null && !wpisanyAdres.equals("")
-				&& lokalizacja != null) {
+				&& lokalizacja != null  && !wpisanyAdres.equals("Lokalizacja")) {
 			intent.putExtra("lok", true);
 			intent.putExtra("lat", lokalizacja.getLat());
 			intent.putExtra("lon", lokalizacja.getLon());
+			intent.putExtra("adres", lokalizacja.getAdres());
 		} else {
 			intent.putExtra("lok", false);
 		}

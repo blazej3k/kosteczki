@@ -1,60 +1,90 @@
 package Dziecioly.zkimnabasen.api;
 
-import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import Dziecioly.zkimnabasen.baza.DatabaseManager;
 import android.content.Context;
-import android.location.Address;
-import android.location.Geocoder;
+import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 
 public class Obs³ugaMapy {
-	
-	private Geocoder geocoder;
-	
-	public Obs³ugaMapy(Context context)
-	{
-		geocoder = new Geocoder(context);
+
+	HttpRequest request = new HttpRequest();
+
+	public Obs³ugaMapy(Context context) {
 	}
 
 	public String pobierzAdres(LatLng arg) {
+		String url = stworzUrl(arg);
+		String response = request.getFromUrl(url, false);
+		return getAdressFromResponse(response);
+	}
+
+	public LatLng pobierzMarker(String arg) {
+		String url = stworzUrl(arg);
+		String response = request.getFromUrl(url, false);
+		return getLatLngFromResponse(response);
+	}
+
+	private String getAdressFromResponse(String response) {
 		try {
-			Address a = geocoder
-					.getFromLocation(arg.latitude, arg.longitude, 1).get(0);
-			if (a == null)
-				return null;
-			return a.getAddressLine(0);
-		} catch (IOException e) {
+			JSONObject json = new JSONObject(response);
+			String addr = json.getJSONArray("results").getJSONObject(0)
+					.getString("formatted_address");
+			String[] tab = addr.split(",");
+			return tab[0];
+
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	public LatLng getLatLngFromResponse(String response) {
+		try {
+			JSONObject json = new JSONObject(response);
+			JSONObject loc = json.getJSONArray("results").getJSONObject(0)
+					.getJSONObject("geometry").getJSONObject("location");
+			double lat = loc.getDouble("lat");
+			double lon =loc.getDouble("lng");
+			return new LatLng(lat, lon);
+
+		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
 
-	public LatLng pobierzMarker(String adres) {
-		double[] lewyDolnyRog = { 52.116507, 20.870993 };
-		double[] prawyGornyRog = { 52.365419, 21.208823 };
+	private String stworzUrl(LatLng arg) {
+		String geoUrl = "https://maps.googleapis.com/maps/api/geocode/json?latlng=";
+		geoUrl += arg.latitude;
+		geoUrl += ",";
+		geoUrl += arg.longitude;
+		geoUrl += "&key=AIzaSyCDu59Epm8rTQAdgd2IfpEwnozCqbe98Rk";
+		return geoUrl;
+	}
 
-		LatLng latlon = null;
+	private String stworzUrl(String arg) {
+		String geoUrl = null;
 		try {
-			List<Address> ad = geocoder.getFromLocationName(
-					adres + " Warszawa", 1, lewyDolnyRog[0], lewyDolnyRog[1],
-					prawyGornyRog[0], prawyGornyRog[1]);
-
-			if (ad.size() == 0)
-				return null;
-			else {
-				Address a = ad.get(0);
-				latlon = new LatLng(a.getLatitude(), a.getLongitude());
-			}
-		} catch (IOException e) {
+			geoUrl = "https://maps.googleapis.com/maps/api/geocode/json?address=";
+			geoUrl += URLEncoder.encode(arg, "UTF-8") + "Warszawa";
+			geoUrl += "&key=AIzaSyCDu59Epm8rTQAdgd2IfpEwnozCqbe98Rk";
+		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
-		return latlon;
+		return geoUrl;
+
 	}
-	
-	
+
 	public List<LatLng> decodePolyline(String encoded) {
 
 		List<LatLng> poly = new ArrayList<LatLng>();

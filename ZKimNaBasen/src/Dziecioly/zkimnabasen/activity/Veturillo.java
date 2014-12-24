@@ -3,6 +3,7 @@ package Dziecioly.zkimnabasen.activity;
 import Dziecioly.zkimnabasen.R;
 import Dziecioly.zkimnabasen.baza.DatabaseManager;
 import Dziecioly.zkimnabasen.baza.model.Lokalizacja;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,7 +18,7 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class Veturillo extends ActionBarActivity {
+public class Veturillo extends Activity {
 
 	private Context context;
 	private TextView textDestination;
@@ -78,13 +79,15 @@ public class Veturillo extends ActionBarActivity {
 		}
 		double originLat = lokalizacja.getLat();
 		double originLon = lokalizacja.getLon();
-
+		String originAdres = lokalizacja.getAdres();
 		Intent intent = new Intent(context, VeturilloMapa.class);
 
 		intent.putExtra("originLat", originLat);
 		intent.putExtra("originLon", originLon);
 		intent.putExtra("destLat", destLat);
 		intent.putExtra("destLon", destLon);
+		intent.putExtra("addrOrigin", originAdres);
+		intent.putExtra("addrDest", destAdres);
 
 		startActivity(intent);
 

@@ -58,7 +58,7 @@ public class Logowanie extends Activity {
 		String u_haslo = haslo.getText().toString();
 
 		if (!uzytkownikDao.zaloguj(u_login, u_haslo))
-			Toast.makeText(context, "B³êdny login lub has³o", Toast.LENGTH_LONG)
+			Toast.makeText(context, "B³êdny login lub has³o", Toast.LENGTH_SHORT)
 					.show();
 		else {
 			Intent intent = new Intent(context, WydarzeniaLista.class);

@@ -8,10 +8,11 @@ import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 
-import Dziecioly.zkimnabasen.baza.DatabaseManager;
 import android.util.Base64;
-import android.util.Log;
 
 public class HttpRequest {
 
@@ -29,6 +30,8 @@ public class HttpRequest {
 
 
 	public String getFromUrl(String url, boolean auth) {
+		final HttpParams httpParams = new BasicHttpParams();
+	    HttpConnectionParams.setConnectionTimeout(httpParams, 10000);
 		MyHttpClient httpclient = new MyHttpClient();
 		HttpResponse response;
 		String responseString = null;

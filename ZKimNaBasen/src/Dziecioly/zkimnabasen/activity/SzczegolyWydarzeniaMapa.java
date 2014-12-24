@@ -15,6 +15,7 @@ public class SzczegolyWydarzeniaMapa extends FragmentActivity implements
 		OnMapReadyCallback {
 
 	private LatLng latLng;
+	private String adres;
 	private GoogleMap map;
 
 	@Override
@@ -26,6 +27,8 @@ public class SzczegolyWydarzeniaMapa extends FragmentActivity implements
 		double lat = bundle.getDouble("lat");
 		double lon = bundle.getDouble("lon");
 		latLng = new LatLng(lat, lon);
+		
+		adres = bundle.getString("adres");
 
 		SupportMapFragment myMapFragment = (SupportMapFragment) getSupportFragmentManager()
 				.findFragmentById(R.id.map);
@@ -37,7 +40,7 @@ public class SzczegolyWydarzeniaMapa extends FragmentActivity implements
 	@Override
 	public void onMapReady(GoogleMap mapp) {
 		this.map = mapp;
-		map.addMarker(new MarkerOptions().position(latLng));
+		map.addMarker(new MarkerOptions().position(latLng).title(adres)).showInfoWindow();
 		map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12.0f));
 
 	}
