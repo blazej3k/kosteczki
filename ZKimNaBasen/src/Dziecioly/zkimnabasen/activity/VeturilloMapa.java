@@ -5,15 +5,12 @@ import java.util.List;
 import Dziecioly.zkimnabasen.R;
 import Dziecioly.zkimnabasen.api.Obs³ugaMapy;
 import Dziecioly.zkimnabasen.api.VeturilloAsynTask;
-import Dziecioly.zkimnabasen.baza.DatabaseManager;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.widget.Toast;
 
-import com.google.android.gms.drive.internal.m;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -30,13 +27,15 @@ public class VeturilloMapa extends FragmentActivity implements
 
 	private LatLng origin;
 	private LatLng destination;
-	
+
 	private Context context;
 	private boolean mapIsReady;
 	private Obs³ugaMapy obs³ugaMapy;
-	
+
 	private Marker markerOrigin;
 	private Marker markerDest;
+
+	private boolean rowery;
 
 	private VeturilloAsynTask asyncTask;
 	private List<LatLng> lines;
@@ -49,6 +48,8 @@ public class VeturilloMapa extends FragmentActivity implements
 	private String addrOrigin;
 	private String addrDest;
 
+	// private boolean myLocation;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -58,16 +59,19 @@ public class VeturilloMapa extends FragmentActivity implements
 		obs³ugaMapy = new Obs³ugaMapy(context);
 
 		Bundle bundle = getIntent().getExtras();
-		origin = new LatLng(bundle.getDouble("originLat"),
-				bundle.getDouble("originLon"));
+
 		destination = new LatLng(bundle.getDouble("destLat"),
 				bundle.getDouble("destLon"));
-		addrOrigin = bundle.getString("addrOrigin");
 		addrDest = bundle.getString("addrDest");
-		
+		rowery = bundle.getBoolean("rowery");
+
+		origin = new LatLng(bundle.getDouble("originLat"),
+				bundle.getDouble("originLon"));
+		addrOrigin = bundle.getString("addrOrigin");
+
 		// znajdz najblizsze stacje i wyznacz trase
 		asyncTask = new VeturilloAsynTask(this, origin, destination,
-				obs³ugaMapy);
+				obs³ugaMapy, rowery);
 		asyncTask.execute();
 
 		colorOriginMarker = BitmapDescriptorFactory
@@ -88,13 +92,16 @@ public class VeturilloMapa extends FragmentActivity implements
 	@Override
 	public void onMapReady(GoogleMap mapp) {
 		this.map = mapp;
-	
+
 		markerOrigin = map.addMarker(new MarkerOptions().position(origin).icon(
 				colorOriginMarker));
-		markerDest = map.addMarker(new MarkerOptions().position(destination).icon(
-				colorDestMarker));
+		markerDest = map.addMarker(new MarkerOptions().position(destination)
+				.icon(colorDestMarker));
 		map.moveCamera(CameraUpdateFactory.newLatLngZoom(origin, zoom));
-		
+
+		Toast.makeText(context, "Wyznaczanie trasy..", Toast.LENGTH_LONG)
+				.show();
+
 		mapIsReady = true;
 		if (asyncTask.isVeturilloIsReady())
 			narysujTrase(lines);
@@ -104,25 +111,43 @@ public class VeturilloMapa extends FragmentActivity implements
 	private void narysujTrase(List<LatLng> lines) {
 		LatLng vetOrigin = asyncTask.getVetOrigin();
 		LatLng vetDest = asyncTask.getVetDest();
+		if (vetOrigin == null || vetDest == null) {
+			Toast.makeText(
+					context,
+					"B³¹d pobierania API lub brak stacji spe³niaj¹cych kryteria",
+					Toast.LENGTH_LONG).show();
+			return;
+
+		}
+
 		map.addMarker(new MarkerOptions().position(vetOrigin).icon(
 				colorVeturiloMarker));
 		map.addMarker(new MarkerOptions().position(vetDest).icon(
 				colorVeturiloMarker));
 
+		markerOrigin.setTitle(addrOrigin);
+		markerOrigin.showInfoWindow();
+
+		markerDest.setTitle(addrDest);
+		markerDest.showInfoWindow();
+
+		if (lines == null) {
+			Toast.makeText(context, "Nie mo¿na wyznaczyæ trasy",
+					Toast.LENGTH_LONG).show();
+			return;
+		}
+		if (lines.size() == 0) {
+			Toast.makeText(context, "Lokalizacje s¹ zbyt blisko siebie ",
+					Toast.LENGTH_LONG).show();
+			return;
+		}
 		map.addPolyline(new PolylineOptions().addAll(lines).width(5)
 				.color(Color.BLUE));
 
 		map.moveCamera(CameraUpdateFactory.newLatLngZoom(vetOrigin, zoom));
-		
-		markerOrigin.setTitle("AAA");
-		markerOrigin.showInfoWindow();
-		
-		markerDest.setTitle(addrDest);
-		markerDest.showInfoWindow();
 
 		String distance = asyncTask.getDistance();
 		String time = asyncTask.getTime();
-
 		Toast.makeText(context, distance + ",   " + time, Toast.LENGTH_LONG)
 				.show();
 	}

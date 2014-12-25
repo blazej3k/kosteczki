@@ -111,7 +111,7 @@ public class Mapa extends FragmentActivity implements OnMapClickListener,
 	@Override
 	public void onMapReady(GoogleMap mapp) {
 		this.map = mapp;
-
+		
 		map.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLatLng, zoom));
 		map.setOnMapClickListener(this);
 		map.setOnMarkerClickListener(this);
@@ -157,13 +157,13 @@ public class Mapa extends FragmentActivity implements OnMapClickListener,
 		if (selectedLanLon != null && selectedMarker == null) {
 			Log.d(DatabaseManager.DEBUG_TAG,
 					"rysuje wczeœniej wybrany marker - usera");
-			userMarker = map.addMarker(new MarkerOptions().position(
-					selectedLanLon).icon(colorSelectedMarker).title(adres));
+			userMarker = map.addMarker(new MarkerOptions()
+					.position(selectedLanLon).icon(colorSelectedMarker)
+					.title(adres));
 			userMarker.showInfoWindow();
 			selectedMarker = userMarker;
 			map.moveCamera(CameraUpdateFactory.newLatLngZoom(selectedLanLon,
 					map.getCameraPosition().zoom));
-			
 
 		}
 
@@ -237,10 +237,10 @@ public class Mapa extends FragmentActivity implements OnMapClickListener,
 
 	@Override
 	public void onMapClick(LatLng arg) {
-		pyknijMapke(arg);
+		pyknijMapke(arg, null);
 	}
 
-	private void pyknijMapke(LatLng arg) {
+	private void pyknijMapke(LatLng arg, String adres) {
 
 		// jesli by³ wybrany jakis marker -> zaznacz go na czerwono lub
 		// niebiesko
@@ -260,7 +260,8 @@ public class Mapa extends FragmentActivity implements OnMapClickListener,
 		selectedMarker = userMarker;
 
 		// pobierz adres punktu i wyœwietl go
-		String adres = obs³ugaMapy.pobierzAdres(arg);
+		if (adres == null)
+			adres = obs³ugaMapy.pobierzAdres(arg);
 		if (adres == null) {
 			Log.d(DatabaseManager.DEBUG_TAG, "Nie mo¿na ogkreœliæ adresu");
 			Toast.makeText(context, "Nie mo¿na ogkreœliæ adresu",
@@ -283,14 +284,15 @@ public class Mapa extends FragmentActivity implements OnMapClickListener,
 
 	private void zaznaczWpisanyAdresNaMapie(String wpisanyAdres) {
 		if (wpisanyAdres != null && !wpisanyAdres.equals("")) {
-			LatLng latlon = obs³ugaMapy.pobierzMarker(wpisanyAdres);
+			String[] res = obs³ugaMapy.pobierzMarker(wpisanyAdres);
 
-			if (latlon == null) {
-				Log.d(DatabaseManager.DEBUG_TAG, "Nieznany adres");
+			if (res== null)
 				Toast.makeText(context, "Nieznany adres", Toast.LENGTH_SHORT)
 						.show();
-			} else {
-				pyknijMapke(latlon);
+			else {
+				LatLng latlon = new LatLng(Double.parseDouble(res[0]),
+						Double.parseDouble(res[1]));
+				pyknijMapke(latlon, res[2]);
 				map.moveCamera(CameraUpdateFactory.newLatLngZoom(latlon,
 						map.getCameraPosition().zoom));
 			}
@@ -320,7 +322,7 @@ public class Mapa extends FragmentActivity implements OnMapClickListener,
 		}
 		return super.onKeyDown(keyCode, event);
 	}
-	
+
 	public Lokalizacja getSelectedMarker() {
 		if (selectedMarker == null)
 			return null;

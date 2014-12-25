@@ -1,16 +1,12 @@
 package Dziecioly.zkimnabasen.fragment;
 
 import java.util.Calendar;
-import java.util.Date;
 
-import Dziecioly.zkimnabasen.activity.General;
 import Dziecioly.zkimnabasen.activity.NoweWydarzenie;
-import Dziecioly.zkimnabasen.baza.DatabaseManager;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
 
 public class DatePickerFragment extends DialogFragment {
 

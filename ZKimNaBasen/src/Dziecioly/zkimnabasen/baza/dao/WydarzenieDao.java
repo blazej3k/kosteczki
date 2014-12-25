@@ -8,11 +8,9 @@ import Dziecioly.zkimnabasen.activity.General;
 import Dziecioly.zkimnabasen.baza.DatabaseManager;
 import Dziecioly.zkimnabasen.baza.model.Wydarzenie;
 import Dziecioly.zkimnabasen.baza.model.Zaproszenie;
-import android.R.integer;
 import android.util.Log;
 
 import com.j256.ormlite.dao.ForeignCollection;
-import com.j256.ormlite.stmt.Where;
 
 public class WydarzenieDao extends GenericDao<Wydarzenie, Integer> {
 

@@ -1,5 +1,7 @@
 package Dziecioly.zkimnabasen.api;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,39 +33,44 @@ public class VeturilloAsynTask extends AsyncTask<Void, Void, List<LatLng>> {
 	private LatLng vetOrigin;
 	private LatLng vetDest;
 
+	private boolean rowery;
+
 	public VeturilloAsynTask(VeturilloMapa mapa, LatLng origin,
-			LatLng destination, Obs³ugaMapy obs³ugaMapy) {
+			LatLng destination, Obs³ugaMapy obs³ugaMapy, boolean rowery) {
 		this.mapa = mapa;
 		this.origin = origin;
 		this.destination = destination;
 		this.obs³ugaMapy = obs³ugaMapy;
+		this.rowery = rowery;
 	}
 
 	@Override
 	protected List<LatLng> doInBackground(Void... params) {
 		veturilloIsReady = false;
 
-		// znajdz najblizsze stacje
-		vetOrigin = znajdzStacje(origin);
-		vetDest = znajdzStacje(destination);
-
-		// wyznacz trase
-		if (vetOrigin != null && vetDest != null && vetOrigin != vetDest) {
-			lines.addAll(wyznaczTrase(vetOrigin, vetDest));
-		}
 		Log.d(DatabaseManager.DEBUG_TAG,
 				"Origin " + Double.toString(origin.latitude) + "  "
 						+ Double.toString(origin.longitude));
 		Log.d(DatabaseManager.DEBUG_TAG,
 				"Dest " + Double.toString(destination.latitude) + "  "
 						+ Double.toString(destination.longitude));
+		// znajdz najblizsze stacje
+		vetOrigin = znajdzStacje(origin, rowery);
+		if (vetOrigin != null)
+			vetDest = znajdzStacje(destination, rowery);
 
-		Log.d(DatabaseManager.DEBUG_TAG,
+/*		Log.d(DatabaseManager.DEBUG_TAG,
 				"VETURILLO Origin " + Double.toString(vetOrigin.latitude)
 						+ "  " + Double.toString(vetOrigin.longitude));
 		Log.d(DatabaseManager.DEBUG_TAG,
 				"VETURILLO Dest " + Double.toString(vetDest.latitude) + "  "
 						+ Double.toString(vetDest.longitude));
+*/
+		// wyznacz trase
+		if (vetOrigin != null && vetDest != null && !vetOrigin.equals(vetDest)) {
+			lines = wyznaczTrase(vetOrigin, vetDest);
+		}
+
 		return lines;
 	}
 
@@ -76,23 +83,22 @@ public class VeturilloAsynTask extends AsyncTask<Void, Void, List<LatLng>> {
 
 	private List<LatLng> wyznaczTrase(LatLng vetOrigin, LatLng vetDest) {
 		String url = createUrlGoogle(vetOrigin, vetDest);
-		Log.d(DatabaseManager.DEBUG_TAG, url);
 		String response = request.getFromUrl(url, false);
 		lines = parseResponseGoogle(response);
 		return lines;
 	}
 
-	private LatLng znajdzStacje(LatLng punkt) {
-		int promien = 500;
+	private LatLng znajdzStacje(LatLng punkt, boolean rowery) {
+		int promien = 1000;
 
 		while (promien < 5000) {
-			String url = createUrl(punkt, promien);
+			String url = createUrl(punkt, promien, rowery);
 			String response = request.getFromUrl(url, true);
 			// Log.d(DatabaseManager.DEBUG_TAG, response);
 			LatLng[] lista = parseResponse(response);
 			// Log.d(DatabaseManager.DEBUG_TAG, Integer.toString(lista.length));
 			if (lista == null || lista.length == 0)
-				promien += 200;
+				promien += 1000;
 			else if (lista.length == 1)
 				return lista[0];
 			else
@@ -116,11 +122,22 @@ public class VeturilloAsynTask extends AsyncTask<Void, Void, List<LatLng>> {
 		return najblizsza;
 	}
 
-	private String createUrl(LatLng latLng, int promien) {
+	private String createUrl(LatLng latLng, int promien, boolean rowery) {
 		String url = urlVeturillo + "?circle=" + latLng.longitude + ","
 				+ latLng.latitude + "," + promien;
+
+		if (rowery) {
+			try {
+				url += "&filter=";
+				url += URLEncoder
+						.encode("<Filter><PropertyIsNotEqualTo><PropertyName>ROWERY</PropertyName><Literal>0</Literal></PropertyIsNotEqualTo></Filter>",
+								"UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		return url;
-		
 
 	}
 
@@ -157,10 +174,10 @@ public class VeturilloAsynTask extends AsyncTask<Void, Void, List<LatLng>> {
 
 	private LatLng[] parseResponse(String response) {
 		try {
+			if (response == null || response.equals("null"))
+				return null;
 
 			JSONObject json = new JSONObject(response);
-			if (json == null)
-				return null;
 
 			JSONArray data = null;
 			try {
@@ -192,6 +209,8 @@ public class VeturilloAsynTask extends AsyncTask<Void, Void, List<LatLng>> {
 
 	private List<LatLng> parseResponseGoogle(String response) {
 		try {
+			if (response == null || response.equals("null"))
+				return null;
 
 			JSONObject result = new JSONObject(response);
 			JSONArray legs = result.getJSONArray("routes").getJSONObject(0)

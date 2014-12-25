@@ -47,7 +47,8 @@ public class ApiAsyncTask extends AsyncTask<Void, String, List<Lokalizacja>> {
 		}
 
 		List<Lokalizacja> lokalizacjeDb = pobierzLokalizacjeDb(kategoria);
-		Log.d(DatabaseManager.DEBUG_TAG, " z db " + Integer.toString(lokalizacjeDb.size()));
+		Log.d(DatabaseManager.DEBUG_TAG,
+				" z db " + Integer.toString(lokalizacjeDb.size()));
 		lokalizacje.addAll(lokalizacjeDb);
 
 		return lokalizacje;
@@ -83,6 +84,9 @@ public class ApiAsyncTask extends AsyncTask<Void, String, List<Lokalizacja>> {
 
 	private List<Lokalizacja> parseResponse(String responseString) {
 		try {
+			if (responseString == null || responseString.equals("null"))
+				return null;
+			
 			JSONObject json = new JSONObject(responseString);
 			JSONArray data = json.getJSONArray("data");
 			List<Lokalizacja> lokalizacje = new ArrayList<Lokalizacja>();

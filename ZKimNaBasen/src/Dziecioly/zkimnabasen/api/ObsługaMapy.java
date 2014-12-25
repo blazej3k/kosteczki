@@ -8,9 +8,7 @@ import java.util.List;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import Dziecioly.zkimnabasen.baza.DatabaseManager;
 import android.content.Context;
-import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -27,14 +25,25 @@ public class Obs³ugaMapy {
 		return getAdressFromResponse(response);
 	}
 
-	public LatLng pobierzMarker(String arg) {
+	public String[] pobierzMarker(String arg) {
 		String url = stworzUrl(arg);
 		String response = request.getFromUrl(url, false);
-		return getLatLngFromResponse(response);
+
+		String[] latLng = getLatLngFromResponse(response);
+		if (latLng == null)
+			return null;
+		String adres = getAdressFromResponse(response);
+		String[] ret = new String[3];
+		ret[0] = latLng[0];
+		ret[1] = latLng[1];
+		ret[2] = adres;
+		return ret;
 	}
 
 	private String getAdressFromResponse(String response) {
 		try {
+			if (response == null)
+				return null;
 			JSONObject json = new JSONObject(response);
 			String addr = json.getJSONArray("results").getJSONObject(0)
 					.getString("formatted_address");
@@ -48,15 +57,17 @@ public class Obs³ugaMapy {
 		return null;
 	}
 
-	public LatLng getLatLngFromResponse(String response) {
+	public String[] getLatLngFromResponse(String response) {
 		try {
+			if (response == null)
+				return null;
 			JSONObject json = new JSONObject(response);
 			JSONObject loc = json.getJSONArray("results").getJSONObject(0)
 					.getJSONObject("geometry").getJSONObject("location");
-			double lat = loc.getDouble("lat");
-			double lon =loc.getDouble("lng");
-			return new LatLng(lat, lon);
-
+			String lat = loc.getString("lat");
+			String lon = loc.getString("lng");
+			String[] latlon = { lat, lon };
+			return latlon;
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}

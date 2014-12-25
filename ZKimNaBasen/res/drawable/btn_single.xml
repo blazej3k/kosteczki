@@ -29,7 +29,7 @@
                 android:angle="270" />
             <stroke
                 android:width="1dp"
-                android:color="#C0C0C0" />
+                android:color="@color/bardzo_szary" />
             <corners
                 android:radius="5dp" />
             <padding

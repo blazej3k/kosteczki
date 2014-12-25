@@ -3,7 +3,6 @@ package Dziecioly.zkimnabasen.baza.dao;
 import java.sql.SQLException;
 import java.util.List;
 
-import Dziecioly.zkimnabasen.activity.General;
 import Dziecioly.zkimnabasen.baza.DatabaseManager;
 import Dziecioly.zkimnabasen.baza.model.Uzytkownik;
 import android.util.Log;

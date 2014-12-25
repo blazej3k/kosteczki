@@ -5,11 +5,9 @@ import java.sql.SQLException;
 import java.util.List;
 
 import Dziecioly.zkimnabasen.baza.DatabaseManager;
-import android.content.Entity;
 import android.util.Log;
 
 import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.dao.ForeignCollection;
 
 public class GenericDao<E, K> {
 

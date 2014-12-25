@@ -17,6 +17,20 @@
         android:id="@+id/btnOrigin"
         style="@style/button_single"
         android:text="@string/skad" />
+    
+    
+
+    <CheckBox
+        android:id="@+id/checkBoxMojaLokalizacja"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/pobierzLokalizacje" />
+    
+    <CheckBox
+        android:id="@+id/checkBoxRowery"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/stacjaZRowerami" />
 
     <Button
         android:id="@+id/btnWyznacz"

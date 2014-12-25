@@ -2,10 +2,7 @@ package Dziecioly.zkimnabasen.baza.model;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
-
-import Dziecioly.zkimnabasen.baza.dao.ZaproszenieDao;
 
 import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DataType;

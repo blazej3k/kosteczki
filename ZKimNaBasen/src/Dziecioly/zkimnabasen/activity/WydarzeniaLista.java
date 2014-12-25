@@ -12,7 +12,6 @@ import Dziecioly.zkimnabasen.baza.model.Uzytkownik;
 import Dziecioly.zkimnabasen.baza.model.Wydarzenie;
 import Dziecioly.zkimnabasen.baza.model.Zaproszenie;
 import Dziecioly.zkimnabasen.fragment.ChecboxListFragment;
-import android.R.integer;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -84,9 +83,6 @@ ChecboxListFragment.NoticeDialogListener {
 	
 	
 		private void zbudujListe(List<Wydarzenie> wydarzeniaL) {
-			Log.d(DatabaseManager.DEBUG_TAG,
-					"SIZE " + Integer.toString(wydarzeniaL.size()));
-
 			RowBeanListaWyd[] WydarzeniaRB = null;
 			WydarzeniaRB = new RowBeanListaWyd[wydarzeniaL.size()];
 

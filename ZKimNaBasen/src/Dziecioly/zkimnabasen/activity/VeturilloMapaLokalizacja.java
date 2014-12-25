@@ -2,10 +2,12 @@ package Dziecioly.zkimnabasen.activity;
 
 import Dziecioly.zkimnabasen.R;
 import Dziecioly.zkimnabasen.api.Obs³ugaMapy;
+import Dziecioly.zkimnabasen.baza.DatabaseManager;
 import Dziecioly.zkimnabasen.baza.model.Lokalizacja;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -19,6 +21,8 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -30,13 +34,17 @@ public class VeturilloMapaLokalizacja extends FragmentActivity implements
 
 	private GoogleMap map;
 	private Obs³ugaMapy obs³ugaMapy;
-	private final LatLng defaultLatLng = new LatLng(52.23, 21);
+	private LatLng defaultLatLng = new LatLng(52.23, 21);
 	private float zoom = 12.0f;
 
 	private EditText editText;
 	private Button btnZnajdz;
 
 	private Marker selectedMarker = null;
+	private LatLng selectedLanLon = null;
+	private String adres;
+
+	private BitmapDescriptor colorSelectedMarker;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -49,10 +57,22 @@ public class VeturilloMapaLokalizacja extends FragmentActivity implements
 		editText = (EditText) findViewById(R.id.editText);
 		initBtnOnClickListener();
 
+		Bundle bundle = getIntent().getExtras();
+		if (bundle.getBoolean("lok")) {
+			selectedLanLon = new LatLng(bundle.getDouble("lat"),
+					bundle.getDouble("lon"));
+			adres = bundle.getString("adres");
+			defaultLatLng = selectedLanLon;
+			Log.d(DatabaseManager.DEBUG_TAG, "selectedLanLon" + "  " + adres);
+		}
+
 		SupportMapFragment myMapFragment = (SupportMapFragment) getSupportFragmentManager()
 				.findFragmentById(R.id.map2);
 		myMapFragment.onCreate(savedInstanceState);
 		myMapFragment.getMapAsync(this);
+
+		colorSelectedMarker = BitmapDescriptorFactory
+				.defaultMarker(BitmapDescriptorFactory.HUE_GREEN);
 
 	}
 
@@ -61,12 +81,17 @@ public class VeturilloMapaLokalizacja extends FragmentActivity implements
 		this.map = mapp;
 		map.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLatLng, zoom));
 		map.setOnMapClickListener(this);
-
+		if (selectedLanLon != null) {
+			selectedMarker = map.addMarker(new MarkerOptions()
+					.position(selectedLanLon).title(adres)
+					.icon(colorSelectedMarker));
+			selectedMarker.showInfoWindow();
+		}
 	}
 
 	@Override
 	public void onMapClick(LatLng arg) {
-		pyknijMapke(arg, true);
+		pyknijMapke(arg, null);
 	}
 
 	@Override
@@ -94,40 +119,48 @@ public class VeturilloMapaLokalizacja extends FragmentActivity implements
 		if (selectedMarker == null)
 			return null;
 		Lokalizacja l = new Lokalizacja(selectedMarker.getPosition().latitude,
-				selectedMarker.getPosition().longitude, editText.getText()
-						.toString(), null, false, null);
+				selectedMarker.getPosition().longitude,
+				selectedMarker.getTitle(), null, false, null);
 		return l;
 
 	}
 
-	private void pyknijMapke(LatLng arg, boolean onclick) {
+	private void pyknijMapke(LatLng arg, String adres) {
 		if (selectedMarker != null)
 			selectedMarker.remove();
 
-		selectedMarker = map.addMarker(new MarkerOptions().position(arg));
+		selectedMarker = map.addMarker(new MarkerOptions().position(arg).icon(
+				colorSelectedMarker));
 
-		String adres = obs³ugaMapy.pobierzAdres(arg);
-		if (adres == null) {
-			Toast.makeText(context, "Nie mo¿na ogkreœliæ adresu",
+		if (adres == null)
+			adres = obs³ugaMapy.pobierzAdres(arg);
+		if (adres == null)
+			Toast.makeText(context, "Nie mo¿na okreœliæ adresu",
 					Toast.LENGTH_SHORT).show();
-		} else if (onclick)
-			editText.setText(adres);
-		
-		map.moveCamera(CameraUpdateFactory.newLatLngZoom(arg, map.getCameraPosition().zoom));
+		else {
+			selectedMarker.setTitle(adres);
+			selectedMarker.showInfoWindow();
+		}
+
+		map.moveCamera(CameraUpdateFactory.newLatLngZoom(arg,
+				map.getCameraPosition().zoom));
 	}
 
 	private void zaznaczWpisanyAdresNaMapie(String wpisanyAdres) {
 		if (wpisanyAdres != null && !wpisanyAdres.equals("")) {
-			LatLng latlon = obs³ugaMapy.pobierzMarker(wpisanyAdres);
+			String[] res = obs³ugaMapy.pobierzMarker(wpisanyAdres);
 
-			if (latlon == null) {
+			if (res == null)
 				Toast.makeText(context, "Nieznany adres", Toast.LENGTH_SHORT)
 						.show();
-			} else {
-				pyknijMapke(latlon, false);
-				map.moveCamera(CameraUpdateFactory.newLatLngZoom(latlon, map.getCameraPosition().zoom));
+			else {
+				LatLng latlon = new LatLng(Double.parseDouble(res[0]),
+						Double.parseDouble(res[1]));
+				pyknijMapke(latlon, res[2]);
+				map.moveCamera(CameraUpdateFactory.newLatLngZoom(latlon,
+						map.getCameraPosition().zoom));
 			}
 		}
-	}
 
+	}
 }
