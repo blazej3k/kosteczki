@@ -6,11 +6,13 @@ import java.util.Date;
 
 import Dziecioly.zkimnabasen.baza.DatabaseManager;
 import Dziecioly.zkimnabasen.baza.dao.UzytkownikDao;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
+@SuppressLint("SimpleDateFormat")
 public class General {
 	
 	UzytkownikDao uzytkownikDao = new UzytkownikDao();

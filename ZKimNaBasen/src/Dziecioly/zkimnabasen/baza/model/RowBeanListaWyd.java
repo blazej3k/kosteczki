@@ -1,16 +1,20 @@
 package Dziecioly.zkimnabasen.baza.model;
 
+import Dziecioly.zkimnabasen.baza.DatabaseManager;
+import android.util.Log;
+
 public class RowBeanListaWyd {
-    private int icon;
-    private String tekst;
-    private String data;
-    
-    public RowBeanListaWyd () { }
-    
-    public RowBeanListaWyd(int icon, String tekst) {
-    	this.icon = icon;
-    	this.tekst = tekst;
-    }
+	private int icon;
+	private String tekst;
+	private String data;
+
+	public RowBeanListaWyd() {
+	}
+
+	public RowBeanListaWyd(int icon, String tekst) {
+		this.icon = icon;
+		this.tekst = tekst;
+	}
 
 	public int getIcon() {
 		return icon;
@@ -36,4 +40,3 @@ public class RowBeanListaWyd {
 		this.data = data;
 	}
 }
-

@@ -2,6 +2,7 @@ package Dziecioly.zkimnabasen.activity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import Dziecioly.zkimnabasen.R;
@@ -23,6 +24,8 @@ import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
@@ -61,7 +64,7 @@ public class NoweWydarzenie extends FragmentActivity implements
 	private Button btnVeturillo;
 
 	private List<Uzytkownik> wszyscyZnajomi = new ArrayList<Uzytkownik>();
-	private boolean[] wybraniZnajomi;
+	// private boolean[] wybraniZnajomi;
 	private String wybranaKategoria = "";
 	public static Lokalizacja wybranaLokalizacja;
 	private Lokalizacja lokalizacja = null;
@@ -101,8 +104,7 @@ public class NoweWydarzenie extends FragmentActivity implements
 		initBtnOnClickListeners();
 
 		wszyscyZnajomi = pobierzZnajomych();
-		wybraniZnajomi = new boolean[wszyscyZnajomi.size()];
-		Arrays.fill(wybraniZnajomi, Boolean.FALSE);
+		wyczyscSharedPref();
 
 		wybranaLokalizacja = null;
 
@@ -110,6 +112,12 @@ public class NoweWydarzenie extends FragmentActivity implements
 		if (id_wydarzenia != 0)
 			wpiszDane();
 
+	}
+
+	private void wyczyscSharedPref() {
+		boolean[] checkedItems = new boolean[wszyscyZnajomi.size()];
+		Arrays.fill(checkedItems, Boolean.FALSE);
+		zapiszWybranych(checkedItems);
 	}
 
 	@Override
@@ -155,26 +163,28 @@ public class NoweWydarzenie extends FragmentActivity implements
 			wydarzenie.setLokalizacja(lokalizacjaDb);
 		}
 
-		ForeignCollection<Zaproszenie> zaproszenia = wydarzenieDao
-				.getEmptyCollection();
-		for (int i = 0; i < wybraniZnajomi.length; i++) {
-			if (wybraniZnajomi[i] == true) {
-				Uzytkownik u = wszyscyZnajomi.get(i);
-				Zaproszenie z = new Zaproszenie(false);
-				z.setUzytkownik(u);
-				z.setWydarzenie(wydarzenie);
-				zaproszenia.add(z);
+		if (!w_czyOtwarte) {
+			ForeignCollection<Zaproszenie> zaproszenia = wydarzenieDao
+					.getEmptyCollection();
+			boolean[] wybraniZnajomi = pobierzWybranych();
+			for (int i = 0; i < wybraniZnajomi.length; i++) {
+				if (wybraniZnajomi[i] == true) {
+					Uzytkownik u = wszyscyZnajomi.get(i);
+					Zaproszenie z = new Zaproszenie(false);
+					z.setUzytkownik(u);
+					z.setWydarzenie(wydarzenie);
+					zaproszenia.add(z);
+				}
 			}
+			wydarzenie.setZaproszenia(zaproszenia);
 		}
-		wydarzenie.setZaproszenia(zaproszenia);
-
 		int id_w;
 		Log.d(DatabaseManager.DEBUG_TAG,
 				"ID WYD " + Integer.toString(id_wydarzenia));
-		//edycja -> najpierw usun, potem normalnie zapisz
+		// edycja -> najpierw usun, potem normalnie zapisz
 		if (id_wydarzenia != 0)
 			usun(id_wydarzenia);
-			
+
 		id_w = wydarzenieDao.add(wydarzenie).getId();
 		Intent intent = new Intent(context, SzczegolyWydarzenia.class);
 		Log.d(DatabaseManager.DEBUG_TAG, "ID WYD 2" + Integer.toString(id_w));
@@ -235,6 +245,12 @@ public class NoweWydarzenie extends FragmentActivity implements
 				else if (data_w.equals("Data")) {
 					Toast.makeText(context, "Podaj datê wydarzenia",
 							Toast.LENGTH_SHORT).show();
+				}
+				if (General.dateFromString(data_w).before(
+						General.dateFromString(General
+								.stringFromDate(new Date())))) {
+					Toast.makeText(context, "Podana data ju¿ minê³a",
+							Toast.LENGTH_SHORT).show();
 				} else {
 					if (lokalizacja != null
 							&& lokalizacja.isLokalizacjaUzytkownika()) {
@@ -252,7 +268,8 @@ public class NoweWydarzenie extends FragmentActivity implements
 		data.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				DatePickerFragment date = new DatePickerFragment(data.getText().toString());
+				DatePickerFragment date = new DatePickerFragment(data.getText()
+						.toString());
 				date.show(getSupportFragmentManager(), "Date Picker");
 			}
 		});
@@ -261,7 +278,8 @@ public class NoweWydarzenie extends FragmentActivity implements
 			@Override
 			public void onClick(View v) {
 				flag = 0;
-				TimePickerFragment time = new TimePickerFragment(godzinaRozpoczecia.getText().toString());
+				TimePickerFragment time = new TimePickerFragment(
+						godzinaRozpoczecia.getText().toString());
 				time.show(getSupportFragmentManager(), "Time Picker");
 			}
 		});
@@ -270,7 +288,8 @@ public class NoweWydarzenie extends FragmentActivity implements
 			@Override
 			public void onClick(View v) {
 				flag = 1;
-				TimePickerFragment time = new TimePickerFragment(godzinaZakonczenia.getText().toString());
+				TimePickerFragment time = new TimePickerFragment(
+						godzinaZakonczenia.getText().toString());
 				time.show(getSupportFragmentManager(), "Time Picker");
 			}
 		});
@@ -282,8 +301,10 @@ public class NoweWydarzenie extends FragmentActivity implements
 					Toast.makeText(context, "Zaznaczono wydarzenie otwarte",
 							Toast.LENGTH_SHORT).show();
 				else {
+
+					boolean[] checkedItems = pobierzWybranych();
 					checkboxFrag = new ChecboxListFragment("Wybierz znajomych",
-							null, wybraniZnajomi);
+							null, checkedItems);
 					checkboxFrag.setItems(wszyscyZnajomi);
 					checkboxFrag.show(getSupportFragmentManager(),
 							"Checkbox list");
@@ -332,7 +353,8 @@ public class NoweWydarzenie extends FragmentActivity implements
 				if (isChecked)
 					zaprosZnajomych.setText("Zaproszeni: wszyscy");
 				else {
-					int licz = policzWybranych();
+					boolean[] wybraniZnajomi = pobierzWybranych();
+					int licz = policzWybranych(wybraniZnajomi);
 					if (licz != 0)
 						zaprosZnajomych.setText("Zaproszonych: " + licz);
 					else
@@ -345,6 +367,29 @@ public class NoweWydarzenie extends FragmentActivity implements
 
 	}
 
+	private void zapiszWybranych(boolean[] checkedItems) {
+		SharedPreferences pref = context.getSharedPreferences("MyPref", 0);
+		Editor editor = pref.edit();
+		for (int i = 0; i < wszyscyZnajomi.size(); i++) {
+			String key = "z" + i;
+			editor.putBoolean(key, checkedItems[i]);
+
+		}
+		editor.commit();
+	}
+
+	private boolean[] pobierzWybranych() {
+		SharedPreferences pref = context.getSharedPreferences("MyPref", 0);
+		boolean[] checkedItems = new boolean[wszyscyZnajomi.size()];
+		for (int i = 0; i < wszyscyZnajomi.size(); i++) {
+			String key = "z" + i;
+			checkedItems[i] = pref.getBoolean(key, false);
+
+		}
+		return checkedItems;
+
+	}
+
 	private void wczytajMape() {
 		Intent intent = new Intent(context, Mapa.class);
 		intent.putExtra("kategoria", wybranaKategoria);
@@ -352,7 +397,7 @@ public class NoweWydarzenie extends FragmentActivity implements
 		String wpisanyAdres = btnMapa.getText().toString();
 
 		if (wpisanyAdres != null && !wpisanyAdres.equals("")
-				&& lokalizacja != null  && !wpisanyAdres.equals("Lokalizacja")) {
+				&& lokalizacja != null && !wpisanyAdres.equals("Lokalizacja")) {
 			intent.putExtra("lok", true);
 			intent.putExtra("lat", lokalizacja.getLat());
 			intent.putExtra("lon", lokalizacja.getLon());
@@ -367,14 +412,16 @@ public class NoweWydarzenie extends FragmentActivity implements
 	@Override
 	public void onDialogPositiveClick(DialogFragment dialog) {
 
-		this.wybraniZnajomi = checkboxFrag.getCheckedItems();
-		zaprosZnajomych.setText("Zaproszonych: " + policzWybranych());
+		boolean[] checkedItems = checkboxFrag.getCheckedItems();
+		zapiszWybranych(checkedItems);
+		zaprosZnajomych.setText("Zaproszonych: "
+				+ policzWybranych(checkedItems));
 
 	}
 
-	private int policzWybranych() {
+	private int policzWybranych(boolean[] checkedItems) {
 		int licznik = 0;
-		for (boolean b : wybraniZnajomi)
+		for (boolean b : checkedItems)
 			if (b)
 				licznik++;
 		return licznik;
@@ -472,18 +519,19 @@ public class NoweWydarzenie extends FragmentActivity implements
 			lokalizacja = lok;
 			btnKategoria.setText(lok.getKategoria());
 			btnMapa.setText(lok.getAdres());
+			wybranaKategoria = lok.getKategoria();
 		}
 
 		List<Zaproszenie> list = w.getZaproszenia();
 		if (list != null) {
+			boolean[] wybraniZnajomi = new boolean[wszyscyZnajomi.size()];
 			for (int i = 0; i < list.size(); i++) {
 				int id_zaproszonego = list.get(i).getUzytkownik().getId();
-				Log.d(DatabaseManager.DEBUG_TAG,
-						"A " + Integer.toString(id_zaproszonego));
 				Integer j = index(id_zaproszonego);
 				if (j != null)
 					wybraniZnajomi[j] = true;
 			}
+			zapiszWybranych(wybraniZnajomi);
 		}
 
 		if (w_otwarte)
