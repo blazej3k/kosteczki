@@ -159,7 +159,7 @@ public class Mapa extends FragmentActivity implements OnMapClickListener,
 
 		}
 
-		if (kategoria.equals("P造walnia") || kategoria.equals("Pi趾a no積a")
+		if (kategoria.equals("P造walnia") || kategoria.equals("Boisko")
 				&& apiNiePobrane)
 			Toast.makeText(context, "B章d pobierania API", Toast.LENGTH_LONG)
 					.show();
@@ -167,7 +167,7 @@ public class Mapa extends FragmentActivity implements OnMapClickListener,
 	}
 
 	boolean isApiMarker(LatLng arg) {
-		if (!(kategoria.equals("P造walnia") || kategoria.equals("Pi趾a no積a")))
+		if (!(kategoria.equals("P造walnia") || kategoria.equals("Boisko")))
 			return false;
 		else {
 			for (Lokalizacja lok : lokalizacje)

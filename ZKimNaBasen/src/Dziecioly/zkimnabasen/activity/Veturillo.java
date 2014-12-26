@@ -115,7 +115,6 @@ public class Veturillo extends Activity {
 				double lon = myLocation.getLongitude();
 				lokalizacja = new Lokalizacja(lat, lon, null, null, false, null);
 				return true;
-
 			}
 		}
 		Toast.makeText(context, "Nie mo¿na okreœliæ bie¿¹cej lokalizacji",
@@ -163,7 +162,7 @@ public class Veturillo extends Activity {
 							btnOrigin.setText("Moja lokalizacja");
 							btnOrigin.setEnabled(false);
 						} else {
-							if (lokalizacja == null)
+							if (lokalizacja == null || lokalizacja.getAdres()==null)
 								btnOrigin.setText("Sk¹d?");
 							else
 								btnOrigin.setText(lokalizacja.getAdres());

@@ -1,13 +1,11 @@
 package Dziecioly.zkimnabasen.fragment;
 
-import Dziecioly.zkimnabasen.baza.DatabaseManager;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
 
 public class ListFragment extends DialogFragment {
 

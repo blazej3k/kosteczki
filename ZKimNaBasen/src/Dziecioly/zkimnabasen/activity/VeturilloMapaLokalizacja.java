@@ -2,12 +2,10 @@ package Dziecioly.zkimnabasen.activity;
 
 import Dziecioly.zkimnabasen.R;
 import Dziecioly.zkimnabasen.api.Obs³ugaMapy;
-import Dziecioly.zkimnabasen.baza.DatabaseManager;
 import Dziecioly.zkimnabasen.baza.model.Lokalizacja;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
