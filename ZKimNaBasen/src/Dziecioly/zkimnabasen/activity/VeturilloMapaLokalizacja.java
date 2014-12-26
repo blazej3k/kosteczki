@@ -63,7 +63,6 @@ public class VeturilloMapaLokalizacja extends FragmentActivity implements
 					bundle.getDouble("lon"));
 			adres = bundle.getString("adres");
 			defaultLatLng = selectedLanLon;
-			Log.d(DatabaseManager.DEBUG_TAG, "selectedLanLon" + "  " + adres);
 		}
 
 		SupportMapFragment myMapFragment = (SupportMapFragment) getSupportFragmentManager()

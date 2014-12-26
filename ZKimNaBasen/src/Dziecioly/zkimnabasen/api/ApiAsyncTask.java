@@ -8,11 +8,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import Dziecioly.zkimnabasen.activity.Mapa;
-import Dziecioly.zkimnabasen.baza.DatabaseManager;
 import Dziecioly.zkimnabasen.baza.dao.LokalizacjaDao;
 import Dziecioly.zkimnabasen.baza.model.Lokalizacja;
 import android.os.AsyncTask;
-import android.util.Log;
 
 public class ApiAsyncTask extends AsyncTask<Void, String, List<Lokalizacja>> {
 
@@ -37,7 +35,6 @@ public class ApiAsyncTask extends AsyncTask<Void, String, List<Lokalizacja>> {
 		listIsReady = false;
 		List<Lokalizacja> lokalizacje = new ArrayList<Lokalizacja>();
 
-		Log.d(DatabaseManager.DEBUG_TAG, kategoria);
 		if (kategoria.equals("P³ywalnia"))
 			lokalizacje = pobierzLokalizacjeApi(swimmingPoolsUrl);
 		else if (kategoria.equals("Boisko"))
@@ -47,8 +44,6 @@ public class ApiAsyncTask extends AsyncTask<Void, String, List<Lokalizacja>> {
 		}
 
 		List<Lokalizacja> lokalizacjeDb = pobierzLokalizacjeDb(kategoria);
-		Log.d(DatabaseManager.DEBUG_TAG,
-				" z db " + Integer.toString(lokalizacjeDb.size()));
 		lokalizacje.addAll(lokalizacjeDb);
 
 		return lokalizacje;
@@ -60,7 +55,6 @@ public class ApiAsyncTask extends AsyncTask<Void, String, List<Lokalizacja>> {
 	}
 
 	private List<Lokalizacja> pobierzLokalizacjeApi(String url) {
-		Log.d(DatabaseManager.DEBUG_TAG, "pobieram z api...");
 		List<Lokalizacja> lokalizacje = new ArrayList<Lokalizacja>();
 		String responseString = request.getFromUrl(url, true);
 		lokalizacje = parseResponse(responseString);

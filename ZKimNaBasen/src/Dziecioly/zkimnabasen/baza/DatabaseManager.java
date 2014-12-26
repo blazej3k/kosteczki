@@ -65,7 +65,6 @@ public class DatabaseManager extends OrmLiteSqliteOpenHelper {
 			ConnectionSource connectionSource) {
 		try {
 			db = database;
-			Log.d(DEBUG_TAG2, "on create");
 			TableUtils.createTable(connectionSource, Uzytkownik.class);
 			TableUtils.createTable(connectionSource, Wydarzenie.class);
 			TableUtils.createTable(connectionSource, Zaproszenie.class);
@@ -96,7 +95,6 @@ public class DatabaseManager extends OrmLiteSqliteOpenHelper {
 	public void upgrade(SQLiteDatabase db) {
 		if (db == null)
 			db = instance.getWritableDatabase();
-		Log.d(DEBUG_TAG2, "on update");
 
 		db.execSQL(DROP_TABLE_UZYTKOWNIK);
 		db.execSQL(DROP_TABLE_WYDARZENIE);

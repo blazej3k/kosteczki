@@ -72,7 +72,6 @@ ChecboxListFragment.NoticeDialogListener {
 			initBtnOnClickListeners();
 
 			if (wydarzeniaL.size() == 0) {
-				Log.d(DatabaseManager.DEBUG_TAG, "PUSTA LISTA");
 				Toast.makeText(this, "Lista wydarzeñ jest pusta",
 						Toast.LENGTH_LONG).show();
 			}

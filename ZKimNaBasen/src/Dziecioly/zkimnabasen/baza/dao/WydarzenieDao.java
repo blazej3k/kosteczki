@@ -23,8 +23,7 @@ public class WydarzenieDao extends GenericDao<Wydarzenie, Integer> {
 					.orderBy("godz_od", true).where().ge("data", currDate)
 					.query();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Log.d(DatabaseManager.DEBUG_TAG, e.toString());
 		}
 		return null;
 

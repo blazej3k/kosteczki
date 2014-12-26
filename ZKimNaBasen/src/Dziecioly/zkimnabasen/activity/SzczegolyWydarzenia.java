@@ -112,8 +112,6 @@ public class SzczegolyWydarzenia extends FragmentActivity {
 
 	private void czytajWydarzenie(Wydarzenie wydarzenie) {
 
-		Log.d(DEBUG_TAG, "czytajWydarzenie2 id=" + id);
-
 		if (wydarzenie.equals(null)) // czy wydarzenie sie pobralo
 			Log.d(DatabaseManager.DEBUG_TAG, "Brak wydarzenia");
 		else { // jesli tak to dzialaj

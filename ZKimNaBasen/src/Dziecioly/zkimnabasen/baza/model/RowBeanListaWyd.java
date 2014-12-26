@@ -1,7 +1,5 @@
 package Dziecioly.zkimnabasen.baza.model;
 
-import Dziecioly.zkimnabasen.baza.DatabaseManager;
-import android.util.Log;
 
 public class RowBeanListaWyd {
 	private int icon;

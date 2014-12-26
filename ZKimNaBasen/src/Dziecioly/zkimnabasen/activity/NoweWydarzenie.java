@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.List;
 
 import Dziecioly.zkimnabasen.R;
-import Dziecioly.zkimnabasen.baza.DatabaseManager;
 import Dziecioly.zkimnabasen.baza.dao.LokalizacjaDao;
 import Dziecioly.zkimnabasen.baza.dao.UzytkownikDao;
 import Dziecioly.zkimnabasen.baza.dao.WydarzenieDao;
@@ -29,7 +28,6 @@ import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -179,15 +177,12 @@ public class NoweWydarzenie extends FragmentActivity implements
 			wydarzenie.setZaproszenia(zaproszenia);
 		}
 		int id_w;
-		Log.d(DatabaseManager.DEBUG_TAG,
-				"ID WYD " + Integer.toString(id_wydarzenia));
 		// edycja -> najpierw usun, potem normalnie zapisz
 		if (id_wydarzenia != 0)
 			usun(id_wydarzenia);
 
 		id_w = wydarzenieDao.add(wydarzenie).getId();
 		Intent intent = new Intent(context, SzczegolyWydarzenia.class);
-		Log.d(DatabaseManager.DEBUG_TAG, "ID WYD 2" + Integer.toString(id_w));
 		intent.putExtra("id_wydarzenia", id_w);
 		startActivity(intent);
 	}
@@ -546,8 +541,6 @@ public class NoweWydarzenie extends FragmentActivity implements
 	private Integer index(int id) {
 		for (int i = 0; i < wszyscyZnajomi.size(); i++)
 			if (wszyscyZnajomi.get(i).getId() == id) {
-				Log.d(DatabaseManager.DEBUG_TAG,
-						"B " + Integer.toString(wszyscyZnajomi.get(i).getId()));
 				return i;
 			}
 		return null;

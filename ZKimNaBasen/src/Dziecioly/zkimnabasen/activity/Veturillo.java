@@ -1,7 +1,6 @@
 package Dziecioly.zkimnabasen.activity;
 
 import Dziecioly.zkimnabasen.R;
-import Dziecioly.zkimnabasen.baza.DatabaseManager;
 import Dziecioly.zkimnabasen.baza.model.Lokalizacja;
 import android.app.Activity;
 import android.content.Context;
@@ -10,7 +9,6 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -66,10 +64,8 @@ public class Veturillo extends Activity {
 		if (wybranaLokalizacja != null) {
 			lokalizacja = wybranaLokalizacja;
 			String adres = wybranaLokalizacja.getAdres();
-			Log.d(DatabaseManager.DEBUG_TAG, adres);
 			if (adres != null) {
 				btnOrigin.setText(adres);
-				Log.d(DatabaseManager.DEBUG_TAG, adres);
 			} else {
 				btnOrigin.setText("");
 			}
@@ -112,7 +108,6 @@ public class Veturillo extends Activity {
 
 		String provider = locationManager.getBestProvider(new Criteria(), true);
 		if (provider != null) {
-			Log.d(DatabaseManager.DEBUG_TAG, provider);
 			Location myLocation = locationManager
 					.getLastKnownLocation(provider);
 			if (myLocation != null) {

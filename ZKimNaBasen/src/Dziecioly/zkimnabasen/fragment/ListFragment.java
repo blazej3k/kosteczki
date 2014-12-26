@@ -28,8 +28,6 @@ public class ListFragment extends DialogFragment {
 		builder.setTitle(title).setItems(items,
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
-						Log.d(DatabaseManager.DEBUG_TAG,
-								Integer.toString(which));
 						selectedItem = items[which];
 						mListener.onDialogClick(ListFragment.this);
 					}

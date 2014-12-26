@@ -10,9 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import Dziecioly.zkimnabasen.activity.VeturilloMapa;
-import Dziecioly.zkimnabasen.baza.DatabaseManager;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -48,24 +46,11 @@ public class VeturilloAsynTask extends AsyncTask<Void, Void, List<LatLng>> {
 	protected List<LatLng> doInBackground(Void... params) {
 		veturilloIsReady = false;
 
-		Log.d(DatabaseManager.DEBUG_TAG,
-				"Origin " + Double.toString(origin.latitude) + "  "
-						+ Double.toString(origin.longitude));
-		Log.d(DatabaseManager.DEBUG_TAG,
-				"Dest " + Double.toString(destination.latitude) + "  "
-						+ Double.toString(destination.longitude));
 		// znajdz najblizsze stacje
 		vetOrigin = znajdzStacje(origin, rowery);
 		if (vetOrigin != null)
 			vetDest = znajdzStacje(destination, rowery);
 
-/*		Log.d(DatabaseManager.DEBUG_TAG,
-				"VETURILLO Origin " + Double.toString(vetOrigin.latitude)
-						+ "  " + Double.toString(vetOrigin.longitude));
-		Log.d(DatabaseManager.DEBUG_TAG,
-				"VETURILLO Dest " + Double.toString(vetDest.latitude) + "  "
-						+ Double.toString(vetDest.longitude));
-*/
 		// wyznacz trase
 		if (vetOrigin != null && vetDest != null && !vetOrigin.equals(vetDest)) {
 			lines = wyznaczTrase(vetOrigin, vetDest);
@@ -94,9 +79,7 @@ public class VeturilloAsynTask extends AsyncTask<Void, Void, List<LatLng>> {
 		while (promien < 5000) {
 			String url = createUrl(punkt, promien, rowery);
 			String response = request.getFromUrl(url, true);
-			// Log.d(DatabaseManager.DEBUG_TAG, response);
 			LatLng[] lista = parseResponse(response);
-			// Log.d(DatabaseManager.DEBUG_TAG, Integer.toString(lista.length));
 			if (lista == null || lista.length == 0)
 				promien += 1000;
 			else if (lista.length == 1)
@@ -183,7 +166,6 @@ public class VeturilloAsynTask extends AsyncTask<Void, Void, List<LatLng>> {
 			try {
 				data = json.getJSONArray("data");
 			} catch (JSONException e) {
-				Log.d(DatabaseManager.DEBUG_TAG, "Vetrurillo - 1 wynik");
 				JSONObject coord = json.getJSONObject("data")
 						.getJSONObject("geometry").getJSONObject("coordinates");
 				LatLng[] listPoj = { new LatLng(coord.getDouble("lat"),
@@ -222,8 +204,6 @@ public class VeturilloAsynTask extends AsyncTask<Void, Void, List<LatLng>> {
 					.getString("text");
 			time = time.substring(0, time.length() - 1);
 
-			Log.d(DatabaseManager.DEBUG_TAG, time);
-			Log.d(DatabaseManager.DEBUG_TAG, distance);
 			JSONArray steps = legs.getJSONObject(0).getJSONArray("steps");
 
 			List<LatLng> lines = new ArrayList<LatLng>();

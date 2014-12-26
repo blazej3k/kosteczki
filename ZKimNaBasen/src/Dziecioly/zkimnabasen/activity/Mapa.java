@@ -6,12 +6,10 @@ import java.util.List;
 import Dziecioly.zkimnabasen.R;
 import Dziecioly.zkimnabasen.api.ApiAsyncTask;
 import Dziecioly.zkimnabasen.api.Obs³ugaMapy;
-import Dziecioly.zkimnabasen.baza.DatabaseManager;
 import Dziecioly.zkimnabasen.baza.model.Lokalizacja;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -79,7 +77,6 @@ public class Mapa extends FragmentActivity implements OnMapClickListener,
 			selectedLanLon = new LatLng(bundle.getDouble("lat"),
 					bundle.getDouble("lon"));
 			adres = bundle.getString("adres");
-			Log.d(DatabaseManager.DEBUG_TAG, "selectedLanLon" + "  " + adres);
 		}
 
 		// pobranie lokalizacji z API i bazy
@@ -122,7 +119,6 @@ public class Mapa extends FragmentActivity implements OnMapClickListener,
 	}
 
 	private void addMarkers(List<Lokalizacja> lokalizacjeApi) {
-		Log.d(DatabaseManager.DEBUG_TAG, "Rysujê markery..");
 		boolean apiNiePobrane = true;
 		if (lokalizacjeApi == null)
 			return;
@@ -130,8 +126,6 @@ public class Mapa extends FragmentActivity implements OnMapClickListener,
 			LatLng latLng = new LatLng(lok.getLat(), lok.getLon());
 
 			if (selectedLanLon != null && selectedLanLon.equals(latLng)) {
-				Log.d(DatabaseManager.DEBUG_TAG,
-						"rysuje wczeœniej wybrany marker - z api lub bazy");
 				selectedMarker = map.addMarker(new MarkerOptions()
 						.position(latLng).title(lok.getAdres())
 						.snippet(lok.getOpis()).icon(colorSelectedMarker));
@@ -155,8 +149,6 @@ public class Mapa extends FragmentActivity implements OnMapClickListener,
 		// jesli wziêty z intentu latlon nie by³ z api ani bazy -> narysuj
 		// marker usera
 		if (selectedLanLon != null && selectedMarker == null) {
-			Log.d(DatabaseManager.DEBUG_TAG,
-					"rysuje wczeœniej wybrany marker - usera");
 			userMarker = map.addMarker(new MarkerOptions()
 					.position(selectedLanLon).icon(colorSelectedMarker)
 					.title(adres));
@@ -263,7 +255,6 @@ public class Mapa extends FragmentActivity implements OnMapClickListener,
 		if (adres == null)
 			adres = obs³ugaMapy.pobierzAdres(arg);
 		if (adres == null) {
-			Log.d(DatabaseManager.DEBUG_TAG, "Nie mo¿na ogkreœliæ adresu");
 			Toast.makeText(context, "Nie mo¿na ogkreœliæ adresu",
 					Toast.LENGTH_SHORT).show();
 		} else {
@@ -305,7 +296,6 @@ public class Mapa extends FragmentActivity implements OnMapClickListener,
 			@Override
 			public void onClick(View v) {
 				String wpisanyAdres = editText.getText().toString();
-				Log.d(DatabaseManager.DEBUG_TAG, wpisanyAdres);
 				InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 				imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
 				zaznaczWpisanyAdresNaMapie(wpisanyAdres);
@@ -317,7 +307,6 @@ public class Mapa extends FragmentActivity implements OnMapClickListener,
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if ((keyCode == KeyEvent.KEYCODE_BACK)) {
-			Log.d(DatabaseManager.DEBUG_TAG, "back button pressed");
 			NoweWydarzenie.wybranaLokalizacja = getSelectedMarker();
 		}
 		return super.onKeyDown(keyCode, event);
