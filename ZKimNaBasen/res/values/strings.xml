@@ -22,7 +22,6 @@
     <string name="title_activity_wydarzenia_">Wydarzenia_Activity</string>
     <string name="title_activity_wydarzenia">Wydarzenia</string>
     <string name="title_activity_wydarzenia_lista">WydarzeniaLista</string>
-    <string name="penis_str">penis</string>
     <string name="nickLubNumer">nick lub numer telefonu</string>
     <string name="haslo">hasło</string>
     <string name="zaloguj">Zaloguj</string>
@@ -62,7 +61,7 @@
     <string name="btn_edytuj">Edytuj</string>
     <string name="btn_usun">Usuń</string>
     <string name="img_rowDesc">status</string>
-    <string name="tv_rowDesc">TextView_PINDOLINO</string>
+    <string name="demo_str">Pendolino</string>
     <string name="label_lokalizacja">Lokalizacja:</string>
     <string name="btn_mapa">Mapa</string>
     <string name="btn_veturilo">Veturilo</string>

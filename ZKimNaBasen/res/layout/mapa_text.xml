@@ -27,8 +27,7 @@
         <Button
             android:id="@+id/btnZnajdz"
             style="@style/button"
-            android:text="@string/znajdz" >
-        </Button>
+            android:text="@string/znajdz" />
     </LinearLayout>
 
 </FrameLayout>

@@ -135,7 +135,7 @@ public class SzczegolyWydarzenia extends FragmentActivity {
 
 			if (zaproszeniaL.isEmpty()) {
 				if (wydarzenie.isOtwarte())
-					tv_zaproszeni.setText("Nikt jeszcze nie do³¹czy³ do wydarzenia");
+					tv_zaproszeni.setText("Nikt jeszcze nie do³¹czy³ do wydarzenia.");
 				else 
 					tv_zaproszeni.setText("Lista zaproszonych osób jest pusta");
 			}
