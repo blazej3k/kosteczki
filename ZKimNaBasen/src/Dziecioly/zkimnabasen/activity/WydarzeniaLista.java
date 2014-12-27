@@ -84,13 +84,23 @@ ChecboxListFragment.NoticeDialogListener {
 		private void zbudujListe(List<Wydarzenie> wydarzeniaL) {
 			RowBeanListaWyd[] WydarzeniaRB = null;
 			WydarzeniaRB = new RowBeanListaWyd[wydarzeniaL.size()];
+			
+			String data=null;
+			String godzOd=null;
 
 			for (int i = 0; i < wydarzeniaL.size(); i++) {
 				WydarzeniaRB[i] = new RowBeanListaWyd();
 				WydarzeniaRB[i].setTekst(wydarzeniaL.get(i).getNazwa());
-				WydarzeniaRB[i].setData(General.stringFromDate(wydarzeniaL.get(i).getData())+", "+wydarzeniaL.get(i).getGodz_od());
 				
-				switch(wydarzeniaL.get(i).getTryb()) {
+				data = General.stringFromDate(wydarzeniaL.get(i).getData());
+				godzOd = wydarzeniaL.get(i).getGodz_od();
+				
+				if (godzOd == null)								// jak godziny nie ma podanej to jej nie wstawiaj do ciagu
+					WydarzeniaRB[i].setData(data);				// gdyz data i godzina to jedno pole na liscie
+				else 
+					WydarzeniaRB[i].setData(data+", "+godzOd);
+				
+				switch(wydarzeniaL.get(i).getTryb()) {			// ustawianie kolorowego znacznika w zaleznosci od typu wydarzenia, numerek oznacza typ (otwarte, w ktorym uczestnicze; moje; etc.)
 				case 0: 
 					WydarzeniaRB[i].setIcon(R.drawable.niebieski);
 					break;

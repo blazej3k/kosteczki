@@ -37,8 +37,8 @@
         android:layout_marginBottom="5dp"
         android:layout_marginTop="5dp"
         android:gravity="center_vertical|right"
-        android:paddingLeft="60dp"
         android:text="@string/demo_str"
         android:textSize="16sp" />
+    	
 
 </FrameLayout>
