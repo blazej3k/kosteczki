@@ -58,6 +58,8 @@
             android:id="@+id/opis"
             style="@style/edit_text"
             android:layout_width="match_parent"
+            android:inputType="textMultiLine"
+            android:minLines="3"
             android:hint="@string/opiss" />
 
         <CheckBox
