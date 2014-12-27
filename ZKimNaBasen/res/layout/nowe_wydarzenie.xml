@@ -24,12 +24,12 @@
 
         <Button
             android:id="@+id/kategoria"
-            style="@style/button_single"
+            style="@style/button_single_long"
             android:text="@string/kategoria" />
 
         <Button
             android:id="@+id/mapa"
-            style="@style/button_single"
+            style="@style/button_single_long"
             android:text="@string/lokalizacja" />
 
         <Button
@@ -41,17 +41,17 @@
 
         <Button
             android:id="@+id/data"
-            style="@style/button_single"
+            style="@style/button_single_long"
             android:text="@string/data" />
 
         <Button
             android:id="@+id/godzinaRozpoczecia"
-            style="@style/button_single"
+            style="@style/button_single_long"
             android:text="@string/godzinaRozpoczecia" />
 
         <Button
             android:id="@+id/godzinaZakonczenia"
-            style="@style/button_single"
+            style="@style/button_single_long"
             android:text="@string/godzinaZakonczenia" />
 
         <EditText
@@ -68,7 +68,7 @@
 
         <Button
             android:id="@+id/zaprosZnajomych"
-            style="@style/button_single"
+            style="@style/button_single_long"
             android:text="@string/zaprosZnajomych" />
 
         <Button
