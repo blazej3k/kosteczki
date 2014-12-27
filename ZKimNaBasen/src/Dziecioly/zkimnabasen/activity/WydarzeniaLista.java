@@ -86,8 +86,15 @@ public class WydarzeniaLista extends FragmentActivity implements
 		for (int i = 0; i < wydarzeniaL.size(); i++) {
 			WydarzeniaRB[i] = new RowBeanListaWyd();
 			WydarzeniaRB[i].setTekst(wydarzeniaL.get(i).getNazwa());
-			WydarzeniaRB[i].setData(General.stringFromDate(wydarzeniaL.get(i)
-					.getData()) + ", " + wydarzeniaL.get(i).getGodz_od());
+			String data = General.stringFromDate(wydarzeniaL.get(i).getData());
+			String godzOd = wydarzeniaL.get(i).getGodz_od();
+
+			if (godzOd == null) // jak godziny nie ma podanej to jej nie
+								// wstawiaj do ciagu
+				WydarzeniaRB[i].setData(data); // gdyz data i godzina to jedno
+												// pole na liscie
+			else
+				WydarzeniaRB[i].setData(data + ", " + godzOd);
 
 			switch (wydarzeniaL.get(i).getTryb()) {
 			case 0:

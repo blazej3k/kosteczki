@@ -3,7 +3,7 @@
     android:id="@+id/LinearLayoutNowe"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_vertical"
+    android:gravity="top"
     android:orientation="vertical" >
 
     <TextView
@@ -11,11 +11,12 @@
         style="@style/tv_lbl"
         android:layout_marginBottom="25dp"
         android:singleLine="false"
-        android:textSize="25sp" />
+        android:textSize="@dimen/naglowek_text" 
+        android:text="@string/demo_str"/>
 
     <Button
         android:id="@+id/btnOrigin"
-        style="@style/button_single"
+        style="@style/button_single_long"
         android:text="@string/skad" />
     
     

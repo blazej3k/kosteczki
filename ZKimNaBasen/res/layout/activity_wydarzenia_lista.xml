@@ -9,11 +9,8 @@
 
     <TextView
         android:id="@+id/tv_tworca_wydarzenia"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:text="@string/lbl_moje_wydarzenia"
-        android:textSize="@dimen/naglowki" />
+        style="@style/tv_naglowek"
+        android:text="@string/lbl_moje_wydarzenia" />
 
     <ListView
         android:id="@+id/lv_prostalista"
@@ -26,8 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="0" >
 
-        <!--   style="?android:attr/buttonStyleSmall" -->
-        <Button
+        <Button
             android:id="@+id/btn_nowe_wydarzenie"
             style="@style/button"
             android:text="@string/btn_nowe_wydarzenie" />

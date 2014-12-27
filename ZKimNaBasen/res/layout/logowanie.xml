@@ -18,7 +18,8 @@
         android:id="@+id/login"
         style="@style/edit_text"
         android:layout_marginTop="30dp"
-        android:hint="@string/nickLubNumer" >
+        android:hint="@string/nickLubNumer"
+        android:inputType="text" >t
 
         <requestFocus />
     </EditText>

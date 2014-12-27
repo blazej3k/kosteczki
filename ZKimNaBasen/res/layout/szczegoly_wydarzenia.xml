@@ -9,13 +9,7 @@
 
     <TextView
         android:id="@+id/tv_nazwa_wydarzenia"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:singleLine="true"
-        android:text="@string/penis_str"
-        android:textSize="22sp"
-        android:textStyle="bold" />
+        style="@style/tv_naglowek" />
 
     <LinearLayout
         android:id="@+id/horiz_big"
@@ -67,7 +61,7 @@
             <TextView
                 android:id="@+id/tv_tworca"
                 style="@style/tv_text"
-                android:text="@string/penis_str" />
+                android:text="@string/demo_str" />
 
             <TextView
                 android:id="@+id/tv_data"

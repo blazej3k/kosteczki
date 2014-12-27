@@ -48,7 +48,7 @@ public class List_Custom_ListaWydarzen extends ArrayAdapter<RowBeanListaWyd> {
 		view_holder.tekst_w_layoucie.setText(object.getTekst());
 		view_holder.imgIcon.setImageResource(object.getIcon());
 		view_holder.data.setText(object.getData());
-
+		
 		return convertView;
 	}
 	
