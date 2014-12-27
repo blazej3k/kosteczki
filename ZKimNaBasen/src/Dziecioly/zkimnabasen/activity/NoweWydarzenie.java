@@ -237,11 +237,11 @@ public class NoweWydarzenie extends FragmentActivity implements
 				if (nazwa_w == null || nazwa_w.equals(""))
 					Toast.makeText(context, "Podaj nazwê wydarzenia",
 							Toast.LENGTH_SHORT).show();
-				else if (data_w.equals("Data")) {
+				else if (data_w.equals("Data"))
 					Toast.makeText(context, "Podaj datê wydarzenia",
 							Toast.LENGTH_SHORT).show();
-				}
-				if (General.dateFromString(data_w).before(
+
+				else if (General.dateFromString(data_w).before(
 						General.dateFromString(General
 								.stringFromDate(new Date())))) {
 					Toast.makeText(context, "Podana data ju¿ minê³a",

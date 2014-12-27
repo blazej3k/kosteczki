@@ -16,7 +16,7 @@ import android.content.SharedPreferences.Editor;
 public class General {
 	
 	UzytkownikDao uzytkownikDao = new UzytkownikDao();
-
+	
 	public static void clearSharedPrefs(Context context) {
 		SharedPreferences pref = context.getSharedPreferences("MyPref", 0);
 		Editor editor = pref.edit();

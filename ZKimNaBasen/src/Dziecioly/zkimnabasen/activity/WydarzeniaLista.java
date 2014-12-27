@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,7 +33,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 public class WydarzeniaLista extends FragmentActivity implements
-ChecboxListFragment.NoticeDialogListener {
+		ChecboxListFragment.NoticeDialogListener {
 
 	static final String DEBUG_TAG = "LOG";
 
@@ -47,7 +48,7 @@ ChecboxListFragment.NoticeDialogListener {
 	private ChecboxListFragment frag;
 	private CharSequence[] items = { "Moje", "Wezmê udzia³",
 			"Jestem zaproszony, ale nie biorê udzia³u",
-	"Otwarte, w których nie biorê udzia³u" };
+			"Otwarte, w których nie biorê udzia³u" };
 
 	@SuppressLint("NewApi")
 	@Override
@@ -61,8 +62,7 @@ ChecboxListFragment.NoticeDialogListener {
 		if (!pref.contains("loggedIn")) {
 			Intent intent = new Intent(context, Logowanie.class);
 			startActivity(intent);
-		} 
-		else {
+		} else {
 			List<Wydarzenie> list = wydarzenieDao.pobierzWydarzenia();
 			wydarzeniaL = wybierzWydarzenia(list);
 
@@ -74,210 +74,222 @@ ChecboxListFragment.NoticeDialogListener {
 			if (wydarzeniaL.size() == 0) {
 				Toast.makeText(this, "Lista wydarzeñ jest pusta",
 						Toast.LENGTH_LONG).show();
-			}
-			else
+			} else
 				zbudujListe(wydarzeniaL);
 		}
 	}
-	
-	
-		private void zbudujListe(List<Wydarzenie> wydarzeniaL) {
-			RowBeanListaWyd[] WydarzeniaRB = null;
-			WydarzeniaRB = new RowBeanListaWyd[wydarzeniaL.size()];
 
-			for (int i = 0; i < wydarzeniaL.size(); i++) {
-				WydarzeniaRB[i] = new RowBeanListaWyd();
-				WydarzeniaRB[i].setTekst(wydarzeniaL.get(i).getNazwa());
-				WydarzeniaRB[i].setData(General.stringFromDate(wydarzeniaL.get(i).getData())+", "+wydarzeniaL.get(i).getGodz_od());
-				
-				switch(wydarzeniaL.get(i).getTryb()) {
-				case 0: 
-					WydarzeniaRB[i].setIcon(R.drawable.niebieski);
-					break;
-				case 1: 
-					WydarzeniaRB[i].setIcon(R.drawable.zielony);
-					break;
-				case 2: 
-					WydarzeniaRB[i].setIcon(R.drawable.czerwony);
-					break;
-				case 3: 
-					WydarzeniaRB[i].setIcon(R.drawable.zolty);
-					break;
-				default:
-					WydarzeniaRB[i].setIcon(R.drawable.zolty);
-					break;
-				}
-				
-				
+	private void zbudujListe(List<Wydarzenie> wydarzeniaL) {
+		RowBeanListaWyd[] WydarzeniaRB = null;
+		WydarzeniaRB = new RowBeanListaWyd[wydarzeniaL.size()];
+
+		for (int i = 0; i < wydarzeniaL.size(); i++) {
+			WydarzeniaRB[i] = new RowBeanListaWyd();
+			WydarzeniaRB[i].setTekst(wydarzeniaL.get(i).getNazwa());
+			WydarzeniaRB[i].setData(General.stringFromDate(wydarzeniaL.get(i)
+					.getData()) + ", " + wydarzeniaL.get(i).getGodz_od());
+
+			switch (wydarzeniaL.get(i).getTryb()) {
+			case 0:
+				WydarzeniaRB[i].setIcon(R.drawable.niebieski);
+				break;
+			case 1:
+				WydarzeniaRB[i].setIcon(R.drawable.zielony);
+				break;
+			case 2:
+				WydarzeniaRB[i].setIcon(R.drawable.czerwony);
+				break;
+			case 3:
+				WydarzeniaRB[i].setIcon(R.drawable.zolty);
+				break;
+			default:
+				WydarzeniaRB[i].setIcon(R.drawable.zolty);
+				break;
 			}
 
-			/*
-			 * for (Wydarzenie x : wydarzeniaL) Log.d(DatabaseManager.DEBUG_TAG,
-			 * "ID: " + x.getId());
-			 */
-
-			rozbudowana_lista = (ListView) findViewById(R.id.lv_prostalista);
-			List_Custom_ListaWydarzen adapter_listy = new List_Custom_ListaWydarzen(
-					this, R.layout.view_row_item_lista_wydarzen, WydarzeniaRB);
-
-			rozbudowana_lista.setAdapter(adapter_listy);
-
-			initOnItemClickListener();
 		}
 
-		private List<Wydarzenie> wybierzWydarzenia(List<Wydarzenie> list) {
-			
-			SharedPreferences pref = context.getSharedPreferences("MyPref", 0);
-			boolean moje = pref.getBoolean("0", true);
-			boolean wezmeUdzial = pref.getBoolean("1", true);
-			boolean jestemZaproszona = pref.getBoolean("2", true);
-			boolean otwarte = pref.getBoolean("3", true);
+		/*
+		 * for (Wydarzenie x : wydarzeniaL) Log.d(DatabaseManager.DEBUG_TAG,
+		 * "ID: " + x.getId());
+		 */
 
-			int zalogowany = General.loggedUser(context);
-			
-			//Log.d(DatabaseManager.DEBUG_TAG, "USER " +Integer.toString(zalogowany));
+		rozbudowana_lista = (ListView) findViewById(R.id.lv_prostalista);
+		List_Custom_ListaWydarzen adapter_listy = new List_Custom_ListaWydarzen(
+				this, R.layout.view_row_item_lista_wydarzen, WydarzeniaRB);
 
-			List<Wydarzenie> subList = new ArrayList<Wydarzenie>();
-			for (Wydarzenie wydarzenie : list) {
-				Uzytkownik uzytkownik = wydarzenie.getUzytkownik();
-				List<Zaproszenie> zaproszenia = wydarzenie.getZaproszenia();
-				boolean czyOtwarte = wydarzenie.isOtwarte();
-				
-				if (moje) {
-					//Log.d(DatabaseManager.DEBUG_TAG, "Moje");
-					if (uzytkownik.getId() == zalogowany) {
-						wydarzenie.setTryb(0);
+		rozbudowana_lista.setAdapter(adapter_listy);
+
+		initOnItemClickListener();
+	}
+
+	private List<Wydarzenie> wybierzWydarzenia(List<Wydarzenie> list) {
+
+		SharedPreferences pref = context.getSharedPreferences("MyPref", 0);
+		boolean moje = pref.getBoolean("0", true);
+		boolean wezmeUdzial = pref.getBoolean("1", true);
+		boolean jestemZaproszona = pref.getBoolean("2", true);
+		boolean otwarte = pref.getBoolean("3", true);
+
+		int zalogowany = General.loggedUser(context);
+
+		// Log.d(DatabaseManager.DEBUG_TAG, "USER "
+		// +Integer.toString(zalogowany));
+
+		List<Wydarzenie> subList = new ArrayList<Wydarzenie>();
+		for (Wydarzenie wydarzenie : list) {
+			Uzytkownik uzytkownik = wydarzenie.getUzytkownik();
+			List<Zaproszenie> zaproszenia = wydarzenie.getZaproszenia();
+			boolean czyOtwarte = wydarzenie.isOtwarte();
+
+			if (moje) {
+				// Log.d(DatabaseManager.DEBUG_TAG, "Moje");
+				if (uzytkownik.getId() == zalogowany) {
+					wydarzenie.setTryb(0);
+					subList.add(wydarzenie);
+				}
+			}
+			if (wezmeUdzial) {
+				// Log.d(DatabaseManager.DEBUG_TAG, "wezme udzial");
+				for (Zaproszenie zaproszenie : zaproszenia) {
+					if (zaproszenie.getUzytkownik().getId() == zalogowany
+							&& zaproszenie.isWezmie_udzial()) {
+						wydarzenie.setTryb(1);
 						subList.add(wydarzenie);
 					}
 				}
-				if (wezmeUdzial) {
-					//Log.d(DatabaseManager.DEBUG_TAG, "wezme udzial");
-					for (Zaproszenie zaproszenie : zaproszenia) {
-						if (zaproszenie.getUzytkownik().getId() == zalogowany
-								&& zaproszenie.isWezmie_udzial()) {
-							wydarzenie.setTryb(1);
-							subList.add(wydarzenie);
-						}
-					}
-				}
+			}
 
-				if (jestemZaproszona) {
-					//Log.d(DatabaseManager.DEBUG_TAG, "jestem zaproszona");
-					for (Zaproszenie zaproszenie : zaproszenia) {
-						if (zaproszenie.getUzytkownik().getId() == zalogowany
-								&& !zaproszenie.isWezmie_udzial()) {
-							wydarzenie.setTryb(2);
-							subList.add(wydarzenie);
-						}
-					}
-				}
-
-				if (otwarte) {
-					//Log.d(DatabaseManager.DEBUG_TAG, "otwarte");
-					if (czyOtwarte && uzytkownik.getId() != zalogowany) {
-						boolean istniejeZaproszenie = false;
-						for (Zaproszenie zaproszenie : zaproszenia) {
-							if (zaproszenie.getUzytkownik().getId() == zalogowany
-									&& zaproszenie.getWydarzenie().getId() == wydarzenie
-									.getId()) {
-								istniejeZaproszenie = true;
-							}
-						}
-
-						if (!istniejeZaproszenie) {
-							wydarzenie.setTryb(3);
-							subList.add(wydarzenie);
-						}
+			if (jestemZaproszona) {
+				// Log.d(DatabaseManager.DEBUG_TAG, "jestem zaproszona");
+				for (Zaproszenie zaproszenie : zaproszenia) {
+					if (zaproszenie.getUzytkownik().getId() == zalogowany
+							&& !zaproszenie.isWezmie_udzial()) {
+						wydarzenie.setTryb(2);
+						subList.add(wydarzenie);
 					}
 				}
 			}
-			return subList;
-		}
 
-		private void initOnItemClickListener() {
-			rozbudowana_lista.setOnItemClickListener(new OnItemClickListener() {
+			if (otwarte) {
+				// Log.d(DatabaseManager.DEBUG_TAG, "otwarte");
+				if (czyOtwarte && uzytkownik.getId() != zalogowany) {
+					boolean istniejeZaproszenie = false;
+					for (Zaproszenie zaproszenie : zaproszenia) {
+						if (zaproszenie.getUzytkownik().getId() == zalogowany
+								&& zaproszenie.getWydarzenie().getId() == wydarzenie
+										.getId()) {
+							istniejeZaproszenie = true;
+						}
+					}
 
-				@Override
-				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-					Log.d(DEBUG_TAG, "Listener");
-
-					Intent startSzczegolowyWidok = new Intent(WydarzeniaLista.this, SzczegolyWydarzenia.class);
-					startSzczegolowyWidok.putExtra("id_wydarzenia",  wydarzeniaL.get(position).getId());
-					startSzczegolowyWidok.putExtra("tryb", wydarzeniaL.get(position).getTryb());
-					Log.d(DEBUG_TAG, "PutExtra");
-					startActivity(startSzczegolowyWidok);
+					if (!istniejeZaproszenie) {
+						wydarzenie.setTryb(3);
+						subList.add(wydarzenie);
+					}
 				}
-
-			});
+			}
 		}
+		return subList;
+	}
 
-		private void initBtnOnClickListeners() {
-			btn_nowe_wydarzenie.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					Intent intent = new Intent(context, NoweWydarzenie.class);
-					startActivity(intent);
-				}
-			});
+	private void initOnItemClickListener() {
+		rozbudowana_lista.setOnItemClickListener(new OnItemClickListener() {
 
-			btn_wyswietlanie.setOnClickListener(new OnClickListener() {
-				public void onClick(View v) {
-					boolean[] checkedItems = new boolean[4];
-					SharedPreferences pref = context.getSharedPreferences("MyPref",	0);
-					checkedItems[0] = pref.getBoolean("0", true);
-					checkedItems[1] = pref.getBoolean("1", true);
-					checkedItems[2] = pref.getBoolean("2", true);
-					checkedItems[3] = pref.getBoolean("3", true);
-					
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				Log.d(DEBUG_TAG, "Listener");
 
-					frag = new ChecboxListFragment("Co chcesz wyœwietlaæ?", items, checkedItems);
-					frag.show(getSupportFragmentManager(), "tryb");
-				}
-			});
+				Intent startSzczegolowyWidok = new Intent(WydarzeniaLista.this,
+						SzczegolyWydarzenia.class);
+				startSzczegolowyWidok.putExtra("id_wydarzenia", wydarzeniaL
+						.get(position).getId());
+				startSzczegolowyWidok.putExtra("tryb", wydarzeniaL
+						.get(position).getTryb());
+				Log.d(DEBUG_TAG, "PutExtra");
+				startActivity(startSzczegolowyWidok);
+			}
+
+		});
+	}
+
+	private void initBtnOnClickListeners() {
+		btn_nowe_wydarzenie.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(context, NoweWydarzenie.class);
+				startActivity(intent);
+			}
+		});
+
+		btn_wyswietlanie.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				boolean[] checkedItems = new boolean[4];
+				SharedPreferences pref = context.getSharedPreferences("MyPref",
+						0);
+				checkedItems[0] = pref.getBoolean("0", true);
+				checkedItems[1] = pref.getBoolean("1", true);
+				checkedItems[2] = pref.getBoolean("2", true);
+				checkedItems[3] = pref.getBoolean("3", true);
+
+				frag = new ChecboxListFragment("Co chcesz wyœwietlaæ?", items,
+						checkedItems);
+				frag.show(getSupportFragmentManager(), "tryb");
+			}
+		});
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.main, menu);
+
+		return true;
+	}
+
+	@Override
+	public void onDialogPositiveClick(DialogFragment dialog) {
+		boolean checkedItems[] = frag.getCheckedItems();
+		SharedPreferences pref = context.getSharedPreferences("MyPref", 0);
+		Editor editor = pref.edit();
+		editor.putBoolean("0", checkedItems[0]);
+		editor.putBoolean("1", checkedItems[1]);
+		editor.putBoolean("2", checkedItems[2]);
+		editor.putBoolean("3", checkedItems[3]);
+		editor.commit();
+
+		List<Wydarzenie> list = wydarzenieDao.pobierzWydarzenia();
+		List<Wydarzenie> subList = wybierzWydarzenia(list);
+
+		wydarzeniaL = subList;
+		zbudujListe(subList);
+	}
+
+	@Override
+	public void onDialogNegativeClick(DialogFragment dialog) {
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		int id = item.getItemId();
+		if (id == R.id.action_logout) {
+			General.clearSharedPrefs(context);
+			return true;
+		} else if (id == R.id.action_clear) {
+			General.clearData(context);
+			return true;
 		}
+		return super.onOptionsItemSelected(item);
+	}
 
-		@Override
-		public boolean onCreateOptionsMenu(Menu menu) {
-			// Inflate the menu; this adds items to the action bar if it is present.
-			getMenuInflater().inflate(R.menu.main, menu);
-
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			System.exit(0);
 			return true;
 		}
 
-		@Override
-		public void onDialogPositiveClick(DialogFragment dialog) {
-			boolean checkedItems[] = frag.getCheckedItems();
-			SharedPreferences pref = context.getSharedPreferences("MyPref", 0);
-			Editor editor = pref.edit();
-			editor.putBoolean("0", checkedItems[0]);
-			editor.putBoolean("1", checkedItems[1]);
-			editor.putBoolean("2", checkedItems[2]);
-			editor.putBoolean("3", checkedItems[3]);
-			editor.commit();
-
-			List<Wydarzenie> list = wydarzenieDao.pobierzWydarzenia();
-			List<Wydarzenie> subList = wybierzWydarzenia(list);
-
-			wydarzeniaL = subList;
-			zbudujListe(subList);
-		}
-		
-
-		@Override
-		public void onDialogNegativeClick(DialogFragment dialog) {	}
-
-		@Override
-		public boolean onOptionsItemSelected(MenuItem item) {
-			int id = item.getItemId();
-			if (id == R.id.action_logout) {
-				General.clearSharedPrefs(context);
-				return true;
-			}
-			else if(id == R.id.action_clear)
-			{
-				General.clearData(context);	
-				return true;
-			}
-			return super.onOptionsItemSelected(item);
-		}
+		return super.onKeyDown(keyCode, event);
 	}
+}
