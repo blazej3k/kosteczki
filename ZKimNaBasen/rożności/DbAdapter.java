@@ -1,6 +1,6 @@
-package Dziecioly.zkimnabasen.baza;
+package dziecioly.zkimnabasen.baza;
 
-import Dziecioly.zkimnabasen.baza.model.TUzytkownik;
+import dziecioly.zkimnabasen.baza.model.TUzytkownik;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.SQLException;
