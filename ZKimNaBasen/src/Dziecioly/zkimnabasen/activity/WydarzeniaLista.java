@@ -140,9 +140,6 @@ public class WydarzeniaLista extends FragmentActivity implements
 
 		int zalogowany = General.loggedUser(context);
 
-		// Log.d(DatabaseManager.DEBUG_TAG, "USER "
-		// +Integer.toString(zalogowany));
-
 		List<Wydarzenie> subList = new ArrayList<Wydarzenie>();
 		for (Wydarzenie wydarzenie : list) {
 			Uzytkownik uzytkownik = wydarzenie.getUzytkownik();
@@ -293,7 +290,7 @@ public class WydarzeniaLista extends FragmentActivity implements
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			System.exit(0);
+			finish(); 
 			return true;
 		}
 

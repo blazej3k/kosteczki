@@ -27,11 +27,9 @@ public class HttpRequest {
 		return ret;
 	}
 
-
-
 	public String getFromUrl(String url, boolean auth) {
 		final HttpParams httpParams = new BasicHttpParams();
-	    HttpConnectionParams.setConnectionTimeout(httpParams, 10000);
+	    HttpConnectionParams.setConnectionTimeout(httpParams, 3000);
 		MyHttpClient httpclient = new MyHttpClient();
 		HttpResponse response;
 		String responseString = null;
@@ -47,6 +45,8 @@ public class HttpRequest {
 				response.getEntity().writeTo(out);
 				out.close();
 				responseString = out.toString();
+				//Log.d(DatabaseManager.DEBUG_TAG, url);
+				//Log.d(DatabaseManager.DEBUG_TAG, responseString);
 			} else {
 				// Closes the connection.
 				response.getEntity().getContent().close();

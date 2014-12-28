@@ -9,18 +9,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import Dziecioly.zkimnabasen.activity.VeturilloMapa;
 import android.os.AsyncTask;
 
 import com.google.android.gms.maps.model.LatLng;
 
 public class VeturilloAsynTask extends AsyncTask<Void, Void, List<LatLng>> {
 
-	private boolean veturilloIsReady = false;
 	private String urlVeturillo = "https://api.bihapi.pl/wfs/warszawa/veturilo";
+	private VeturiloAsyncListener listener;
 
 	private HttpRequest request = new HttpRequest();
-	private VeturilloMapa mapa;
 	private LatLng origin;
 	private LatLng destination;
 	private Obs³ugaMapy obs³ugaMapy;
@@ -33,19 +31,17 @@ public class VeturilloAsynTask extends AsyncTask<Void, Void, List<LatLng>> {
 
 	private boolean rowery;
 
-	public VeturilloAsynTask(VeturilloMapa mapa, LatLng origin,
+	public VeturilloAsynTask(VeturiloAsyncListener listener, LatLng origin,
 			LatLng destination, Obs³ugaMapy obs³ugaMapy, boolean rowery) {
-		this.mapa = mapa;
 		this.origin = origin;
 		this.destination = destination;
 		this.obs³ugaMapy = obs³ugaMapy;
 		this.rowery = rowery;
+		this.listener = listener;
 	}
 
 	@Override
 	protected List<LatLng> doInBackground(Void... params) {
-		veturilloIsReady = false;
-
 		// znajdz najblizsze stacje
 		vetOrigin = znajdzStacje(origin, rowery);
 		if (vetOrigin != null)
@@ -62,8 +58,9 @@ public class VeturilloAsynTask extends AsyncTask<Void, Void, List<LatLng>> {
 	@Override
 	protected void onPostExecute(List<LatLng> result) {
 		super.onPostExecute(result);
-		mapa.setLines(result);
-		veturilloIsReady = true;
+		listener.doStuff(result);
+		//mapa.setLines(result);
+		//veturilloIsReady = true;
 	}
 
 	private List<LatLng> wyznaczTrase(LatLng vetOrigin, LatLng vetDest) {
@@ -223,15 +220,6 @@ public class VeturilloAsynTask extends AsyncTask<Void, Void, List<LatLng>> {
 		}
 		return null;
 	}
-
-	public boolean isVeturilloIsReady() {
-		return veturilloIsReady;
-	}
-
-	public void setVeturilloIsReady(boolean veturilloIsReady) {
-		this.veturilloIsReady = veturilloIsReady;
-	}
-
 	public String getDistance() {
 		return distance;
 	}
@@ -262,6 +250,11 @@ public class VeturilloAsynTask extends AsyncTask<Void, Void, List<LatLng>> {
 
 	public void setVetDest(LatLng vetDest) {
 		this.vetDest = vetDest;
+	}
+	
+	
+	public interface VeturiloAsyncListener {
+		public void doStuff(List<LatLng> result);
 	}
 
 }

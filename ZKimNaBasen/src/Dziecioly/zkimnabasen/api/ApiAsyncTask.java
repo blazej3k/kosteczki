@@ -7,32 +7,29 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import Dziecioly.zkimnabasen.activity.Mapa;
+import Dziecioly.zkimnabasen.baza.DatabaseManager;
 import Dziecioly.zkimnabasen.baza.dao.LokalizacjaDao;
 import Dziecioly.zkimnabasen.baza.model.Lokalizacja;
 import android.os.AsyncTask;
+import android.util.Log;
 
 public class ApiAsyncTask extends AsyncTask<Void, String, List<Lokalizacja>> {
 
+	private AsyncListener listener;
 	private final String swimmingPoolsUrl = "https://api.bihapi.pl/wfs/warszawa/swimmingPools";
 	private final String sportFieldsUrl = "https://api.bihapi.pl/wfs/warszawa/sportFields?";
-
-	private boolean listIsReady;
-
 	private String kategoria;
-	private Mapa mapa;
 
 	HttpRequest request = new HttpRequest();
 	LokalizacjaDao lokalizacjaDao = new LokalizacjaDao();
 
-	public ApiAsyncTask(Mapa mapa, String kategoria) {
-		this.mapa = mapa;
+	public ApiAsyncTask(AsyncListener listener, String kategoria) {
 		this.kategoria = kategoria;
+		this.listener = listener;
 	}
 
 	@Override
 	protected List<Lokalizacja> doInBackground(Void... params) {
-		listIsReady = false;
 		List<Lokalizacja> lokalizacje = new ArrayList<Lokalizacja>();
 
 		if (kategoria.equals("P³ywalnia"))
@@ -40,6 +37,7 @@ public class ApiAsyncTask extends AsyncTask<Void, String, List<Lokalizacja>> {
 		else if (kategoria.equals("Boisko"))
 			lokalizacje = pobierzLokalizacjeApi(sportFieldsUrl);
 		if (lokalizacje == null) {
+			Log.d(DatabaseManager.DEBUG_TAG, "Brak API");
 			lokalizacje = new ArrayList<Lokalizacja>();
 		}
 
@@ -64,16 +62,7 @@ public class ApiAsyncTask extends AsyncTask<Void, String, List<Lokalizacja>> {
 	@Override
 	protected void onPostExecute(List<Lokalizacja> result) {
 		super.onPostExecute(result);
-		mapa.setLokalizacje(result);
-		listIsReady = true;
-	}
-
-	public boolean isListIsReady() {
-		return listIsReady;
-	}
-
-	public void setListIsReady(boolean listIsReady) {
-		this.listIsReady = listIsReady;
+		listener.doStuff(result);
 	}
 
 	private List<Lokalizacja> parseResponse(String responseString) {
@@ -114,5 +103,9 @@ public class ApiAsyncTask extends AsyncTask<Void, String, List<Lokalizacja>> {
 		}
 		return null;
 	}
-
+	
+	
+	public interface AsyncListener {
+		public void doStuff(List<Lokalizacja> result);
+	}
 }

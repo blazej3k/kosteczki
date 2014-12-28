@@ -5,6 +5,7 @@ import java.util.List;
 import Dziecioly.zkimnabasen.R;
 import Dziecioly.zkimnabasen.api.Obs³ugaMapy;
 import Dziecioly.zkimnabasen.api.VeturilloAsynTask;
+import Dziecioly.zkimnabasen.api.VeturilloAsynTask.VeturiloAsyncListener;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -23,13 +24,12 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 public class VeturilloMapa extends FragmentActivity implements
-		OnMapReadyCallback {
+		OnMapReadyCallback, VeturiloAsyncListener {
 
 	private LatLng origin;
 	private LatLng destination;
 
 	private Context context;
-	private boolean mapIsReady;
 	private Obs³ugaMapy obs³ugaMapy;
 
 	private Marker markerOrigin;
@@ -47,6 +47,8 @@ public class VeturilloMapa extends FragmentActivity implements
 	private BitmapDescriptor colorVeturiloMarker;
 	private String addrOrigin;
 	private String addrDest;
+	
+	private boolean isReady = false;
 
 	// private boolean myLocation;
 
@@ -102,8 +104,7 @@ public class VeturilloMapa extends FragmentActivity implements
 		Toast.makeText(context, "Wyznaczanie trasy..", Toast.LENGTH_LONG)
 				.show();
 
-		mapIsReady = true;
-		if (asyncTask.isVeturilloIsReady())
+		if (isReady)
 			narysujTrase(lines);
 
 	}
@@ -152,11 +153,14 @@ public class VeturilloMapa extends FragmentActivity implements
 				.show();
 	}
 
-	public void setLines(List<LatLng> lines) {
-		this.lines = lines;
-		if (mapIsReady)
-			narysujTrase(lines);
+	
 
+	@Override
+	public void doStuff(List<LatLng> lines) {
+		this.lines = lines;
+		isReady = true;
+		if (map!=null)
+			narysujTrase(lines);
 	}
 
 }

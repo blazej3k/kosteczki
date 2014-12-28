@@ -1,10 +1,10 @@
 package Dziecioly.zkimnabasen.activity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import Dziecioly.zkimnabasen.R;
 import Dziecioly.zkimnabasen.api.ApiAsyncTask;
+import Dziecioly.zkimnabasen.api.ApiAsyncTask.AsyncListener;
 import Dziecioly.zkimnabasen.api.Obs³ugaMapy;
 import Dziecioly.zkimnabasen.baza.model.Lokalizacja;
 import android.content.Context;
@@ -31,7 +31,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class Mapa extends FragmentActivity implements OnMapClickListener,
-		OnMarkerClickListener, OnMapReadyCallback {
+		OnMarkerClickListener, OnMapReadyCallback, AsyncListener {
 
 	private EditText editText;
 	private Button btnZnajdz;
@@ -42,7 +42,6 @@ public class Mapa extends FragmentActivity implements OnMapClickListener,
 	private Obs³ugaMapy obs³ugaMapy;
 	private GoogleMap map;
 	private final LatLng defaultLatLng = new LatLng(52.23, 21);
-	private boolean mapIsReady;
 	private float zoom = 12.0f;
 
 	private BitmapDescriptor colorApiMarker;
@@ -54,11 +53,14 @@ public class Mapa extends FragmentActivity implements OnMapClickListener,
 	private String adres;
 
 	// z Api -> jeœli publiczne = false, z DB-> jeœli publiczne = true
-	private List<Lokalizacja> lokalizacje = new ArrayList<Lokalizacja>();
+	private List<Lokalizacja> lokalizacje;
 
 	private Marker userMarker = null;
 	private Marker selectedMarker = null;
 	private LatLng selectedLanLon = null;
+	
+	private boolean isReady = false;
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -108,13 +110,12 @@ public class Mapa extends FragmentActivity implements OnMapClickListener,
 	@Override
 	public void onMapReady(GoogleMap mapp) {
 		this.map = mapp;
-		
+
 		map.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLatLng, zoom));
 		map.setOnMapClickListener(this);
 		map.setOnMarkerClickListener(this);
 
-		mapIsReady = true;
-		if (asyncTask.isListIsReady())
+		if (isReady)
 			addMarkers(lokalizacje);
 	}
 
@@ -159,7 +160,7 @@ public class Mapa extends FragmentActivity implements OnMapClickListener,
 
 		}
 
-		if (kategoria.equals("P³ywalnia") || kategoria.equals("Boisko")
+		if ((kategoria.equals("P³ywalnia") || kategoria.equals("Boisko"))
 				&& apiNiePobrane)
 			Toast.makeText(context, "B³¹d pobierania API", Toast.LENGTH_LONG)
 					.show();
@@ -266,18 +267,11 @@ public class Mapa extends FragmentActivity implements OnMapClickListener,
 				map.getCameraPosition().zoom));
 	}
 
-	public void setLokalizacje(List<Lokalizacja> lokalizacje) {
-		this.lokalizacje = lokalizacje;
-		if (mapIsReady)
-			addMarkers(lokalizacje);
-
-	}
-
 	private void zaznaczWpisanyAdresNaMapie(String wpisanyAdres) {
 		if (wpisanyAdres != null && !wpisanyAdres.equals("")) {
 			String[] res = obs³ugaMapy.pobierzMarker(wpisanyAdres);
 
-			if (res== null)
+			if (res == null)
 				Toast.makeText(context, "Nieznany adres", Toast.LENGTH_SHORT)
 						.show();
 			else {
@@ -343,4 +337,14 @@ public class Mapa extends FragmentActivity implements OnMapClickListener,
 	public void setSelectedMarker(Marker selectedMarker) {
 		this.selectedMarker = selectedMarker;
 	}
+
+	@Override
+	public void doStuff(List<Lokalizacja> result) {
+		lokalizacje = result;
+		isReady= true;
+		if (map != null)
+			addMarkers(lokalizacje);
+
+	}
+
 }
