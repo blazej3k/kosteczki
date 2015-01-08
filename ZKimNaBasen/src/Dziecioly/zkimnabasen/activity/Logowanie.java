@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -79,6 +80,15 @@ public class Logowanie extends Activity {
 	private void utworzKonto() {
 		Intent intent = new Intent(context, Rejestracja.class);
 		startActivity(intent);
+	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			moveTaskToBack( true );
+			return true;
+		}
+		return super.onKeyDown(keyCode, event);
 	}
 
 }
