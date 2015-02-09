@@ -62,7 +62,7 @@ public class Pompeczka {
 
 		// wydarzenie 1 - uzytkownik 1, lokalizacja 7, zaproszenia (2 3 4)
 		Wydarzenie wydarzenie1 = new Wydarzenie("Wypad na basen",
-				General.dateFromString("01.02.2015"), "14:00", "16:00",
+				General.dateFromString("01.03.2015"), "14:00", "16:00",
 				"Niedziela to œwietny dzieñ na odrobinê relaksu! :) Proponujê wspólne wyjœcie na basen. Tego dnia na Rydygiera jest promocja -wejœcie 50% taniej!", false); 																			
 		wydarzenie1.setUzytkownik(uzytkownik1);
 		wydarzenie1.setLokalizacja(lokalizacja7);
@@ -86,7 +86,7 @@ public class Pompeczka {
 		
 		// wydarzenie 2 - uzytkownik 1, lokalizacja 1,  zaproszenie (3)
 		Wydarzenie wydarzenie2 = new Wydarzenie("Poniedzia³kowy fitness",
-				General.dateFromString("02.02.2015"), "18:30", "20:00",
+				General.dateFromString("02.03.2015"), "18:30", "20:00",
 				"Trzeba dobrze rozpocz¹æ tydzieñ. W poniedzia³ki o 18:30 jest areobik Fitness Clubie; by³am w zesz³ym tygodniu - by³o super", false); 																	
 		wydarzenie2.setUzytkownik(uzytkownik1);
 		wydarzenie2.setLokalizacja(lokalizacja1);
@@ -100,7 +100,7 @@ public class Pompeczka {
 		
 		// wydarzenie 3 - uzytkownik 2, lokalizacja 4,  otwarte (1)
 		Wydarzenie wydarzenie3 = new Wydarzenie("Tenis",
-				General.dateFromString("01.02.2015"), "11:00", null,
+				General.dateFromString("01.03.2015"), "11:00", null,
 				"Ktoœ chêtny? :)", true); 																	
 		wydarzenie3.setUzytkownik(uzytkownik2);
 		wydarzenie3.setLokalizacja(lokalizacja4);
@@ -114,7 +114,7 @@ public class Pompeczka {
 		
 		// wydarzenie 4 - uzytkownik 2, lokalizacja 6,  otwarte
 		Wydarzenie wydarzenie4 = new Wydarzenie("Godzinka p³ywania",
-				General.dateFromString("04.02.2015"), "17:30", "18:30",
+				General.dateFromString("04.03.2015"), "17:30", "18:30",
 				"Zapraszam na wspólne pokonanie kilku d³ugoœci basenu.", true); 																	
 		wydarzenie4.setUzytkownik(uzytkownik2);
 		wydarzenie4.setLokalizacja(lokalizacja6);
@@ -123,7 +123,7 @@ public class Pompeczka {
 		
 		// wydarzenie 5 - uzytkownik 3, lokalizacja 3,  zaproszenia (1, 2)
 		Wydarzenie wydarzenie5 = new Wydarzenie("Pilates",
-				General.dateFromString("07.02.2015"), "12:15", "14:00",
+				General.dateFromString("07.03.2015"), "12:15", "14:00",
 				null, false); 																	
 		wydarzenie5.setUzytkownik(uzytkownik3);
 		wydarzenie5.setLokalizacja(lokalizacja1);
